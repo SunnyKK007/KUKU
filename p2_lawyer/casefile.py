@@ -36,9 +36,8 @@ class CaseFile:
     escalations: list = field(default_factory=list)
     story: str = ""
     today: dt.date = field(default_factory=dt.date.today)
-    status: str = "intake"   # intake | ready | out_of_scope
+    status: str = "intake"
 
-    # ---------------------------------------------------------------- slots
     def slots(self) -> list[str]:
         return SLOTS.get(self.problem_type, [])
 
@@ -53,7 +52,6 @@ class CaseFile:
     def intake_done(self) -> bool:
         return bool(self.problem_type) and not self.missing_slots()
 
-    # ---------------------------------------------------------------- proof
     def still_employed(self) -> bool:
         v = self.facts.get("end_date")
         return isinstance(v, dict) and v.get("text") == "still employed"
@@ -61,7 +59,7 @@ class CaseFile:
     def proof_items(self) -> dict:
         items = dict(PROOF_ITEMS.get(self.problem_type, {}))
         if self.problem_type == "salary" and self.still_employed():
-            items.pop("exit_proof", None)   # no resignation letter if you still work there
+            items.pop("exit_proof", None)
         return items
 
     def have_proof(self) -> list[str]:
@@ -80,7 +78,6 @@ class CaseFile:
         ratio = have / len(items)
         return "strong" if ratio >= 0.75 else "medium" if ratio >= 0.4 else "weak"
 
-    # ------------------------------------------------------------- escalation
     def add_escalations(self, hits: list[dict]) -> list[dict]:
         new = []
         have = {e["code"] for e in self.escalations}
@@ -98,7 +95,6 @@ class CaseFile:
         loc = self.facts.get("location") or {}
         return isinstance(loc, dict) and loc.get("state") in MTA_STATES
 
-    # ---------------------------------------------------------------- display
     def fmt(self, slot: str) -> str:
         v = self.facts.get(slot)
         if v in (None, "", {}):

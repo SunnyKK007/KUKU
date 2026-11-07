@@ -50,7 +50,7 @@ def judge(llm: LLM, promo: dict) -> dict | None:
             + clip_script(promo["segments"]))
     try:
         out = llm.json(SYSTEM, user, max_tokens=500)
-    except Exception as e:  # never let one bad call kill a full-show run
+    except Exception as e:
         return {"error": str(e)[:200]}
     for k in ("hook_score", "cliff_score", "standalone_score"):
         try:

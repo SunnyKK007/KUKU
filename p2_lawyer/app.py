@@ -17,7 +17,6 @@ if str(ROOT) not in sys.path:
 
 import streamlit as st  # noqa: E402
 
-# Streamlit Cloud secrets -> environment, so common/llm.py and voice.py find keys
 try:
     for k, v in dict(st.secrets).items():
         if isinstance(v, str):
@@ -48,7 +47,6 @@ if "session" not in st.session_state:
     new_session("auto")
 S: Session = st.session_state.session
 
-# ------------------------------------------------------------------ sidebar
 with st.sidebar:
     st.header("Nyay Saathi")
     st.caption("Deposit · Refund · Salary")
@@ -82,7 +80,6 @@ with st.sidebar:
     with st.expander("Cost so far"):
         st.json(S.cost_report())
 
-# ------------------------------------------------------------------ main
 st.title("⚖️ Get your money back")
 st.info(f"{DISCLAIMER} I cover three problems only: a deposit your landlord won't return, a refund a company won't "
         f"give, and salary your employer hasn't paid.")

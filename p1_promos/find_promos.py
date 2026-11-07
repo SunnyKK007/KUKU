@@ -18,7 +18,6 @@ Usage
 from __future__ import annotations
 
 import argparse
-import json
 import pathlib
 import re
 import time
@@ -33,7 +32,6 @@ MIN_LEN, MAX_LEN = 20.0, 60.0
 SWEET_LO, SWEET_HI = 28.0, 50.0
 
 
-# ----------------------------------------------------------------- cut points
 def cut_points(ep: Episode) -> tuple[list[float], list[float]]:
     """Starts: shot changes. Ends: shot ends or episode end. Never inside a spoken line."""
     lines = ep.dialogue
@@ -54,7 +52,6 @@ def make_segment(ep: Episode, start: float, end: float) -> dict:
             "script": [b.as_text() for b in beats]}
 
 
-# ------------------------------------------------------------------- scoring
 def score_clip(ep: Episode, start: float, end: float, known: set[str]) -> dict:
     beats = ep.window(start, end)
     dur = end - start
@@ -86,7 +83,7 @@ def best_clips(ep: Episode, known: set[str], keep: int = 3) -> list[dict]:
                 cands.append((s, e, score_clip(ep, s, e, known)))
     cands.sort(key=lambda x: -x[2]["rule_score"])
     chosen: list[tuple[float, float, dict]] = []
-    for s, e, sc in cands:                       # non-max suppression
+    for s, e, sc in cands:
         if all(overlap((s, e), (cs, ce)) < 0.3 for cs, ce, _ in chosen):
             chosen.append((s, e, sc))
         if len(chosen) >= keep:
@@ -115,7 +112,7 @@ def stitched_cold_open(ep: Episode, base: dict, known: set[str]) -> dict | None:
         return None
     fs, fe, _ = best
     total = (fe - fs) + (seg["end"] - seg["start"])
-    if total > MAX_LEN:                     # trim the build from the front, at a valid start
+    if total > MAX_LEN:
         need = total - MAX_LEN
         later = [t for t in starts if t >= seg["start"] + need and seg["end"] - t >= 15]
         if not later:
@@ -131,7 +128,7 @@ def stitched_cold_open(ep: Episode, base: dict, known: set[str]) -> dict | None:
     hook = S.squash(h_raw, 4.0)
     cliff = base["cliff_rule"]
     inten = S.squash(S.body_intensity(ep.window(fs, fe) + beats, total), 6.0)
-    rule = (0.35 * hook + 0.30 * cliff + 0.20 * (alone - 0.8) + 0.15 * inten)  # stitching risk
+    rule = (0.35 * hook + 0.30 * cliff + 0.20 * (alone - 0.8) + 0.15 * inten)
     return {"type": "stitched cold open", "segments": [flash, build],
             "duration": round((fe - fs) + (seg["end"] - new_start), 2), "entry_episode": ep.number,
             "hook_rule": hook, "cliff_rule": cliff, "standalone_rule": round(alone - 0.8, 2),
@@ -142,7 +139,6 @@ def stitched_cold_open(ep: Episode, base: dict, known: set[str]) -> dict | None:
             "tropes": base["tropes"]}
 
 
-# -------------------------------------------------------------- final ranking
 def _short(text: str, n: int = 110) -> str:
     text = text.strip()
     return text if len(text) <= n else text[:n].rsplit(" ", 1)[0] + "..."
@@ -185,7 +181,6 @@ def describe(p: dict) -> dict:
 def rank(promos: list[dict], top: int) -> list[dict]:
     n_eps = max(p["entry_episode"] for p in promos)
     for p in promos:
-        # earlier entry episode = shorter path from ad to the free first episodes
         funnel = 1.0 - 0.06 * (p["entry_episode"] - 1) / max(n_eps - 1, 1)
         j = p.get("judge") or {}
         if j and all(isinstance(j.get(k), int) for k in ("hook_score", "cliff_score", "standalone_score")):
@@ -195,8 +190,6 @@ def rank(promos: list[dict], top: int) -> list[dict]:
             p["final_score"] = round(p["rule_score"] * funnel, 3)
         p["funnel_factor"] = round(funnel, 3)
     promos.sort(key=lambda p: -p["final_score"])
-    # A slate of ads should cover the whole show: one promo per episode, at most
-    # three per 5-episode stretch, and no trope more than a third of the slate.
     ranked, alternates, per_block, trope_count = [], [], {}, {}
     used_eps = set()
     for p in promos:
@@ -211,8 +204,6 @@ def rank(promos: list[dict], top: int) -> list[dict]:
         ranked.append(p)
         if len(ranked) >= top:
             break
-    # Short shows: if the slate rules leave empty slots, fill them with the best
-    # remaining clips, still skipping near-duplicates of a pick already made.
     for p in sorted(alternates, key=lambda x: -x["final_score"]):
         if len(ranked) >= top:
             break
@@ -250,7 +241,6 @@ def run(folder: str, model: str = "offline", top: int = 25, judge_k: int = 40,
             if st:
                 st["ends_episode"] = clips[0]["ends_episode"]
                 promos.append(st)
-    # shortlist for the (optional) model judge
     promos.sort(key=lambda p: -p["rule_score"])
     judged = 0
     approx_tokens = 0

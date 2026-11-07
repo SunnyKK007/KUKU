@@ -143,7 +143,7 @@ def make_llm(model: str | None):
     try:
         llm = LLM(model or "offline")
         return llm, None
-    except Exception as e:  # missing key, unknown provider
+    except Exception as e:
         return LLM("offline"), f"{type(e).__name__}: {e}"
 
 
@@ -161,7 +161,6 @@ class Session:
         self.practice_state: dict | None = None
         self.shadow = {"model_calls": 0, "prompt_tokens": 0, "completion_tokens": 0}
 
-    # --------------------------------------------------------------- helpers
     @property
     def model_label(self) -> str:
         return self.llm.label()
@@ -188,7 +187,6 @@ class Session:
         self.shadow["prompt_tokens"] += _est_tokens(prompt)
         self.shadow["completion_tokens"] += completion_tokens
 
-    # ------------------------------------------------------------ main entry
     def reply(self, text: str) -> dict:
         text = (text or "").strip()
         if not text:
@@ -198,7 +196,6 @@ class Session:
         if not c.story:
             c.story = text
         lang = detect_language(text)
-        # sticky: short answers ("Sharma ji, Sector 62", "20000") must not flip the reply language
         if lang != "en" or len(self.transcript) == 1 or len(text.split()) >= 8:
             c.language = lang
 
@@ -239,12 +236,11 @@ class Session:
         if self.llm.available and c.status != "out_of_scope":
             try:
                 return self._model_turn(text, payload, new_esc, newly_typed)
-            except Exception as e:  # network, quota, bad JSON: fall back to rules for this turn
+            except Exception as e:
                 self.model_error = f"{type(e).__name__}: {e}"
                 log.warning("model turn failed, using rules: %s", self.model_error)
         return self._offline_turn(text, new_esc, newly_typed)
 
-    # ---------------------------------------------------------- offline turn
     def _escalation_block(self, esc: list[dict]) -> str:
         if not esc:
             return ""
@@ -310,7 +306,7 @@ class Session:
         if SKIP_RE.match(text):
             c.skipped.append(slot)
             if slot == "amount" and f.get("amount") in (None, "") and f.get("amount_paid"):
-                f["amount"] = f["amount_paid"]      # best available figure
+                f["amount"] = f["amount_paid"]
             return
         if slot in ("amount", "monthly_rent", "monthly_salary"):
             amts = extract_amounts(text, force=True)
@@ -371,7 +367,6 @@ class Session:
                       r"paid|बाकी|नहीं दी|नहीं मिली|जमा|डिपॉजिट|wapas",
         }
         amts = extract_amounts(text)
-        # "deposit was 2,50,000 and he is returning only 1,00,000" -> amount at stake is the difference
         if p == "deposit" and len(amts) >= 2 and f.get("amount") in (None, ""):
             pos2 = low.find(amts[1]["raw"].lower())
             if re.search(r"(?:return(?:ing|ed)?|gave back|giving back|refund(?:ed|ing)?|paid back|wapas (?:kiya|diya|de raha))"
@@ -390,8 +385,6 @@ class Session:
                     if 0 <= d < best_d and d <= 40:
                         best, best_d = cat, d
             slot = best or "amount"
-            # Refunds: "I paid 12,000" is what was paid, not necessarily what is owed
-            # (a gym that ran 4 of 12 months owes less). Keep it apart so the bot asks.
             before = low[max(0, pos - 45):pos]
             if (p == "refund" and slot == "amount" and re.search(r"\bpaid\b|payment|bought|purchased|cost", before)
                     and not re.search(r"refund|due|owe|back|remaining|pending|wapas|baaki|baki", before)):
@@ -457,7 +450,6 @@ class Session:
                 f.setdefault("what_happened", "resigned")
             self._months(text)
 
-    # ------------------------------------------------------------- model turn
     def _model_payload(self, text: str) -> str:
         c = self.case
         types = [c.problem_type] if c.problem_type else ["deposit", "refund", "salary"]
@@ -479,7 +471,6 @@ class Session:
 
     def _model_turn(self, text: str, payload: str, new_esc: list[dict], newly_typed: bool) -> dict:
         c, f = self.case, self.case.facts
-        # deterministic extraction first, so the model sees it and rules stay in charge
         if c.problem_type and c.pending_slot and c.pending_slot != "__type__" and not newly_typed:
             self._fill_slot(c.pending_slot, text)
         if c.problem_type:
@@ -534,7 +525,6 @@ class Session:
         cited = ["NALSA-15100"] if esc_block else []
         return self._out(msg, kind="model", cited=cited, escalations=new_esc)
 
-    # ----------------------------------------------------------- where I stand
     def where_i_stand(self, log_user: bool = True) -> dict:
         if log_user:
             self.transcript.append({"role": "user", "text": "[Where do I stand?]"})
@@ -559,7 +549,6 @@ class Session:
                 self.model_error = f"{type(e).__name__}: {e}"
         return self._out(text, kind="stand")
 
-    # --------------------------------------------------------------- documents
     def documents(self) -> list[dict]:
         out = []
         for d in documents.build_documents(self.case):
@@ -583,7 +572,6 @@ class Session:
         cited = [cid for d in docs for cid in d["cited"]] + documents.DOC_CARDS.get(self.case.problem_type, [])
         return self._out(body, kind="documents", cited=cited)
 
-    # ---------------------------------------------------------------- practice
     def start_practice(self, log_user: bool = True) -> dict:
         if log_user:
             self.transcript.append({"role": "user", "text": "[Practise]"})
@@ -628,7 +616,6 @@ class Session:
                              kind="practice")
         return self._out(fb + f"\n\n**{persona.capitalize()}:** {self._in_character(st['i'])}", kind="practice")
 
-    # ----------------------------------------------------------------- sources
     def sources_reply(self, log_user: bool = True) -> dict:
         if log_user:
             self.transcript.append({"role": "user", "text": "[Sources]"})

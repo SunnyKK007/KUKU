@@ -40,15 +40,15 @@ def fmt(sec: float) -> str:
 
 @dataclass
 class Beat:
-    kind: str            # camera | action | sfx | dialogue
+    kind: str
     start: float
     end: float
     text: str
-    speaker: str = ""    # raw speaker label, e.g. "LADY JANE"
-    cue: str = ""        # delivery cue, e.g. "Cold, Commanding"
+    speaker: str = ""
+    cue: str = ""
     offscreen: bool = False
     scene: int = 1
-    line: int = 0        # 1-based line number in the source file
+    line: int = 0
 
     def as_text(self) -> str:
         if self.kind == "dialogue":
@@ -103,7 +103,7 @@ def parse_episode(path: str | pathlib.Path) -> Episode:
     lines = path.read_text(encoding="utf-8").splitlines()
     m = re.search(r"episode-(\d+)", path.name)
     ep = Episode(number=int(m.group(1)) if m else 0, path=path)
-    scene_no, pending = 1, None   # pending = (kind, speaker, cue, offscreen, label_line)
+    scene_no, pending = 1, None
     cur_scene: dict = {}
     i = 0
     while i < len(lines):

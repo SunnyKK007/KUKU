@@ -11,14 +11,11 @@ import re
 
 from common.screenplay import Beat
 
-# --- what makes a scrolling viewer stop (hook) ------------------------------
 HOOK_WORDS = {
-    # physical shock, weight 3
     3.0: r"slap|strikes?|struck|punch|explo|blast|ablaze|inferno|flames?|blood|bleed|dagger|blade|sword|"
          r"pistol|gun|riding crop|whip|lash|chain|shackle|red-hot|iron rod|branding|noose|gallows|"
          r"strangl|chok|stab|smash|shatter|hurls?|throws?|slams?|seiz|drags?|kicks?|burns?|fire\b|"
          r"poison|arsenic|corpse|dead body|collapses?|faints?",
-    # dramatic reveal / romance beat, weight 2
     2.0: r"kneel|drops? to one knee|propos|kiss|bursts? (in|through|open)|storms? (in|into)|"
          r"reveal|unmask|tears? (off|open)|rips?|crown|signet|ring\b|veil|altar|tiara|regalia|"
          r"gasps?|screams?|shrieks?|sob|tears stream|weep|trembl|mud\b|on her knees|on his knees",
@@ -32,10 +29,8 @@ SHOCK_LINE = (r"\b(never|dead|die|kill|hang|hanged|witch|marry|married|wife|husb
               r"filth|beggar|execute|burn|arrest|guards|take her|take him|get out|how dare|"
               r"not anymore|you will|you are no|i am the|i will destroy|on your knees|"
               r"rightful|heir|lawful|duke|duchess|pregnant|inheritance|disinherit)\b")
-# cosy-scene words that make fire/strike words false alarms ("strikes flint over kindling")
 COSY = r"flint|kindling|hearth|fireplace|candle|lantern|stove|cooking|kettle"
 
-# --- what leaves the viewer needing more (cliffhanger) -----------------------
 CLIFF_WORDS = (r"cut(s|ting)? (abruptly )?to black|abrupt|cliffhanger|freez|frozen|realiz|horror|"
                r"terrified|terror|shock|gasps?|stunned|eyes widen|wide eyes|wide-eyed|jaw drops|"
                r"smirk|venomous|triumphant|bursts? (in|open|through)|silhouett|footsteps|appears|"
@@ -47,7 +42,6 @@ RESOLVED_WORDS = (r"embrace|smiles? warmly|warm smile|peaceful|peace\b|relief|re
                   r"walk(s|ing)? (away|off|out)( \w+)? together|together into|sunlight|warmth|warm\b|cozy|"
                   r"gentle|soft smile|calm|fad(es|ing) out|music swells? (warmly|softly)|safe\b|comfort")
 
-# --- what a new viewer can follow without backstory (standalone) -------------
 ARCHETYPES = (r"\b(wife|husband|sister|mother|father|bride|groom|wedding|duke|duchess|son|daughter|"
               r"family|fianc[eé]e?|stepmother|heir|maid|lord|lady|king|queen|witch|soldier)\b")
 NEEDS_CONTEXT = (r"\b(remember|again|last night|yesterday|earlier|as i said|as i told|like before|"
@@ -92,11 +86,11 @@ def _beat_intensity(b: Beat) -> float:
         if text.endswith("!"):
             score += 0.5
         if len(text.split()) <= 8:
-            score += 0.5          # short, punchy line
+            score += 0.5
     if b.kind == "sfx":
         score += 0.5
     if re.search(COSY, text, re.I):
-        score -= 2.5          # fire in a hearth is not danger
+        score -= 2.5
     return max(score, 0.0)
 
 
@@ -108,7 +102,6 @@ def hook_score(beats: list[Beat], start: float) -> tuple[float, Beat | None]:
     scored = [(beat_intensity(b), b) for b in early]
     best = max(scored, key=lambda x: x[0])
     total = sum(s for s, _ in scored)
-    # a line of dialogue inside 3s matters (works with sound on), visuals matter (sound off)
     has_line = any(b.kind == "dialogue" for b in early)
     calm_open = all(re.search(r"establish|landscape|exterior|slow pan|wide shot of the (manor|forest|"
                               r"village|estate|castle)", b.text, re.I) for b in early if b.kind == "camera") \
@@ -134,7 +127,6 @@ def cliff_score(beats: list[Beat], end: float, episode_end: float) -> tuple[floa
         s += 0.6 * min(_count(INTENSE_CUES, last_line.cue), 2)
     resolved = _count(RESOLVED_WORDS, text)
     if abs(end - episode_end) <= 1.5:
-        # writers usually place the episode cliffhanger here, unless the ending is calm
         s += 3.0 if resolved == 0 else 0.5
     anchor = max(late, key=lambda b: (b.kind != "camera", b.end))
     return s, anchor
@@ -158,7 +150,6 @@ def standalone_score(beats: list[Beat], speakers_known: set[str]) -> tuple[float
     if len(dialogue) < 3:
         s -= 2.0
         notes.append("almost no dialogue, so stakes may be unclear")
-    # names said aloud but never seen speaking in the clip need explanation
     said = set(re.findall(r"\b([A-Z][a-z]{3,})\b", " ".join(b.text for b in dialogue)))
     absent = {n for n in said if n.upper() in speakers_known and not any(n.upper() in sp for sp in speakers)}
     if absent:
@@ -170,7 +161,7 @@ def standalone_score(beats: list[Beat], speakers_known: set[str]) -> tuple[float
 def body_intensity(beats: list[Beat], duration: float) -> float:
     if duration <= 0:
         return 0.0
-    return sum(beat_intensity(b) for b in beats) / duration * 10.0   # per 10 seconds
+    return sum(beat_intensity(b) for b in beats) / duration * 10.0
 
 
 def tropes(beats: list[Beat]) -> list[str]:

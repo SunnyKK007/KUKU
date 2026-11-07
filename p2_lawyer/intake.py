@@ -12,7 +12,6 @@ import re
 
 PROBLEM_TYPES = ("deposit", "refund", "salary")
 
-# ------------------------------------------------------------------ language
 HINGLISH_MARKERS = {
     "hai", "hain", "nahi", "nahin", "mera", "meri", "mere", "mujhe", "kya", "kar", "raha", "rahi", "rahe",
     "wapas", "vapas", "paise", "paisa", "bhai", "tha", "thi", "diya", "diye", "mila", "mili", "abhi", "kaise",
@@ -40,7 +39,6 @@ def detect_language(text: str) -> str:
     return "hinglish" if hits >= 2 and hits / max(len(words), 1) >= 0.12 else "en"
 
 
-# ------------------------------------------------------------ classification
 KEYWORDS = {
     "deposit": [r"security deposit", r"\bdeposit\b", r"landlord", r"land lord", r"house ?owner", r"flat owner",
                 r"\bowner\b", r"\brent(?:ed|al)?\b", r"tenant", r"\bpg\b", r"paying guest", r"kiray[ae]", r"kiraye",
@@ -67,7 +65,6 @@ def classify(text: str) -> tuple[str | None, dict]:
     scores = {}
     for ptype, pats in KEYWORDS.items():
         scores[ptype] = sum(WEIGHTS.get(p, 1) for p in pats if re.search(p, t))
-    # "deposit" + "refund" together usually means a rent deposit refund
     if scores["deposit"] >= 3 and scores["refund"] and re.search(r"deposit|landlord|kiray|मकान", t):
         scores["deposit"] += 2
     best = max(scores, key=scores.get)
@@ -85,7 +82,6 @@ def parse_choice(text: str) -> str | None:
     return None
 
 
-# ----------------------------------------------------------------- amounts
 AMOUNT_RE = re.compile(
     r"(?P<cur>₹|rs\.?|inr|rupees?|रु\.?)?\s*(?P<num>\d{1,3}(?:,\d{2,3})+(?:\.\d+)?|\d+(?:\.\d+)?)\s*"
     r"(?P<mult>k\b|thousand|hazaa?r|हज़ार|हजार|lakhs?|lacs?|लाख|crores?|cr\b|करोड़)?\s*(?P<cur2>rupees?|rs\b|/-|रुपये|रुपए|रुपया)?",
@@ -106,7 +102,6 @@ def extract_amounts(text: str, force: bool = False) -> list[dict]:
         num = m.group("num")
         mult = (m.group("mult") or "").lower()
         has_cur = bool(m.group("cur") or m.group("cur2"))
-        # skip dates like 12/03/2025 or 2025-03-12 and plain years
         before, after = text[max(0, m.start("num") - 1):m.start("num")], text[m.end("num"):m.end("num") + 1]
         if before in "/-." and before or after in ("/", "-") and after and not mult:
             continue
@@ -134,7 +129,6 @@ MONTHS_COUNT_RE = re.compile(r"(\d+|one|two|three|four|five|six|ek|do|teen|char|
 WORDNUM = {"one": 1, "two": 2, "three": 3, "four": 4, "five": 5, "six": 6, "ek": 1, "do": 2, "teen": 3,
            "char": 4, "paanch": 5, "दो": 2, "तीन": 3, "चार": 4, "पांच": 5}
 
-# ------------------------------------------------------------------- dates
 MONTHS = {m: i + 1 for i, m in enumerate(["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct",
                                            "nov", "dec"])}
 HI_MONTHS = {"जनवरी": 1, "फरवरी": 2, "फ़रवरी": 2, "मार्च": 3, "अप्रैल": 4, "मई": 5, "जून": 6, "जुलाई": 7,
@@ -210,7 +204,6 @@ def _relative(s: str, today: dt.date) -> str | None:
     return None
 
 
-# ------------------------------------------------------------------ places
 STATES = ["Andhra Pradesh", "Arunachal Pradesh", "Assam", "Bihar", "Chhattisgarh", "Goa", "Gujarat", "Haryana",
           "Himachal Pradesh", "Jharkhand", "Karnataka", "Kerala", "Madhya Pradesh", "Maharashtra", "Manipur",
           "Meghalaya", "Mizoram", "Nagaland", "Odisha", "Punjab", "Rajasthan", "Sikkim", "Tamil Nadu", "Telangana",
@@ -231,7 +224,6 @@ CITIES = {"bengaluru": "Karnataka", "bangalore": "Karnataka", "mysuru": "Karnata
           "मुंबई": "Maharashtra", "दिल्ली": "Delhi", "जयपुर": "Rajasthan", "लखनऊ": "Uttar Pradesh",
           "पटना": "Bihar", "बेंगलुरु": "Karnataka", "पुणे": "Maharashtra", "नोएडा": "Uttar Pradesh",
           "इंदौर": "Madhya Pradesh", "भोपाल": "Madhya Pradesh", "कानपुर": "Uttar Pradesh"}
-# States the Centre reported (PIB, 25 Jul 2022) as having revised tenancy law on Model Tenancy Act lines.
 MTA_STATES = {"Andhra Pradesh", "Tamil Nadu", "Uttar Pradesh", "Assam"}
 
 
@@ -246,7 +238,6 @@ def extract_location(text: str) -> dict | None:
     return None
 
 
-# ------------------------------------------------------------------- proof
 PROOF_ITEMS = {
     "deposit": {
         "rent_agreement": ("Rent agreement", [r"agreement", r"lease", r"एग्रीमेंट", r"अनुबंध", r"करारनामा"]),
@@ -326,7 +317,6 @@ def extract_proof(ptype: str, text: str, answering: bool = False) -> dict:
     return found
 
 
-# ------------------------------------------------------------------ slots
 SKIP_RE = re.compile(r"(?i)^\s*(?:skip|pass|don'?t know|dont know|do not know|not sure|no idea|pata nahi|"
                      r"maloom nahi|nahi pata|पता नहीं|मालूम नहीं|na|n/a|-)\s*[.!]?\s*$")
 
@@ -465,7 +455,7 @@ def extract_party(text: str) -> str | None:
     m = PARTY_RE.search(text) or COMPANY_RE.search(text)
     if m:
         return m.group(0).strip()
-    for cm in CAMEL_RE.finditer(text):   # brand-style names like QuickKart, ShopZone
+    for cm in CAMEL_RE.finditer(text):
         if cm.group(1) not in NOT_PARTIES:
             return cm.group(1)
     t = text.lower()

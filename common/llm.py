@@ -40,8 +40,6 @@ PROVIDERS = {
     "custom": {"base_url": None, "key_env": "LLM_API_KEY", "default_model": None},
 }
 
-# Rough public list prices in USD per 1M tokens (input, output), only used for
-# cost estimates in reports. Free tiers cost $0; these show cost at paid volume.
 PRICE_PER_M = {
     "llama-3.3-70b-versatile": (0.59, 0.79),
     "gemini-2.5-flash": (0.30, 2.50),
@@ -96,7 +94,7 @@ class LLM:
         key = os.environ.get(cfg["key_env"]) if cfg["key_env"] else "ollama"
         if not key:
             raise RuntimeError(f"{cfg['key_env']} is not set. Add it to .env or use --model offline.")
-        from openai import OpenAI  # imported lazily so offline mode needs nothing
+        from openai import OpenAI
         self.client = OpenAI(base_url=base_url, api_key=key)
 
     @property
@@ -106,7 +104,6 @@ class LLM:
     def label(self) -> str:
         return "offline (rules only)" if not self.available else f"{self.provider}:{self.model}"
 
-    # ------------------------------------------------------------------ calls
     def chat(self, messages: list[dict], json_mode: bool = False, max_tokens: int = 1500) -> str:
         if not self.available:
             raise RuntimeError("No model configured (offline mode).")
@@ -125,10 +122,10 @@ class LLM:
             try:
                 resp = self.client.chat.completions.create(**kwargs)
                 break
-            except Exception as e:  # rate limits / transient errors
+            except Exception as e:
                 msg = str(e).lower()
                 if "response_format" in msg and "response_format" in kwargs:
-                    kwargs.pop("response_format")  # provider without JSON mode
+                    kwargs.pop("response_format")
                     continue
                 if attempt == 5 or not any(s in msg for s in ("429", "rate", "timeout", "503", "overloaded", "502", "resource_exhausted", "quota", "unavailable")):
                     raise

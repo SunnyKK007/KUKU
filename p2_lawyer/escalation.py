@@ -12,8 +12,8 @@ from __future__ import annotations
 import datetime as dt
 import re
 
-LARGE_AMOUNT = 500_000          # above Rs 5 lakh: stakes are high, a lawyer is worth it
-DISTRICT_LIMIT = 5_000_000      # District Consumer Commission limit (Rs 50 lakh), card CPA-JURISDICTION
+LARGE_AMOUNT = 500_000
+DISTRICT_LIMIT = 5_000_000
 
 RULES = [
     ("danger", "urgent", r"threat|dhamk|dhamaki|beat me|hit me|\bhit\b|assault|attack|violen|\bkill|maar(?:ne|unga|dunga|a)|"
@@ -62,7 +62,7 @@ HINDI_PREFIX = {
 LEGAL_AID_LINE = ("Free legal aid: call NALSA's toll-free helpline 15100, or visit your District Legal Services Authority. "
                   "Women, children, SC/ST members, persons with disability, industrial workmen and people below the "
                   "state's income limit are among those entitled to a free lawyer.")
-BLOCKING = {"family", "property", "other_area", "criminal"}   # stop intake if no money problem is found
+BLOCKING = {"family", "property", "other_area", "criminal"}
 
 
 def check_text(text: str) -> list[dict]:
@@ -70,7 +70,6 @@ def check_text(text: str) -> list[dict]:
     for code, level, rx in COMPILED:
         m = rx.search(text)
         if m:
-            # 'hit' alone is too noisy ("hit by a delay"): require a person nearby
             if code == "danger" and m.group(0).lower() == "hit" and not re.search(r"hit (?:me|him|her|us)", text, re.I):
                 continue
             hits.append({"code": code, "level": level, "trigger": m.group(0), "message": MESSAGES[code]})
@@ -88,7 +87,6 @@ def check_case(case) -> list[dict]:
         elif amt > LARGE_AMOUNT:
             hits.append({"code": "large_amount", "level": "refer", "trigger": f"Rs {amt:,}",
                          "message": MESSAGES["large_amount"]})
-    # time limits: refund 2 years (CPA s.69), salary claim 3 years (Code on Wages s.45(6))
     limit_days = {"refund": 730, "salary": 1095}.get(case.problem_type)
     key = "start_date" if case.problem_type == "refund" else "end_date"
     iso = (case.facts.get(key) or {}).get("iso") if isinstance(case.facts.get(key), dict) else None

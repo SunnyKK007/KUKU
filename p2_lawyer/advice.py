@@ -52,7 +52,6 @@ def where_you_stand(case) -> tuple[str, list[str]]:
                    if case.language == "hi" else
                    "_(Neeche ki jaankari abhi English mein hai: bina AI model ke main kanooni baatein sirf checked English "
                    "text mein deta hoon. Model on hone par yeh Hinglish mein aayegi. Madad ke liye 15100 par call karein.)_")
-    # 1. the case in one line
     amt = case.fmt("amount")
     party = case.fmt("other_party") if case.facts.get("other_party") else \
         {"deposit": "the landlord", "refund": "the seller", "salary": "Your employer"}[p]
@@ -63,14 +62,12 @@ def where_you_stand(case) -> tuple[str, list[str]]:
     }[p]
     out.append("### Your case in one line\n" + one_line.replace("not given", "(not given yet)"))
 
-    # 2. safety / lawyer flags first
     if case.escalations:
         out.append("### Please read first")
         for e in case.escalations:
             out.append(f"- {e['message']}")
         out.append(f"- {LEGAL_AID_LINE} {_cite('NALSA-15100')}")
 
-    # 3. what the law says (only from cards)
     out.append("### What the law says (only verified sources)")
     for cid in ids:
         if cid in ("NALSA-15100", "EMERGENCY-112"):
@@ -96,7 +93,6 @@ def where_you_stand(case) -> tuple[str, list[str]]:
                        f"Tenancy Act, so I treat this as a normal agreement dispute: the deposit is owed back under your "
                        f"agreement unless there is a valid deduction. {_cite('TENANCY-STATE')}")
 
-    # 4. proof
     out.append(f"### How strong is your proof: **{case.proof_strength()}**")
     have = case.have_proof()
     if have:
@@ -109,11 +105,9 @@ def where_you_stand(case) -> tuple[str, list[str]]:
     else:
         out.append("You have all the key documents I look for. Keep copies in two places.")
 
-    # 5. options ladder
     out.append("### Your options, step by step")
     out += OPTIONS[p](case)
 
-    # 6. time limits
     out.append("### Time limits")
     if p == "refund":
         out.append(f"- File a consumer complaint within 2 years of the problem. {_cite('CPA-LIMITATION')}")
@@ -126,7 +120,6 @@ def where_you_stand(case) -> tuple[str, list[str]]:
         out.append("- I do not have a verified time limit for deposit recovery cases in my sources. Do not wait: "
                    "send the notice now and ask legal aid or a lawyer about the time limit for a civil case.")
 
-    # 7. honesty
     out.append("### What I am not sure about")
     out += UNSURE[p](case)
     out.append("- I only know what you told me. I have not seen your documents.")

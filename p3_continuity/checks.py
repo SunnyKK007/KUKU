@@ -47,17 +47,14 @@ def _texts(show: list[Episode]):
         yield ep, 2, "logline", ep.logline
         yield ep, 3, "notes", ep.continuity
         for b in ep.beats:
-            yield ep, b.line + 2, b.kind, b.text       # text sits 2 lines below the label
+            yield ep, b.line + 2, b.kind, b.text
 
 
-# ------------------------------------------------------------- 1 name drift
 def proper_names(show: list[Episode]) -> tuple[dict[str, list], set[str]]:
     lower_words = set()
     occ = defaultdict(list)
     for ep, line, kind, text in _texts(show):
         lower_words.update(re.findall(r"\b[a-z][a-z]+\b", text))
-        # common words are filtered below (they also appear in lower case), so names
-        # at the start of a sentence ("Robert, stop!") are kept
         for m in re.finditer(r"\b([A-Z][a-z]{3,})(?:'s)?\b", text):
             occ[m.group(1)].append((ep, line, kind, text))
     names = {n: v for n, v in occ.items() if n.lower() not in lower_words}
@@ -81,10 +78,9 @@ def name_drift(show: list[Episode]) -> list[dict]:
             if a[0] != b[0] or abs(len(a) - len(b)) > 3:
                 continue
             if a + "s" == b or b + "s" == a or a + "es" == b or b + "es" == a:
-                continue                      # "the Ashcrofts" is a plural, not a typo
+                continue
             ratio = difflib.SequenceMatcher(None, a.lower(), b.lower()).ratio()
             prefix = len(__import__("os").path.commonprefix([a.lower(), b.lower()]))
-            # two different speaking characters are different people, not a typo
             if a.upper() in speakers and b.upper() in speakers:
                 continue
             if ratio >= 0.8 or (prefix >= 4 and ratio >= 0.6 and min(len(a), len(b)) >= 6):
@@ -119,7 +115,6 @@ def name_drift(show: list[Episode]) -> list[dict]:
     return out
 
 
-# ------------------------------------------------- 2 surname and title drift
 def surname_and_title_drift(show: list[Episode]) -> list[dict]:
     proper, _ = proper_names(show)
     first_names = {b.speaker.split()[-1].title() for ep in show for b in ep.dialogue
@@ -154,7 +149,6 @@ def surname_and_title_drift(show: list[Episode]) -> list[dict]:
     return out
 
 
-# ----------------------------------------------------- 3 speaker label drift
 def label_drift(show: list[Episode]) -> list[dict]:
     labels = defaultdict(list)
     for ep in show:
@@ -196,7 +190,7 @@ def label_typos(show: list[Episode]) -> list[dict]:
         for common in keys[:i]:
             diff = set(rare.split()) ^ set(common.split())
             if len(labels[rare]) * 3 > len(labels[common]) or (diff and diff <= TITLE_WORDS):
-                continue                      # LORD X vs LADY X are two people
+                continue
             if difflib.SequenceMatcher(None, rare, common).ratio() >= 0.85:
                 ev = [_ev(ep, b.line, f"label '{rare}': {b.text[:80]}") for ep, b in labels[rare]]
                 out.append(issue("speaker label typo", "medium",
@@ -207,7 +201,6 @@ def label_typos(show: list[Episode]) -> list[dict]:
     return out
 
 
-# --------------------------------------------- 4 nameless labels with a name
 def descriptor_labels(show: list[Episode]) -> list[dict]:
     known = {w.title() for ep in show for b in ep.dialogue for w in b.speaker.split()
              if w not in TITLE_WORDS and w not in DESCRIPTOR_WORDS and len(w) > 3}
@@ -218,7 +211,7 @@ def descriptor_labels(show: list[Episode]) -> list[dict]:
             words = set(b.speaker.split())
             if words & DESCRIPTOR_WORDS and not any(w.title() in known for w in words - DESCRIPTOR_WORDS - TITLE_WORDS):
                 labels[b.speaker].append((ep, b))
-    base = Counter()          # how often each name appears in the shot covering ANY line
+    base = Counter()
     total_lines = 0
     for ep in show:
         for b in ep.dialogue:
@@ -269,7 +262,6 @@ def _shot_names(ep: Episode, b, known: set[str]) -> list[str]:
     return [n for n in re.findall(r"\b([A-Z][a-z]{3,})\b", shot.text) if n in known]
 
 
-# -------------------------------------------------- 5 one prop, many names
 def prop_drift(show: list[Episode]) -> list[dict]:
     found = defaultdict(lambda: defaultdict(list))
     for ep, line, kind, text in _texts(show):
@@ -289,7 +281,6 @@ def prop_drift(show: list[Episode]) -> list[dict]:
     return out
 
 
-# ------------------------------------------------------------- 6 format lint
 def format_lint(show: list[Episode]) -> list[dict]:
     out = []
     for i, ep in enumerate(show):

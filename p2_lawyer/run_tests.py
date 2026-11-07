@@ -14,7 +14,6 @@ import datetime as dt
 import json
 import logging
 import pathlib
-import re
 import time
 
 from common.llm import PRICE_PER_M, ROOT
@@ -24,7 +23,7 @@ from .engine import DISCLAIMER, Session
 from .validator import validate
 
 HERE = pathlib.Path(__file__).resolve().parent
-TODAY = dt.date(2026, 11, 8)   # pinned so re-runs give the same transcripts
+TODAY = dt.date(2026, 11, 8)
 
 
 def run_case(case: dict, model: str) -> tuple[str, dict]:
@@ -40,24 +39,23 @@ def run_case(case: dict, model: str) -> tuple[str, dict]:
         if ps == "__type__" and "__type__" not in case["answers"]:
             break
         answered[ps] = answered.get(ps, 0) + 1
-        if answered[ps] > 2:   # the engine keeps asking the same thing: stop, this is a failure to record
+        if answered[ps] > 2:
             break
         s.reply(case["answers"].get(ps, "skip"))
     for msg in case.get("followups", []):
         s.reply(msg)
 
-    stand = docs_out = None
+    stand = None
     if s.case.problem_type and s.case.status != "out_of_scope":
         stand = s.where_i_stand()
-        docs_out = s.documents_reply()
+        s.documents_reply()
         if case.get("practice_reply"):
             s.reply("practise")
             s.reply(case["practice_reply"])
             s.reply("stop")
-    sources = s.sources_reply()
+    s.sources_reply()
     docs = s.documents()
 
-    # ---------------------------------------------------------- checks
     c = s.case
     assistant_texts = [m["text"] for m in s.transcript if m["role"] == "assistant"] + [d["text"] for d in docs]
     leaked = [v for t in assistant_texts for v in validate(t).violations]
@@ -84,7 +82,6 @@ def run_case(case: dict, model: str) -> tuple[str, dict]:
     if c.needs_lawyer():
         checks["legal_aid_offered"] = any("15100" in t for t in assistant_texts)
 
-    # ---------------------------------------------------------- transcript
     md = [f"# {case['id']}", "", f"**Persona:** {case['persona']}", "",
           f"**Model:** {s.model_label}  |  **Run date (pinned):** {TODAY}  |  Raw output, not edited.", "",
           f"> {DISCLAIMER}", "", "## Conversation", ""]

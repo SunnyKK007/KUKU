@@ -97,7 +97,6 @@ def _registry():
     for canon, aliases in data["instruments"].items():
         for a in [canon] + aliases:
             alias_to_canon[_norm(a)] = canon
-        # bare name without the year, e.g. "Code on Wages"
         bare = re.sub(r",?\s*" + YEAR + r"$", "", canon)
         alias_to_canon.setdefault(_norm(bare), canon)
     allowed_secs: dict[str, set] = {}
@@ -116,7 +115,7 @@ def _registry():
 
 
 def _section_allowed(inst: str, sec: str, allowed: dict) -> bool:
-    for a in allowed.get(inst, ()):  # exact, a sub-part of an allowed one, or the parent of one
+    for a in allowed.get(inst, ()):
         if sec == a or sec.startswith(a + "(") or a.startswith(sec + "("):
             return True
     return False
@@ -132,11 +131,10 @@ def _cards_for_section(inst, sec, sec_to_cards):
 
 def validate(text: str, extra_cited=()) -> ValidationResult:
     data, alias_to_canon, allowed_secs, sec_to_cards, inst_to_cards = _registry()
-    spans = []      # (start, end, kind, matched_text, reason)
+    spans = []
     cited: list[str] = []
-    instr_mentions = []  # (start, end, canonical or None)
+    instr_mentions = []
 
-    # 1. known instruments (longest aliases first so the full name wins)
     taken = [False] * len(text)
     for alias in sorted(alias_to_canon, key=len, reverse=True):
         pat = re.compile(r"(?<![\w])" + r"\s+".join(re.escape(w) for w in alias.split()) + r"(?![\w])"
@@ -150,7 +148,6 @@ def validate(text: str, extra_cited=()) -> ValidationResult:
             instr_mentions.append((m.start(), m.end(), canon))
             cited += inst_to_cards.get(canon, [])
 
-    # 2. out-of-date criminal codes
     for m in CRIMINAL_OLD_RE.finditer(text):
         if not any(taken[m.start():m.end()]):
             spans.append((m.start(), m.end(), "outdated_criminal_code", m.group(0),
@@ -159,12 +156,10 @@ def validate(text: str, extra_cited=()) -> ValidationResult:
             for i in range(m.start(), m.end()):
                 taken[i] = True
 
-    # 3. unknown instruments (with or without a year)
     for rx in (GENERIC_INSTR_RE, GENERIC_INSTR_NOYEAR_RE, GENERIC_INSTR_HI_RE):
         for m in rx.finditer(text):
             s, e = m.start("name"), m.end()
             name = m.group("name")
-            # trim leading words like "The", "Under", "Per" so we keep the actual name
             lead = re.match(r"(?:(?:The|the|Under|under|Per|As|In|Of|By|And|See)\s+)+", name)
             if lead:
                 s += lead.end()
@@ -177,19 +172,16 @@ def validate(text: str, extra_cited=()) -> ValidationResult:
 
     instr_mentions.sort()
 
-    # 4. sections / rules / articles
     for m in SECTION_RE.finditer(text):
         if any(taken[m.start():m.end()]):
             continue
         nums = [_norm_sec(n) for n in re.findall(SECTION_NUM, m.group("nums"))]
         kw = m.group("kw").lower()
-        # which instrument is this attached to? first: one starting right after ("of the X")
         inst = None
         after = [im for im in instr_mentions if 0 <= im[0] - m.end() <= 14]
         if after:
             inst = after[0][2] or "UNKNOWN"
         else:
-            # same sentence, nearest instrument before or after
             sent_start = max(text.rfind(".", 0, m.start()) + 1, text.rfind("\n", 0, m.start()) + 1,
                              text.rfind("।", 0, m.start()) + 1)
             nxt = [p for p in (text.find(".", m.end()), text.find("\n", m.end()), text.find("।", m.end())) if p != -1]
@@ -215,7 +207,6 @@ def validate(text: str, extra_cited=()) -> ValidationResult:
         for i in range(m.start(), m.end()):
             taken[i] = True
 
-    # 5. case law
     for rx in CASE_PATTERNS:
         for m in rx.finditer(text):
             if any(taken[m.start():m.end()]):
@@ -224,7 +215,6 @@ def validate(text: str, extra_cited=()) -> ValidationResult:
             for i in range(m.start(), m.end()):
                 taken[i] = True
 
-    # 6. helpline numbers
     allowed_nums = set(data["allowed_phone_numbers"])
     for m in PHONE_RE.finditer(text):
         raw = m.group("num")
@@ -232,7 +222,7 @@ def validate(text: str, extra_cited=()) -> ValidationResult:
         tail = text[m.end("num"):m.end("num") + 2]
         if (re.search(r"rs\.?|₹|inr|rupee|call upon", gap) or re.match(r"[,.]\d|/-", tail)
                 or re.fullmatch(r"\d{4}-\d{1,2}-\d{1,2}", raw.strip())):
-            continue   # money amounts ("call upon you to pay Rs 1,80,000") are not phone numbers
+            continue
         digits = re.sub(r"\D", "", raw)
         if len(digits) == 12 and digits.startswith("91"):
             digits = digits[2:]
@@ -242,7 +232,6 @@ def validate(text: str, extra_cited=()) -> ValidationResult:
         for i in range(m.start("num"), m.end("num")):
             taken[i] = True
 
-    # 7. links
     allowed_domains = set(data["allowed_domains"])
     for m in URL_RE.finditer(text):
         dom = (m.group("domain") or m.group("domain2") or "").lower()
@@ -254,7 +243,6 @@ def validate(text: str, extra_cited=()) -> ValidationResult:
         for i in range(m.start(), m.end()):
             taken[i] = True
 
-    # 8. [[CARD-ID]] tokens from the model
     for m in CARD_TOKEN_RE.finditer(text):
         cid = m.group(1).upper()
         if cid in data["by_id"]:
@@ -262,7 +250,6 @@ def validate(text: str, extra_cited=()) -> ValidationResult:
         else:
             spans.append((m.start(), m.end(), "unknown_card", m.group(0), "model cited a card id that does not exist"))
 
-    # build cleaned text
     spans.sort()
     out, pos, violations = [], 0, []
     for s, e, kind, matched, reason in spans:
@@ -275,7 +262,6 @@ def validate(text: str, extra_cited=()) -> ValidationResult:
         log.warning("guardrail blocked %s: %r (%s)", kind, matched, reason)
     out.append(text[pos:])
     clean = "".join(out)
-    # valid card tokens become short visible refs
     clean = CARD_TOKEN_RE.sub(lambda m: f"[{m.group(1).upper()}]" if m.group(1).upper() in data["by_id"] else "", clean)
     seen, ordered = set(), []
     for cid in list(extra_cited) + cited:

@@ -63,7 +63,6 @@ Inside `3_CODE/` (the python folders keep their names because the code imports t
 ```
 3_CODE/
 ├── README.md                  this file
-├── SUBMISSION_GUIDE.md        short submit checklist
 ├── check_key.py               tests your API key
 ├── make_submission.sh         rebuilds the PDFs and refills folders 1 and 2
 ├── requirements.txt, .env.example, .gitignore
@@ -501,7 +500,7 @@ Work through this in order. Items 1 to 4 are required for any submission.
    stronger model, so know how to change `--model`. Be ready to explain what is code and what is AI, where a human stays in the
    loop, and each failure listed above.
 
-`SUBMISSION_GUIDE.md` is a shorter version of this checklist.
+The same steps, with exact commands, are in `../1_SUBMIT_THESE_FILES/SUBMIT_NOW.md`.
 
 ---
 

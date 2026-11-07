@@ -25,7 +25,7 @@ from p3_continuity.checks import proper_names, run_checks
 
 def typo(word: str, rng: random.Random) -> str:
     i = rng.randrange(1, len(word) - 2)
-    w = word[:i] + word[i + 1] + word[i] + word[i + 2:]          # swap two inner letters
+    w = word[:i] + word[i + 1] + word[i] + word[i + 2:]
     return w if w != word else word[:-1] + ("e" if word[-1] != "e" else "a")
 
 
@@ -43,7 +43,6 @@ def plant(folder: pathlib.Path, rng: random.Random) -> list[dict]:
         path.write_text(t.replace(old, new, count), encoding="utf-8")
         return True
 
-    # 1-2: misspelt character name inside a spoken line (two different names)
     for name in rng.sample(frequent, 2):
         for _ in range(20):
             f = rng.choice(files)
@@ -56,7 +55,6 @@ def plant(folder: pathlib.Path, rng: random.Random) -> list[dict]:
                 f.write_text("\n".join(lines), encoding="utf-8")
                 planted.append({"kind": "name typo in dialogue", "token": bad, "file": f.name})
                 break
-    # 3: speaker label typo
     labels = Counter(b.speaker for e in show for b in e.dialogue)
     lab = rng.choice([l for l, c in labels.items() if c >= 40 and len(l) >= 6])
     bad_lab = typo(lab, rng)
@@ -65,7 +63,6 @@ def plant(folder: pathlib.Path, rng: random.Random) -> list[dict]:
         if edit(f, f"**{lab} (", f"**{bad_lab} ("):
             planted.append({"kind": "speaker label typo", "token": bad_lab, "file": f.name})
             break
-    # 4: title added to a label in one episode (voice split)
     single = [l for l, c in labels.items() if c >= 40 and not l.startswith(("LADY", "LORD")) and len(l.split()) == 1]
     lab2 = rng.choice(single)
     new_lab = rng.choice(["LORD", "LADY", "SIR"]) + " " + lab2
@@ -74,7 +71,6 @@ def plant(folder: pathlib.Path, rng: random.Random) -> list[dict]:
         if edit(f, f"**{lab2} (", f"**{new_lab} (", count=3):
             planted.append({"kind": "label gains a title", "token": new_lab, "file": f.name})
             break
-    # 5: continuity note points at the wrong episode
     for _ in range(40):
         f = rng.choice(files)
         t = f.read_text(encoding="utf-8")
@@ -106,7 +102,7 @@ def main():
     ap.add_argument("--seed-base", type=int, default=1000, help="change for a held-out run")
     ap.add_argument("--out", default="outputs/p3/injection_test.md")
     a = ap.parse_args()
-    norm = lambda t: re.sub(r"\d+", "#", t)            # counts shift when we plant errors
+    norm = lambda t: re.sub(r"\d+", "#", t)
     clean = {norm(i["title"]) for i in run_checks(load_show(a.input))}
     by_kind, noise_total, rows = Counter(), 0, []
     hits = Counter()

@@ -33,5 +33,5 @@ def transcribe(audio_bytes: bytes, filename: str = "voice.wav", language_code: s
             return {"error": f"Sarvam returned {resp.status_code}: {resp.text[:200]}"}
         data = resp.json()
         return {"text": data.get("transcript", ""), "language_code": data.get("language_code", language_code)}
-    except Exception as e:  # network errors etc.
+    except Exception as e:
         return {"error": f"{type(e).__name__}: {e}"}

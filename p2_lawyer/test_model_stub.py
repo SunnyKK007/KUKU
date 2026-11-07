@@ -36,7 +36,6 @@ class HallucinatingLLM:
         if "Rewrite the given legal-information text" in system:
             return {"text": user.replace("### Your case in one line", "### Aapka case ek line mein")
                     + "\nAlso see Mehta v. Union of India (2021) 3 SCC 45 [[FAKE-CARD]]."}
-        payload = json.loads(user)
         return {
             "problem_type": "deposit",
             "language": "hinglish",
