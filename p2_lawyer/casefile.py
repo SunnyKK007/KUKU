@@ -49,9 +49,6 @@ class CaseFile:
     def missing_slots(self) -> list[str]:
         return [s for s in self.slots() if not self.is_filled(s) and s not in self.skipped]
 
-    def intake_done(self) -> bool:
-        return bool(self.problem_type) and not self.missing_slots()
-
     def still_employed(self) -> bool:
         v = self.facts.get("end_date")
         return isinstance(v, dict) and v.get("text") == "still employed"

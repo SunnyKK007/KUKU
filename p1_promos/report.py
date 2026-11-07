@@ -58,10 +58,9 @@ def review_html(res: dict) -> str:
     cards = []
     for p in res["promos"]:
         script = "\n".join(
-            ([f"--- segment {i}: E{s['episode']} {s['start_tc']}-{s['end_tc']} ---"] if len(p["segments"]) > 1 else [])
-            + s["script"] for i, s in enumerate(p["segments"], 1)) if False else "\n".join(
             "\n".join(([f"--- segment {i}: E{s['episode']} {s['start_tc']}-{s['end_tc']} ---"]
-                       if len(p["segments"]) > 1 else []) + s["script"]) for i, s in enumerate(p["segments"], 1))
+                       if len(p["segments"]) > 1 else []) + s["script"])
+            for i, s in enumerate(p["segments"], 1))
         e = html.escape
         cards.append(f"""
 <article class="card" data-rank="{p['rank']}">

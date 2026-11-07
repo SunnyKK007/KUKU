@@ -47,7 +47,6 @@ class Beat:
     speaker: str = ""
     cue: str = ""
     offscreen: bool = False
-    scene: int = 1
     line: int = 0
 
     def as_text(self) -> str:
@@ -146,7 +145,7 @@ def parse_episode(path: str | pathlib.Path) -> Episode:
             s, e = to_sec(t.group("s")), to_sec(t.group("e"))
             if e < s:
                 ep.warnings.append(f"line {i+1}: end before start")
-            ep.beats.append(Beat(kind, s, e, text, speaker, cue, off, scene_no, pending[4]))
+            ep.beats.append(Beat(kind, s, e, text, speaker, cue, off, pending[4]))
             pending = None
             i = j - 1
         i += 1

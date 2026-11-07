@@ -19,12 +19,6 @@ def card(card_id: str) -> dict:
     return load()["by_id"][card_id]
 
 
-def cards_for(problem_type: str) -> list[dict]:
-    """Cards selected by rule for a problem type (plus the always-on legal-aid cards)."""
-    return [c for c in load()["cards"]
-            if problem_type in c["applies_to"] or "all" in c["applies_to"]]
-
-
 def short_cite(card_id: str) -> str:
     """Human citation string for a card, e.g. 'Section 69 of the Consumer Protection Act, 2019'."""
     c = card(card_id)
