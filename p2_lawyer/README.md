@@ -19,7 +19,7 @@ streamlit run p2_lawyer/app.py                   # the chat app
 
 ## 2. Run with a model (better language handling)
 
-Copy `.env.example` to `.env` at the repo root and fill one free key, e.g. `GROQ_API_KEY=...`
+Create a file named `.env` at the repo root with one free key, e.g. `GROQ_API_KEY=...`
 or `GEMINI_API_KEY=...`. Then:
 
 ```bash

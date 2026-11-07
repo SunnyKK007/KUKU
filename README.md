@@ -65,7 +65,7 @@ Inside `3_CODE/` (the python folders keep their names because the code imports t
 ├── README.md                  this file
 ├── check_key.py               tests your API key
 ├── make_submission.sh         rebuilds the PDFs and refills folders 1 and 2
-├── requirements.txt, .env.example, .gitignore
+├── requirements.txt, .gitignore
 ├── .env                       YOUR API KEY GOES HERE
 ├── common/                    shared code
 │   ├── screenplay.py          parses the timestamped screenplays
@@ -108,11 +108,13 @@ All commands below run from `3_CODE/`. No key is needed to start.
 | **Offline** | `--model offline` | Free, no internet | Rules only. Fast and repeatable. All saved results come from this mode. |
 | **Model** | Add a free key to `.env`, drop `--model offline` | Free on free tiers | A model adds judgment the rules cannot, such as language, story understanding and a blind "new viewer" check. |
 
-To use a model, copy the template and paste one key:
+To use a model, create a file named `.env` in `3_CODE/` (it is hidden in Finder; press Cmd+Shift+. to see it) containing one line:
 
-```bash
-cp .env.example .env
 ```
+GEMINI_API_KEY=your_key_here
+```
+
+Use `GROQ_API_KEY`, `ANTHROPIC_API_KEY`, `OPENAI_API_KEY` or `OPENROUTER_API_KEY` for those providers. For any other OpenAI-compatible endpoint, set `LLM_BASE_URL`, `LLM_API_KEY` and `LLM_MODEL`. Optional: `SARVAM_API_KEY` enables voice input in Problem 2.
 
 Free keys: Groq at console.groq.com, or Gemini at aistudio.google.com. Then change the model with one flag:
 
@@ -472,8 +474,8 @@ Work through this in order. Items 1 to 4 are required for any submission.
 2. **Get a free model key and run once in model mode.** Every saved number is from offline mode. A model run lets you report
    the model judge honestly. Get a free key from Groq or Gemini, then:
    ```bash
-   cp .env.example .env
-   # paste the key into .env, then:
+   # put GEMINI_API_KEY=your_key in 3_CODE/.env, then:
+   python3 check_key.py
    python3 -m p3_continuity.check_continuity --input "../4_Kuku_input_pack/episodes" --out outputs/p3_model
    python3 -m p1_promos.find_promos --input "../4_Kuku_input_pack/episodes" --out outputs/p1_model
    python3 -m p2_lawyer.run_tests --model groq:llama-3.3-70b-versatile --out outputs/p2_groq
