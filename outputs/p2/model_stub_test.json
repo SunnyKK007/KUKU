@@ -1,0 +1,96 @@
+{
+  "checks": {
+    "fake case removed": true,
+    "IPC removed": true,
+    "fake helpline removed": true,
+    "unknown card id removed": true,
+    "threat escalation fired (code, not model)": true,
+    "facts merged": true,
+    "unknown proof key ignored": true,
+    "rephrase kept, fake case stripped": true,
+    "practice persona law stripped": true,
+    "violations logged": true
+  },
+  "passed": 10,
+  "total": 10,
+  "shown_reply": "**Important:** Your safety comes first. If you are in danger now, call 112. Threats or violence are a criminal matter: please contact the police and a lawyer. I can still help you with the money part, but I cannot advise on the threat itself.\n\nFree legal aid: call NALSA's toll-free helpline 15100, or visit your District Legal Services Authority. Women, children, SC/ST members, persons with disability, industrial workmen and people below the state's income limit are among those entitled to a free lawyer.\n\nAapka case strong hai. [section removed: not in my verified sources] [IPC/CrPC reference removed: replaced by BNS/BNSS from 1 July 2024] ke under landlord par cheating ka case banta hai, jaise [case reference removed: I do not cite court cases] [case reference removed: I do not cite court cases] mein [case reference removed: I do not cite court cases]. Tenant helpline [number removed: not a verified helpline] par call karein . Mahine ka kiraya kitna tha?",
+  "guardrail_log": [
+    {
+      "turn": 1,
+      "kind": "model",
+      "type": "unverified_section",
+      "text": "Section 420",
+      "reason": "section of a law that is not verified"
+    },
+    {
+      "turn": 1,
+      "kind": "model",
+      "type": "outdated_criminal_code",
+      "text": "IPC",
+      "reason": "IPC/CrPC/Evidence Act were replaced from 1 July 2024"
+    },
+    {
+      "turn": 1,
+      "kind": "model",
+      "type": "case_law",
+      "text": "Sharma v. Gupta",
+      "reason": "case law is never cited"
+    },
+    {
+      "turn": 1,
+      "kind": "model",
+      "type": "case_law",
+      "text": "(2019) 4 SCC 123",
+      "reason": "case law is never cited"
+    },
+    {
+      "turn": 1,
+      "kind": "model",
+      "type": "case_law",
+      "text": "Supreme Court held",
+      "reason": "case law is never cited"
+    },
+    {
+      "turn": 1,
+      "kind": "model",
+      "type": "unverified_phone",
+      "text": "1800-11-4000",
+      "reason": "phone number not on verified list"
+    },
+    {
+      "turn": 1,
+      "kind": "model",
+      "type": "unknown_card",
+      "text": "[[CPA-2019-S99]]",
+      "reason": "model cited a card id that does not exist"
+    },
+    {
+      "turn": 3,
+      "kind": "stand",
+      "type": "case_law",
+      "text": "Mehta v. Union of India",
+      "reason": "case law is never cited"
+    },
+    {
+      "turn": 3,
+      "kind": "stand",
+      "type": "case_law",
+      "text": "(2021) 3 SCC 45",
+      "reason": "case law is never cited"
+    },
+    {
+      "turn": 3,
+      "kind": "stand",
+      "type": "unknown_card",
+      "text": "[[FAKE-CARD]]",
+      "reason": "model cited a card id that does not exist"
+    },
+    {
+      "turn": 5,
+      "kind": "practice",
+      "type": "section_without_act",
+      "text": "Section 106",
+      "reason": "section cited without saying which law"
+    }
+  ]
+}

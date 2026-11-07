@@ -1,0 +1,17 @@
+.env
+.llm_cache/
+__pycache__/
+*.pyc
+# Kuku's input pack is confidential. Never commit screenplays.
+data/
+*.txt.bak
+# Outputs and docs for Problems 1 and 3 quote Kuku's confidential scripts.
+# They are submitted through the form (PDF) and a Drive link, never pushed.
+outputs/p1/
+outputs/p1_baseline/
+outputs/p3/
+outputs/p1_*/
+outputs/p3_*/
+docs/*.md
+docs/*.pdf
+submission/

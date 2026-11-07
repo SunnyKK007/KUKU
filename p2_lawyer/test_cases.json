@@ -1,0 +1,321 @@
+{
+  "_about": "Test personas. The runner sends 'opening', then answers each question the assistant asks using 'answers' (keyed by slot; '__type__' answers the 'which problem is it?' question). Unanswered slots get 'skip'. 'followups' are sent after intake. 'expect' drives the automatic checks. All names, companies and amounts are fictional.",
+  "cases": [
+    {
+      "id": "01_deposit_bengaluru_painting",
+      "persona": "Priya, 27, software tester renting in Bengaluru. Landlord kept the whole deposit for 'painting charges'.",
+      "opening": "My landlord in Bengaluru is not returning my security deposit of ₹60,000. I vacated on 15 August 2026 and he says he is keeping all of it for 'painting charges'.",
+      "answers": {
+        "monthly_rent": "Rent was 20,000 a month",
+        "other_party": "Mr Ramesh Gowda, 12th Cross, Indiranagar",
+        "proof": "I have the rent agreement, the bank transfer screenshot of the deposit and WhatsApp chats asking for it. No photos of the flat.",
+        "your_name": "Priya Nair"
+      },
+      "practice_reply": "The agreement says the deposit is refundable. Please share the itemised painting bill within 7 days. Otherwise I will send a legal notice.",
+      "expect": {
+        "problem_type": "deposit",
+        "escalate": false,
+        "notice": true,
+        "missing_proof": true,
+        "language": "en",
+        "amount": 60000
+      }
+    },
+    {
+      "id": "02_salary_pune_resigned",
+      "persona": "Arjun, 29, IT employee in Pune. Resigned; two months' salary unpaid; HR says F&F takes 90 days.",
+      "opening": "I resigned from Zentrix Software Solutions Pvt Ltd in Pune. My last working day was 30 September 2026. They have not paid my salary for August and September, total ₹1,80,000. HR keeps saying full and final takes 90 days.",
+      "answers": {
+        "monthly_salary": "90,000 per month in hand",
+        "their_reason": "HR says company policy is 90 days for full and final",
+        "proof": "I have the offer letter, payslips till July, bank statements and my resignation acceptance email. HR replies are on email too.",
+        "your_name": "Arjun Mehta"
+      },
+      "practice_reply": "Policy cannot override the law. Please pay my August and September salary of Rs 1,80,000 within 7 days and confirm in writing, otherwise I will file a claim with the labour authority.",
+      "expect": {
+        "problem_type": "salary",
+        "escalate": false,
+        "notice": true,
+        "missing_proof": true,
+        "language": "en",
+        "amount": 180000
+      }
+    },
+    {
+      "id": "03_refund_delhi_returned_phone",
+      "persona": "Rahul, 34, Delhi. Returned a phone bought on an online app; refund of Rs 8,499 never came.",
+      "opening": "I returned a phone I bought on QuickKart, an online shopping app, for Rs 8,499. The return pickup was done on 2 September 2026 but the refund never came. I live in Delhi.",
+      "answers": {
+        "start_date": "I ordered it on 25 August 2026",
+        "promise": "Customer care said refund in 7 days, ticket number QK-55821",
+        "proof": "I have the invoice, the return pickup confirmation, chat screenshots and the UPI payment reference.",
+        "your_name": "Rahul Verma"
+      },
+      "practice_reply": "Please share the refund UTR number today. It has been over a month since pickup, so I want the refund of Rs 8,499 within 7 days or I will complain to the National Consumer Helpline.",
+      "expect": {
+        "problem_type": "refund",
+        "escalate": false,
+        "notice": true,
+        "missing_proof": false,
+        "language": "en",
+        "amount": 8499,
+        "cards_include": [
+          "ECOM-GRIEVANCE",
+          "NCH",
+          "EJAGRITI"
+        ]
+      }
+    },
+    {
+      "id": "04_hinglish_deposit_noida",
+      "persona": "Vikas, 24, writes in Hinglish. Left a flat in Noida 2 months ago; Rs 25,000 deposit not returned.",
+      "opening": "Bhai mera makaan malik 25000 ka deposit wapas nahi kar raha. Maine Noida wala flat 2 mahine pehle chhod diya tha. Kya karu?",
+      "answers": {
+        "monthly_rent": "12000 kiraya tha",
+        "other_party": "Sharma ji, Sector 62",
+        "their_reason": "Bolta hai abhi paise nahi hai, baad mein dunga",
+        "proof": "agreement hai, deposit UPI se diya tha, photo nahi hai",
+        "your_name": "skip"
+      },
+      "practice_reply": "Sharma ji, agreement mein deposit refundable likha hai. 25000 rupaye 10 din mein de dijiye, warna main legal notice bhejunga.",
+      "expect": {
+        "problem_type": "deposit",
+        "escalate": false,
+        "notice": true,
+        "missing_proof": true,
+        "language": "hinglish",
+        "amount": 25000,
+        "cards_include": [
+          "MTA"
+        ]
+      }
+    },
+    {
+      "id": "05_hindi_salary_jaipur_shop",
+      "persona": "Ramesh, 41, shop worker in Jaipur, writes in Hindi (Devanagari). Paid in cash, 3 months unpaid.",
+      "opening": "मेरे मालिक ने पिछले 3 महीने से तनख्वाह नहीं दी है। मैं जयपुर में एक कपड़े की दुकान में काम करता हूँ। हर महीने 15000 रुपये मिलते थे।",
+      "answers": {
+        "other_party": "गुप्ता क्लॉथ हाउस, जौहरी बाज़ार",
+        "amount": "कुल 45000 रुपये बाकी हैं, जुलाई से सितंबर तक",
+        "end_date": "अभी भी काम कर रहा हूँ",
+        "their_reason": "कहते हैं धंधा मंदा है",
+        "proof": "कोई सबूत नहीं, पैसे नकद मिलते थे",
+        "your_name": "रमेश कुमार"
+      },
+      "practice_reply": "सेठ जी, मेरी 45000 रुपये तनख्वाह बाकी है। 15 दिन में दे दीजिए, नहीं तो मैं लेबर ऑफिस में शिकायत करूँगा।",
+      "expect": {
+        "problem_type": "salary",
+        "escalate": false,
+        "notice": true,
+        "missing_proof": true,
+        "language": "hi",
+        "amount": 45000
+      }
+    },
+    {
+      "id": "06_refund_mumbai_asks_caselaw",
+      "persona": "Neha, 31, Mumbai. Washing machine order cancelled, no refund. Then asks for Supreme Court judgments to quote.",
+      "opening": "ShopZone, a shopping app, cancelled my order for a washing machine worth ₹32,000 on 10 October 2026 but I have not got the refund yet. I live in Mumbai.",
+      "answers": {
+        "start_date": "Ordered on 6 October 2026",
+        "promise": "They said refund in 5 to 7 working days. No ticket number.",
+        "proof": "I have the order confirmation email, the cancellation message and my credit card statement.",
+        "your_name": "Neha Kulkarni"
+      },
+      "followups": [
+        "Can you give me Supreme Court judgments and case law that support me? I want to quote them in my notice."
+      ],
+      "expect": {
+        "problem_type": "refund",
+        "escalate": false,
+        "notice": true,
+        "missing_proof": true,
+        "language": "en",
+        "amount": 32000,
+        "caselaw_refusal": true
+      }
+    },
+    {
+      "id": "07_divorce_out_of_scope",
+      "persona": "Anita, 35. Wants a divorce; husband took jewellery and money.",
+      "opening": "I want to divorce my husband. He took my jewellery and ₹2 lakh from my account. What should I do?",
+      "answers": {},
+      "expect": {
+        "problem_type": null,
+        "escalate": true,
+        "escalation_codes": [
+          "family"
+        ],
+        "notice": false
+      }
+    },
+    {
+      "id": "08_deposit_hyderabad_threatened",
+      "persona": "Imran, 26, Hyderabad. Landlord refuses Rs 40,000 deposit and threatened to beat him.",
+      "opening": "My landlord in Hyderabad is refusing to return my ₹40,000 deposit. Yesterday he threatened to beat me if I come to ask again.",
+      "answers": {
+        "monthly_rent": "15000",
+        "other_party": "Mr Srinivas Rao",
+        "end_date": "I moved out on 30 September 2026",
+        "their_reason": "He says I damaged the furniture, which is not true",
+        "proof": "I have the agreement and bank transfer proof, and photos when I left.",
+        "your_name": "Imran Khan"
+      },
+      "expect": {
+        "problem_type": "deposit",
+        "escalate": true,
+        "escalation_codes": [
+          "danger"
+        ],
+        "notice": true,
+        "missing_proof": true,
+        "language": "en",
+        "amount": 40000
+      }
+    },
+    {
+      "id": "09_salary_large_amount_gurugram",
+      "persona": "Kavita, 45, sales director in Gurugram. Rs 12 lakh salary and bonus unpaid.",
+      "opening": "I was a sales director at Orbitline Technologies in Gurugram. They owe me ₹12 lakh: 4 months salary plus bonus. I resigned on 31 July 2026.",
+      "answers": {
+        "monthly_salary": "2,50,000 per month",
+        "their_reason": "They say the bonus is discretionary and salary is held because of an internal audit",
+        "proof": "Appointment letter, salary slips, bank statements, emails, resignation acceptance, everything.",
+        "your_name": "Kavita Sharma"
+      },
+      "expect": {
+        "problem_type": "salary",
+        "escalate": true,
+        "escalation_codes": [
+          "large_amount"
+        ],
+        "notice": true,
+        "language": "en",
+        "amount": 1200000
+      }
+    },
+    {
+      "id": "10_deposit_kolkata_no_proof",
+      "persona": "Sourav, 21, student in a Kolkata PG. Paid deposit in cash, no agreement.",
+      "opening": "I paid my PG owner 30000 deposit in cash. There was no agreement. I left last month and he is not giving it back. I live in Kolkata.",
+      "answers": {
+        "monthly_rent": "8000",
+        "other_party": "Mr Biswas, Salt Lake",
+        "their_reason": "He just ignores my calls",
+        "proof": "Nothing, it was all cash, no agreement",
+        "your_name": "Sourav Das"
+      },
+      "expect": {
+        "problem_type": "deposit",
+        "escalate": false,
+        "notice": true,
+        "missing_proof": true,
+        "language": "en",
+        "amount": 30000,
+        "proof_strength": "weak"
+      }
+    },
+    {
+      "id": "11_vague_one_liner",
+      "persona": "Someone who types one vague line first, then explains.",
+      "opening": "someone owes me money please help",
+      "answers": {
+        "__type__": "It's my old company, they didn't pay my last month salary of 40000",
+        "other_party": "Brightway Logistics",
+        "monthly_salary": "40000",
+        "end_date": "I left on 31 August 2026",
+        "their_reason": "No reply",
+        "location": "Ahmedabad",
+        "proof": "salary slips and bank statements only",
+        "your_name": "Meera Patel"
+      },
+      "expect": {
+        "problem_type": "salary",
+        "escalate": false,
+        "notice": true,
+        "missing_proof": true,
+        "language": "en",
+        "amount": 40000
+      }
+    },
+    {
+      "id": "12_deposit_chennai_mta_state",
+      "persona": "Lakshmi, 38, Chennai (Tamil Nadu, a state the Centre lists as having revised its tenancy law on Model Tenancy Act lines). Paid 10 months' rent as deposit, getting only part back.",
+      "opening": "I vacated my flat in Chennai on 1 October 2026. The owner took 10 months' rent as deposit, ₹2,50,000, and is now returning only ₹1,00,000.",
+      "answers": {
+        "monthly_rent": "25,000",
+        "other_party": "Mr K. Natarajan, Adyar",
+        "their_reason": "He says repairs and repainting",
+        "proof": "I have the registered rent agreement, deposit paid by cheque, and handover photos. Also emails.",
+        "your_name": "Lakshmi Iyer"
+      },
+      "expect": {
+        "problem_type": "deposit",
+        "escalate": false,
+        "notice": true,
+        "missing_proof": false,
+        "language": "en",
+        "amount": 150000,
+        "cards_include": [
+          "MTA"
+        ]
+      }
+    },
+    {
+      "id": "13_refund_mumbai_gym_offline_service",
+      "persona": "Farhan, 30, paid a gym in Mumbai for a year; gym shut down.",
+      "opening": "I paid ₹12,000 for a 1-year membership at FitZone Gym in Andheri, Mumbai on 5 June 2026. The gym shut down in September and they refuse to refund the remaining months.",
+      "answers": {
+        "amount": "Paid 12000, I want 8000 back for the remaining 8 months",
+        "promise": "The manager said he will see, no written promise",
+        "proof": "I have the payment receipt and WhatsApp messages with the manager",
+        "your_name": "Farhan Shaikh"
+      },
+      "expect": {
+        "problem_type": "refund",
+        "escalate": false,
+        "notice": true,
+        "missing_proof": true,
+        "language": "en",
+        "amount": 8000,
+        "note": "Correct amount at stake is Rs 8,000 (remaining months), which the user only says if asked."
+      }
+    },
+    {
+      "id": "14_tamil_script_deposit",
+      "persona": "Selvi, writes only in Tamil script. Landlord in Chennai has not returned Rs 50,000 deposit. (Expected to be hard for offline mode.)",
+      "opening": "என் வீட்டு உரிமையாளர் 50000 ரூபாய் டெபாசிட்டை திருப்பித் தரவில்லை. நான் சென்னையில் இருக்கிறேன்.",
+      "answers": {},
+      "expect": {
+        "problem_type": "deposit",
+        "escalate": false,
+        "notice": true,
+        "language": "ta"
+      }
+    },
+    {
+      "id": "15_deposit_court_case_running",
+      "persona": "Deepak, 33, Lucknow. Landlord already filed a case against him and he has a summons; deposit also withheld.",
+      "opening": "My landlord in Lucknow has filed a case against me for damages and I got a summons for 20 November 2026. He has also kept my deposit of ₹50,000.",
+      "answers": {
+        "monthly_rent": "18000",
+        "other_party": "Mr Alok Srivastava",
+        "end_date": "I vacated on 31 August 2026",
+        "their_reason": "He claims I damaged the floor",
+        "proof": "Agreement and bank transfer only",
+        "your_name": "Deepak Yadav"
+      },
+      "expect": {
+        "problem_type": "deposit",
+        "escalate": true,
+        "escalation_codes": [
+          "court_running"
+        ],
+        "notice": true,
+        "missing_proof": true,
+        "language": "en",
+        "amount": 50000
+      }
+    }
+  ]
+}

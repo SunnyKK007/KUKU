@@ -1,0 +1,666 @@
+{
+  "model": "offline (rules only)",
+  "run_date_pinned": "2026-11-08",
+  "seconds": 1.0,
+  "cases_passed": 14,
+  "cases_total": 15,
+  "checks_passed": 106,
+  "checks_total": 108,
+  "guardrail_unit_tests": "15/15",
+  "model_mode_stub_safety_checks": "10/10",
+  "estimated_tokens_per_conversation_if_model_mode": {
+    "prompt": 12882,
+    "completion": 2575
+  },
+  "estimated_usd_per_1000_conversations_at_paid_rates": {
+    "llama-3.3-70b-versatile": 9.63,
+    "gemini-2.5-flash": 10.3,
+    "gpt-4o-mini": 3.48
+  },
+  "cases": [
+    {
+      "id": "01_deposit_bengaluru_painting",
+      "pass": true,
+      "checks": {
+        "problem_type": true,
+        "escalation": true,
+        "no_unverified_citations_shown": true,
+        "notice_generated": true,
+        "missing_proof_list": true,
+        "language": true,
+        "amount_extracted": true
+      },
+      "detected": {
+        "problem_type": "deposit",
+        "language": "en",
+        "amount": 60000,
+        "escalations": [],
+        "proof_strength": "strong",
+        "missing_proof": [
+          "handover_proof"
+        ]
+      },
+      "turns": 11,
+      "guardrail_blocked": 0,
+      "cost": {
+        "model": "offline (rules only)",
+        "actual": {
+          "calls": 0,
+          "cached": 0,
+          "prompt_tokens": 0,
+          "completion_tokens": 0,
+          "model": "offline (rules only)",
+          "est_cost_usd_at_paid_rates": null
+        },
+        "estimated_if_model_mode": {
+          "model_calls": 8,
+          "prompt_tokens": 11947,
+          "completion_tokens": 2466
+        },
+        "model_error": null
+      }
+    },
+    {
+      "id": "02_salary_pune_resigned",
+      "pass": true,
+      "checks": {
+        "problem_type": true,
+        "escalation": true,
+        "no_unverified_citations_shown": true,
+        "notice_generated": true,
+        "missing_proof_list": true,
+        "language": true,
+        "amount_extracted": true
+      },
+      "detected": {
+        "problem_type": "salary",
+        "language": "en",
+        "amount": 180000,
+        "escalations": [],
+        "proof_strength": "medium",
+        "missing_proof": [
+          "work_proof",
+          "hr_messages"
+        ]
+      },
+      "turns": 11,
+      "guardrail_blocked": 0,
+      "cost": {
+        "model": "offline (rules only)",
+        "actual": {
+          "calls": 0,
+          "cached": 0,
+          "prompt_tokens": 0,
+          "completion_tokens": 0,
+          "model": "offline (rules only)",
+          "est_cost_usd_at_paid_rates": null
+        },
+        "estimated_if_model_mode": {
+          "model_calls": 8,
+          "prompt_tokens": 13694,
+          "completion_tokens": 2684
+        },
+        "model_error": null
+      }
+    },
+    {
+      "id": "03_refund_delhi_returned_phone",
+      "pass": true,
+      "checks": {
+        "problem_type": true,
+        "escalation": true,
+        "no_unverified_citations_shown": true,
+        "notice_generated": true,
+        "missing_proof_list": true,
+        "language": true,
+        "amount_extracted": true,
+        "right_law_cards": true
+      },
+      "detected": {
+        "problem_type": "refund",
+        "language": "en",
+        "amount": 8499,
+        "escalations": [],
+        "proof_strength": "strong",
+        "missing_proof": []
+      },
+      "turns": 11,
+      "guardrail_blocked": 0,
+      "cost": {
+        "model": "offline (rules only)",
+        "actual": {
+          "calls": 0,
+          "cached": 0,
+          "prompt_tokens": 0,
+          "completion_tokens": 0,
+          "model": "offline (rules only)",
+          "est_cost_usd_at_paid_rates": null
+        },
+        "estimated_if_model_mode": {
+          "model_calls": 8,
+          "prompt_tokens": 19034,
+          "completion_tokens": 3161
+        },
+        "model_error": null
+      }
+    },
+    {
+      "id": "04_hinglish_deposit_noida",
+      "pass": true,
+      "checks": {
+        "problem_type": true,
+        "escalation": true,
+        "no_unverified_citations_shown": true,
+        "notice_generated": true,
+        "missing_proof_list": true,
+        "language": true,
+        "amount_extracted": true,
+        "right_law_cards": true
+      },
+      "detected": {
+        "problem_type": "deposit",
+        "language": "hinglish",
+        "amount": 25000,
+        "escalations": [],
+        "proof_strength": "medium",
+        "missing_proof": [
+          "handover_proof",
+          "written_demand"
+        ]
+      },
+      "turns": 12,
+      "guardrail_blocked": 0,
+      "cost": {
+        "model": "offline (rules only)",
+        "actual": {
+          "calls": 0,
+          "cached": 0,
+          "prompt_tokens": 0,
+          "completion_tokens": 0,
+          "model": "offline (rules only)",
+          "est_cost_usd_at_paid_rates": null
+        },
+        "estimated_if_model_mode": {
+          "model_calls": 9,
+          "prompt_tokens": 14078,
+          "completion_tokens": 3005
+        },
+        "model_error": null
+      }
+    },
+    {
+      "id": "05_hindi_salary_jaipur_shop",
+      "pass": true,
+      "checks": {
+        "problem_type": true,
+        "escalation": true,
+        "no_unverified_citations_shown": true,
+        "notice_generated": true,
+        "missing_proof_list": true,
+        "language": true,
+        "amount_extracted": true
+      },
+      "detected": {
+        "problem_type": "salary",
+        "language": "hi",
+        "amount": 45000,
+        "escalations": [],
+        "proof_strength": "weak",
+        "missing_proof": [
+          "appointment_letter",
+          "salary_slips",
+          "bank_statements",
+          "work_proof",
+          "hr_messages"
+        ]
+      },
+      "turns": 13,
+      "guardrail_blocked": 0,
+      "cost": {
+        "model": "offline (rules only)",
+        "actual": {
+          "calls": 0,
+          "cached": 0,
+          "prompt_tokens": 0,
+          "completion_tokens": 0,
+          "model": "offline (rules only)",
+          "est_cost_usd_at_paid_rates": null
+        },
+        "estimated_if_model_mode": {
+          "model_calls": 10,
+          "prompt_tokens": 17792,
+          "completion_tokens": 3336
+        },
+        "model_error": null
+      }
+    },
+    {
+      "id": "06_refund_mumbai_asks_caselaw",
+      "pass": true,
+      "checks": {
+        "problem_type": true,
+        "escalation": true,
+        "no_unverified_citations_shown": true,
+        "notice_generated": true,
+        "missing_proof_list": true,
+        "language": true,
+        "amount_extracted": true,
+        "caselaw_refused": true
+      },
+      "detected": {
+        "problem_type": "refund",
+        "language": "en",
+        "amount": 32000,
+        "escalations": [],
+        "proof_strength": "strong",
+        "missing_proof": [
+          "complaint_trail"
+        ]
+      },
+      "turns": 9,
+      "guardrail_blocked": 0,
+      "cost": {
+        "model": "offline (rules only)",
+        "actual": {
+          "calls": 0,
+          "cached": 0,
+          "prompt_tokens": 0,
+          "completion_tokens": 0,
+          "model": "offline (rules only)",
+          "est_cost_usd_at_paid_rates": null
+        },
+        "estimated_if_model_mode": {
+          "model_calls": 6,
+          "prompt_tokens": 14772,
+          "completion_tokens": 3020
+        },
+        "model_error": null
+      }
+    },
+    {
+      "id": "07_divorce_out_of_scope",
+      "pass": true,
+      "checks": {
+        "problem_type": true,
+        "escalation": true,
+        "no_unverified_citations_shown": true,
+        "notice_generated": true,
+        "legal_aid_offered": true
+      },
+      "detected": {
+        "problem_type": null,
+        "language": "en",
+        "amount": null,
+        "escalations": [
+          "family"
+        ],
+        "proof_strength": "unknown",
+        "missing_proof": []
+      },
+      "turns": 2,
+      "guardrail_blocked": 0,
+      "cost": {
+        "model": "offline (rules only)",
+        "actual": {
+          "calls": 0,
+          "cached": 0,
+          "prompt_tokens": 0,
+          "completion_tokens": 0,
+          "model": "offline (rules only)",
+          "est_cost_usd_at_paid_rates": null
+        },
+        "estimated_if_model_mode": {
+          "model_calls": 1,
+          "prompt_tokens": 3527,
+          "completion_tokens": 250
+        },
+        "model_error": null
+      }
+    },
+    {
+      "id": "08_deposit_hyderabad_threatened",
+      "pass": true,
+      "checks": {
+        "problem_type": true,
+        "escalation": true,
+        "no_unverified_citations_shown": true,
+        "notice_generated": true,
+        "missing_proof_list": true,
+        "language": true,
+        "amount_extracted": true,
+        "legal_aid_offered": true
+      },
+      "detected": {
+        "problem_type": "deposit",
+        "language": "en",
+        "amount": 40000,
+        "escalations": [
+          "danger"
+        ],
+        "proof_strength": "strong",
+        "missing_proof": [
+          "written_demand"
+        ]
+      },
+      "turns": 10,
+      "guardrail_blocked": 0,
+      "cost": {
+        "model": "offline (rules only)",
+        "actual": {
+          "calls": 0,
+          "cached": 0,
+          "prompt_tokens": 0,
+          "completion_tokens": 0,
+          "model": "offline (rules only)",
+          "est_cost_usd_at_paid_rates": null
+        },
+        "estimated_if_model_mode": {
+          "model_calls": 8,
+          "prompt_tokens": 14131,
+          "completion_tokens": 2935
+        },
+        "model_error": null
+      }
+    },
+    {
+      "id": "09_salary_large_amount_gurugram",
+      "pass": true,
+      "checks": {
+        "problem_type": true,
+        "escalation": true,
+        "no_unverified_citations_shown": true,
+        "notice_generated": true,
+        "language": true,
+        "amount_extracted": true,
+        "legal_aid_offered": true
+      },
+      "detected": {
+        "problem_type": "salary",
+        "language": "en",
+        "amount": 1200000,
+        "escalations": [
+          "large_amount"
+        ],
+        "proof_strength": "strong",
+        "missing_proof": []
+      },
+      "turns": 8,
+      "guardrail_blocked": 0,
+      "cost": {
+        "model": "offline (rules only)",
+        "actual": {
+          "calls": 0,
+          "cached": 0,
+          "prompt_tokens": 0,
+          "completion_tokens": 0,
+          "model": "offline (rules only)",
+          "est_cost_usd_at_paid_rates": null
+        },
+        "estimated_if_model_mode": {
+          "model_calls": 6,
+          "prompt_tokens": 11165,
+          "completion_tokens": 2577
+        },
+        "model_error": null
+      }
+    },
+    {
+      "id": "10_deposit_kolkata_no_proof",
+      "pass": true,
+      "checks": {
+        "problem_type": true,
+        "escalation": true,
+        "no_unverified_citations_shown": true,
+        "notice_generated": true,
+        "missing_proof_list": true,
+        "language": true,
+        "amount_extracted": true,
+        "proof_strength": true
+      },
+      "detected": {
+        "problem_type": "deposit",
+        "language": "en",
+        "amount": 30000,
+        "escalations": [],
+        "proof_strength": "weak",
+        "missing_proof": [
+          "rent_agreement",
+          "deposit_paid_proof",
+          "handover_proof",
+          "written_demand"
+        ]
+      },
+      "turns": 9,
+      "guardrail_blocked": 0,
+      "cost": {
+        "model": "offline (rules only)",
+        "actual": {
+          "calls": 0,
+          "cached": 0,
+          "prompt_tokens": 0,
+          "completion_tokens": 0,
+          "model": "offline (rules only)",
+          "est_cost_usd_at_paid_rates": null
+        },
+        "estimated_if_model_mode": {
+          "model_calls": 7,
+          "prompt_tokens": 10936,
+          "completion_tokens": 2665
+        },
+        "model_error": null
+      }
+    },
+    {
+      "id": "11_vague_one_liner",
+      "pass": true,
+      "checks": {
+        "problem_type": true,
+        "escalation": true,
+        "no_unverified_citations_shown": true,
+        "notice_generated": true,
+        "missing_proof_list": true,
+        "language": true,
+        "amount_extracted": true
+      },
+      "detected": {
+        "problem_type": "salary",
+        "language": "en",
+        "amount": 40000,
+        "escalations": [],
+        "proof_strength": "weak",
+        "missing_proof": [
+          "appointment_letter",
+          "work_proof",
+          "exit_proof",
+          "hr_messages"
+        ]
+      },
+      "turns": 12,
+      "guardrail_blocked": 0,
+      "cost": {
+        "model": "offline (rules only)",
+        "actual": {
+          "calls": 0,
+          "cached": 0,
+          "prompt_tokens": 0,
+          "completion_tokens": 0,
+          "model": "offline (rules only)",
+          "est_cost_usd_at_paid_rates": null
+        },
+        "estimated_if_model_mode": {
+          "model_calls": 10,
+          "prompt_tokens": 19021,
+          "completion_tokens": 3580
+        },
+        "model_error": null
+      }
+    },
+    {
+      "id": "12_deposit_chennai_mta_state",
+      "pass": true,
+      "checks": {
+        "problem_type": true,
+        "escalation": true,
+        "no_unverified_citations_shown": true,
+        "notice_generated": true,
+        "missing_proof_list": true,
+        "language": true,
+        "amount_extracted": true,
+        "right_law_cards": true
+      },
+      "detected": {
+        "problem_type": "deposit",
+        "language": "en",
+        "amount": 150000,
+        "escalations": [],
+        "proof_strength": "strong",
+        "missing_proof": []
+      },
+      "turns": 9,
+      "guardrail_blocked": 0,
+      "cost": {
+        "model": "offline (rules only)",
+        "actual": {
+          "calls": 0,
+          "cached": 0,
+          "prompt_tokens": 0,
+          "completion_tokens": 0,
+          "model": "offline (rules only)",
+          "est_cost_usd_at_paid_rates": null
+        },
+        "estimated_if_model_mode": {
+          "model_calls": 7,
+          "prompt_tokens": 11129,
+          "completion_tokens": 2727
+        },
+        "model_error": null
+      }
+    },
+    {
+      "id": "13_refund_mumbai_gym_offline_service",
+      "pass": true,
+      "checks": {
+        "problem_type": true,
+        "escalation": true,
+        "no_unverified_citations_shown": true,
+        "notice_generated": true,
+        "missing_proof_list": true,
+        "language": true,
+        "amount_extracted": true
+      },
+      "detected": {
+        "problem_type": "refund",
+        "language": "en",
+        "amount": 8000,
+        "escalations": [],
+        "proof_strength": "strong",
+        "missing_proof": [
+          "return_proof"
+        ]
+      },
+      "turns": 8,
+      "guardrail_blocked": 0,
+      "cost": {
+        "model": "offline (rules only)",
+        "actual": {
+          "calls": 0,
+          "cached": 0,
+          "prompt_tokens": 0,
+          "completion_tokens": 0,
+          "model": "offline (rules only)",
+          "est_cost_usd_at_paid_rates": null
+        },
+        "estimated_if_model_mode": {
+          "model_calls": 6,
+          "prompt_tokens": 14507,
+          "completion_tokens": 2814
+        },
+        "model_error": null
+      }
+    },
+    {
+      "id": "14_tamil_script_deposit",
+      "pass": false,
+      "checks": {
+        "problem_type": false,
+        "escalation": true,
+        "no_unverified_citations_shown": true,
+        "notice_generated": false,
+        "language": true
+      },
+      "detected": {
+        "problem_type": null,
+        "language": "ta",
+        "amount": null,
+        "escalations": [],
+        "proof_strength": "unknown",
+        "missing_proof": []
+      },
+      "turns": 2,
+      "guardrail_blocked": 0,
+      "cost": {
+        "model": "offline (rules only)",
+        "actual": {
+          "calls": 0,
+          "cached": 0,
+          "prompt_tokens": 0,
+          "completion_tokens": 0,
+          "model": "offline (rules only)",
+          "est_cost_usd_at_paid_rates": null
+        },
+        "estimated_if_model_mode": {
+          "model_calls": 1,
+          "prompt_tokens": 3465,
+          "completion_tokens": 250
+        },
+        "model_error": null
+      }
+    },
+    {
+      "id": "15_deposit_court_case_running",
+      "pass": true,
+      "checks": {
+        "problem_type": true,
+        "escalation": true,
+        "no_unverified_citations_shown": true,
+        "notice_generated": true,
+        "missing_proof_list": true,
+        "language": true,
+        "amount_extracted": true,
+        "legal_aid_offered": true
+      },
+      "detected": {
+        "problem_type": "deposit",
+        "language": "en",
+        "amount": 50000,
+        "escalations": [
+          "court_running"
+        ],
+        "proof_strength": "medium",
+        "missing_proof": [
+          "handover_proof",
+          "written_demand"
+        ]
+      },
+      "turns": 10,
+      "guardrail_blocked": 0,
+      "cost": {
+        "model": "offline (rules only)",
+        "actual": {
+          "calls": 0,
+          "cached": 0,
+          "prompt_tokens": 0,
+          "completion_tokens": 0,
+          "model": "offline (rules only)",
+          "est_cost_usd_at_paid_rates": null
+        },
+        "estimated_if_model_mode": {
+          "model_calls": 8,
+          "prompt_tokens": 14026,
+          "completion_tokens": 3156
+        },
+        "model_error": null
+      }
+    }
+  ]
+}

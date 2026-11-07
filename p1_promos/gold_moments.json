@@ -1,0 +1,101 @@
+{
+  "_about": "Reference must-catch promo moments for 'I Married a Broken Soldier. He was a Duke'. Chosen from the episode loglines BEFORE tuning the rules, then located in the scripts. Drafted with AI help; the student should review and an editor's real picks should replace these. A moment counts as caught if any ranked promo segment contains its timestamp.",
+  "moments": [
+    {
+      "id": "altar-betrayal",
+      "episode": 1,
+      "t": 12.0,
+      "what": "Matriarch tells the bride to turn around as the groom holds her sister's hand"
+    },
+    {
+      "id": "proposal",
+      "episode": 3,
+      "t": 133.2,
+      "what": "Scarred stranger drops to one knee and proposes"
+    },
+    {
+      "id": "ledger-in-mud",
+      "episode": 5,
+      "t": 57.0,
+      "what": "Stepmother throws her dead mother's ledger into the mud"
+    },
+    {
+      "id": "groom-flees",
+      "episode": 7,
+      "t": 91.5,
+      "what": "Silent husband sends Gerald fleeing"
+    },
+    {
+      "id": "gallows-ultimatum",
+      "episode": 12,
+      "t": 65.4,
+      "what": "Villain's ultimatum: retrieve the ring or the husband hangs"
+    },
+    {
+      "id": "thorn-crawl",
+      "episode": 13,
+      "t": 50.0,
+      "what": "Juliana crawls barehanded into blackthorn briars"
+    },
+    {
+      "id": "who-sent-you",
+      "episode": 16,
+      "t": 42.5,
+      "what": "Husband beats the thugs and demands who sent them"
+    },
+    {
+      "id": "cottage-fire",
+      "episode": 18,
+      "t": 1.0,
+      "what": "Cottage set ablaze at night"
+    },
+    {
+      "id": "riding-crop",
+      "episode": 24,
+      "t": 32.5,
+      "what": "Noblewoman strikes Juliana with a riding crop"
+    },
+    {
+      "id": "framed-for-poison",
+      "episode": 27,
+      "t": 145.0,
+      "what": "Guards drag Juliana away, framed for poisoning"
+    },
+    {
+      "id": "hot-iron",
+      "episode": 32,
+      "t": 151.2,
+      "what": "Red-hot iron stops millimetres from her eye"
+    },
+    {
+      "id": "witch-trial",
+      "episode": 34,
+      "t": 1.2,
+      "what": "She is formally accused of witchcraft and poisoning"
+    },
+    {
+      "id": "cathedral-explosion",
+      "episode": 41,
+      "t": 81.8,
+      "what": "Cathedral doors explode as the Duke arrives"
+    },
+    {
+      "id": "rightful-duke",
+      "episode": 42,
+      "t": 64.2,
+      "what": "Mother proclaims him the rightful Duke"
+    },
+    {
+      "id": "marriage-invalid",
+      "episode": 45,
+      "t": 109.0,
+      "what": "Priest declares she is not the Duke's lawful wife"
+    },
+    {
+      "id": "agnes-witness",
+      "episode": 50,
+      "t": 77.2,
+      "what": "Maid catches Catherine with the corrupt priest"
+    }
+  ]
+}

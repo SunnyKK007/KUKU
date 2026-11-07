@@ -1,0 +1,255 @@
+{
+  "passed": 15,
+  "total": 15,
+  "results": [
+    {
+      "input": "In the landmark case of Sharma v. Gupta Builders (2019) 4 SCC 123, the Supreme Court held that a landlord must refund the deposit with 18% interest.",
+      "output": "In the landmark case of [case reference removed: I do not cite court cases] [case reference removed: I do not cite court cases], [case reference removed: I do not cite court cases].",
+      "violations": [
+        {
+          "type": "case_law",
+          "text": "Sharma v. Gupta Builders",
+          "reason": "case law is never cited"
+        },
+        {
+          "type": "case_law",
+          "text": "(2019) 4 SCC 123",
+          "reason": "case law is never cited"
+        },
+        {
+          "type": "case_law",
+          "text": "the Supreme Court held that a landlord must refund the deposit with 18% interest",
+          "reason": "case law is never cited"
+        }
+      ],
+      "cited": [],
+      "missed": [],
+      "wrongly_removed": [],
+      "pass": true
+    },
+    {
+      "input": "See Ramesh Kumar vs State of Karnataka, AIR 2015 SC 2041, for the same point.",
+      "output": "[case reference removed: I do not cite court cases], [case reference removed: I do not cite court cases], for the same point.",
+      "violations": [
+        {
+          "type": "case_law",
+          "text": "See Ramesh Kumar vs State of Karnataka",
+          "reason": "case law is never cited"
+        },
+        {
+          "type": "case_law",
+          "text": "AIR 2015 SC 2041",
+          "reason": "case law is never cited"
+        }
+      ],
+      "cited": [],
+      "missed": [],
+      "wrongly_removed": [],
+      "pass": true
+    },
+    {
+      "input": "Your landlord can be booked under Section 420 IPC for cheating and Section 406 of the Indian Penal Code.",
+      "output": "Your landlord can be booked under [section removed: not in my verified sources] [IPC/CrPC reference removed: replaced by BNS/BNSS from 1 July 2024] for cheating and [section removed: not in my verified sources] of the [IPC/CrPC reference removed: replaced by BNS/BNSS from 1 July 2024].",
+      "violations": [
+        {
+          "type": "unverified_section",
+          "text": "Section 420",
+          "reason": "section of a law that is not verified"
+        },
+        {
+          "type": "outdated_criminal_code",
+          "text": "IPC",
+          "reason": "IPC/CrPC/Evidence Act were replaced from 1 July 2024"
+        },
+        {
+          "type": "unverified_section",
+          "text": "Section 406",
+          "reason": "section of a law that is not verified"
+        },
+        {
+          "type": "outdated_criminal_code",
+          "text": "Indian Penal Code",
+          "reason": "IPC/CrPC/Evidence Act were replaced from 1 July 2024"
+        }
+      ],
+      "cited": [],
+      "missed": [],
+      "wrongly_removed": [],
+      "pass": true
+    },
+    {
+      "input": "Under Section 21 of the Rent Control Act, 1958, deposits must be returned within 30 days.",
+      "output": "Under [section removed: not in my verified sources] of the [law name removed: not in my verified sources], deposits must be returned within 30 days.",
+      "violations": [
+        {
+          "type": "unverified_section",
+          "text": "Section 21",
+          "reason": "section of a law that is not verified"
+        },
+        {
+          "type": "unverified_statute",
+          "text": "Rent Control Act, 1958",
+          "reason": "law not in verified card set"
+        }
+      ],
+      "cited": [],
+      "missed": [],
+      "wrongly_removed": [],
+      "pass": true
+    },
+    {
+      "input": "As per Section 11 of the Model Tenancy Act, 2021 the deposit is capped at two months.",
+      "output": "As per [section removed: not in my verified sources] of the Model Tenancy Act, 2021 the deposit is capped at two months.",
+      "violations": [
+        {
+          "type": "unverified_section",
+          "text": "Section 11",
+          "reason": "11 of Model Tenancy Act, 2021 is not on a verified card"
+        }
+      ],
+      "cited": [
+        "MTA"
+      ],
+      "missed": [],
+      "wrongly_removed": [],
+      "pass": true
+    },
+    {
+      "input": "Section 33 of the Code on Wages, 2019 lets you claim interest at 24%.",
+      "output": "[section removed: not in my verified sources] of the Code on Wages, 2019 lets you claim interest at 24%.",
+      "violations": [
+        {
+          "type": "unverified_section",
+          "text": "Section 33",
+          "reason": "33 of Code on Wages, 2019 is not on a verified card"
+        }
+      ],
+      "cited": [],
+      "missed": [],
+      "wrongly_removed": [],
+      "pass": true
+    },
+    {
+      "input": "The repealed Consumer Protection Act, 1986 still applies to you.",
+      "output": "The repealed [law name removed: not in my verified sources] still applies to you.",
+      "violations": [
+        {
+          "type": "unverified_statute",
+          "text": "Consumer Protection Act, 1986",
+          "reason": "law not in verified card set"
+        }
+      ],
+      "cited": [],
+      "missed": [],
+      "wrongly_removed": [],
+      "pass": true
+    },
+    {
+      "input": "Article 21 guarantees your right to your deposit.",
+      "output": "[section removed: not in my verified sources] guarantees your right to your deposit.",
+      "violations": [
+        {
+          "type": "unverified_section",
+          "text": "Article 21",
+          "reason": "Articles (e.g. of the Constitution) are not in the verified set"
+        }
+      ],
+      "cited": [],
+      "missed": [],
+      "wrongly_removed": [],
+      "pass": true
+    },
+    {
+      "input": "Call the National Tenant Helpline 1800-11-4000 or file at https://www.rentcourt.gov.in/complaint.",
+      "output": "Call the National Tenant Helpline [number removed: not a verified helpline] or file at [link removed: not a verified source]",
+      "violations": [
+        {
+          "type": "unverified_phone",
+          "text": "1800-11-4000",
+          "reason": "phone number not on verified list"
+        },
+        {
+          "type": "unverified_link",
+          "text": "https://www.rentcourt.gov.in/complaint.",
+          "reason": "link not on verified list"
+        }
+      ],
+      "cited": [],
+      "missed": [],
+      "wrongly_removed": [],
+      "pass": true
+    },
+    {
+      "input": "धारा 420 के तहत मामला बनता है। उपभोक्ता संरक्षण अधिनियम, 2019 की धारा 69 के अनुसार दो साल।",
+      "output": "[section removed: unclear which law] के तहत मामला बनता है। उपभोक्ता संरक्षण अधिनियम, 2019 की धारा 69 के अनुसार दो साल।",
+      "violations": [
+        {
+          "type": "section_without_act",
+          "text": "धारा 420",
+          "reason": "section cited without saying which law"
+        }
+      ],
+      "cited": [
+        "CPA-LIMITATION"
+      ],
+      "missed": [],
+      "wrongly_removed": [],
+      "pass": true
+    },
+    {
+      "input": "You can file within two years [[CPA-2019-S99]].",
+      "output": "You can file within two years .",
+      "violations": [
+        {
+          "type": "unknown_card",
+          "text": "[[CPA-2019-S99]]",
+          "reason": "model cited a card id that does not exist"
+        }
+      ],
+      "cited": [],
+      "missed": [],
+      "wrongly_removed": [],
+      "pass": true
+    },
+    {
+      "input": "Under Section 69 of the Consumer Protection Act, 2019 you must file within two years. Section 2(11) of the Consumer Protection Act, 2019 defines deficiency. Section 17 of the Code on Wages, 2019 sets wage deadlines. Call 1915, WhatsApp 8800001915, or NALSA 15100. File on https://e-jagriti.gov.in. [[CPA-LIMITATION]]",
+      "output": "Under Section 69 of the Consumer Protection Act, 2019 you must file within two years. Section 2(11) of the Consumer Protection Act, 2019 defines deficiency. Section 17 of the Code on Wages, 2019 sets wage deadlines. Call 1915, WhatsApp 8800001915, or NALSA 15100. File on https://e-jagriti.gov.in. [CPA-LIMITATION]",
+      "violations": [],
+      "cited": [
+        "CPA-LIMITATION",
+        "CPA-DEFICIENCY",
+        "COW-TIMELINE"
+      ],
+      "missed": [],
+      "wrongly_removed": [],
+      "pass": true
+    },
+    {
+      "input": "I call upon you to pay Rs 1,80,000/- within 15 days.",
+      "output": "I call upon you to pay Rs 1,80,000/- within 15 days.",
+      "violations": [],
+      "cited": [],
+      "missed": [],
+      "wrongly_removed": [],
+      "pass": true
+    },
+    {
+      "input": "Source: https://consumerhelpline.gov.in/, checked 2026-11-08.",
+      "output": "Source: https://consumerhelpline.gov.in/, checked 2026-11-08.",
+      "violations": [],
+      "cited": [],
+      "missed": [],
+      "wrongly_removed": [],
+      "pass": true
+    },
+    {
+      "input": "Order number 40312345 placed on 3 March 2026 for Rs 8,499. Clause 5 of the agreement says the deposit is refundable. I paid 60,000 by UPI.",
+      "output": "Order number 40312345 placed on 3 March 2026 for Rs 8,499. Clause 5 of the agreement says the deposit is refundable. I paid 60,000 by UPI.",
+      "violations": [],
+      "cited": [],
+      "missed": [],
+      "wrongly_removed": [],
+      "pass": true
+    }
+  ]
+}

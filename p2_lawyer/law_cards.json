@@ -1,0 +1,485 @@
+{
+  "_about": "Closed set of verified legal 'cards'. The assistant may only state law that is on a card, and may only cite the instruments/sections listed in each card's 'cites'. Every card was checked against the source_url on verified_on. If a fact could not be checked against an official or highly reliable source it is NOT here. No case law is ever included.",
+  "instruments": {
+    "Consumer Protection Act, 2019": [
+      "Consumer Protection Act 2019",
+      "CPA 2019",
+      "CPA, 2019",
+      "उपभोक्ता संरक्षण अधिनियम, 2019"
+    ],
+    "Consumer Protection (Jurisdiction of the District Commission, the State Commission and the National Commission) Rules, 2021": [
+      "Consumer Protection (Jurisdiction) Rules, 2021",
+      "Jurisdiction Rules, 2021"
+    ],
+    "Consumer Protection (Consumer Disputes Redressal Commissions) Rules, 2020": [
+      "Consumer Disputes Redressal Commissions Rules, 2020"
+    ],
+    "Consumer Protection (E-Commerce) Rules, 2020": [
+      "E-Commerce Rules, 2020",
+      "Consumer Protection (E-Commerce) Rules 2020",
+      "E-Commerce Rules 2020"
+    ],
+    "Code on Wages, 2019": [
+      "Code on Wages 2019",
+      "Wage Code, 2019",
+      "मजदूरी संहिता, 2019",
+      "वेतन संहिता, 2019"
+    ],
+    "Payment of Wages Act, 1936": [
+      "Payment of Wages Act 1936"
+    ],
+    "Indian Contract Act, 1872": [
+      "Indian Contract Act 1872",
+      "Contract Act, 1872",
+      "भारतीय संविदा अधिनियम, 1872"
+    ],
+    "Model Tenancy Act, 2021": [
+      "Model Tenancy Act 2021",
+      "MTA 2021",
+      "आदर्श किरायेदारी अधिनियम, 2021"
+    ],
+    "Legal Services Authorities Act, 1987": [
+      "Legal Services Authorities Act 1987",
+      "LSA Act, 1987",
+      "विधिक सेवा प्राधिकरण अधिनियम, 1987"
+    ],
+    "Bharatiya Nyaya Sanhita, 2023": [
+      "Bharatiya Nyaya Sanhita 2023",
+      "BNS 2023",
+      "BNS, 2023",
+      "भारतीय न्याय संहिता, 2023"
+    ],
+    "Consumer Protection (E-Commerce) (Amendment) Rules, 2026": [
+      "E-Commerce (Amendment) Rules, 2026"
+    ]
+  },
+  "allowed_phone_numbers": {
+    "1915": "National Consumer Helpline (toll-free)",
+    "8800001915": "National Consumer Helpline WhatsApp / SMS",
+    "15100": "NALSA free legal aid helpline (toll-free)",
+    "112": "Emergency Response Support System (police, fire, ambulance)"
+  },
+  "allowed_domains": [
+    "consumerhelpline.gov.in",
+    "e-jagriti.gov.in",
+    "nalsa.gov.in",
+    "nalsa15100.in",
+    "egazette.gov.in",
+    "indiacode.nic.in",
+    "pib.gov.in",
+    "static.pib.gov.in",
+    "mohua.gov.in",
+    "cdnbbsr.s3waas.gov.in",
+    "112.gov.in",
+    "indiankanoon.org"
+  ],
+  "cards": [
+    {
+      "id": "CPA-CONSUMER",
+      "title": "You are a 'consumer', even for online purchases",
+      "applies_to": [
+        "refund"
+      ],
+      "plain": "If you paid for goods or a service for your own use (not for resale or business), you are a 'consumer'. This includes things bought online.",
+      "cites": [
+        {
+          "instrument": "Consumer Protection Act, 2019",
+          "section": "2(7)"
+        }
+      ],
+      "source_name": "Gazette of India: Consumer Protection Act, 2019 (Act 35 of 2019)",
+      "source_url": "https://egazette.gov.in/WriteReadData/2019/210422.pdf",
+      "verified_on": "2026-11-08",
+      "confidence": "high",
+      "caveats": "Goods bought for resale or a 'commercial purpose' are excluded, but use only to earn a livelihood by self-employment is still covered."
+    },
+    {
+      "id": "CPA-DEFICIENCY",
+      "title": "Not giving the service you paid for is a 'deficiency'",
+      "applies_to": [
+        "refund"
+      ],
+      "plain": "Any fault, shortcoming or inadequacy in a service you paid for, including negligence or hiding relevant information from you, is a 'deficiency in service'. You can complain about it.",
+      "cites": [
+        {
+          "instrument": "Consumer Protection Act, 2019",
+          "section": "2(11)"
+        },
+        {
+          "instrument": "Consumer Protection Act, 2019",
+          "section": "2(6)"
+        }
+      ],
+      "source_name": "Gazette of India: Consumer Protection Act, 2019",
+      "source_url": "https://egazette.gov.in/WriteReadData/2019/210422.pdf",
+      "verified_on": "2026-11-08",
+      "confidence": "high",
+      "caveats": "Whether a specific delay or refusal counts as a deficiency is decided by the Consumer Commission on the facts."
+    },
+    {
+      "id": "CPA-UTP",
+      "title": "Misleading or deceptive selling is an 'unfair trade practice'",
+      "applies_to": [
+        "refund"
+      ],
+      "plain": "Selling with false or misleading claims, or any unfair or deceptive method, is an 'unfair trade practice'. You can complain about it.",
+      "cites": [
+        {
+          "instrument": "Consumer Protection Act, 2019",
+          "section": "2(47)"
+        }
+      ],
+      "source_name": "Gazette of India: Consumer Protection Act, 2019",
+      "source_url": "https://egazette.gov.in/WriteReadData/2019/210422.pdf",
+      "verified_on": "2026-11-08",
+      "confidence": "high",
+      "caveats": "Use this only if the seller made a false or misleading claim; a plain delayed refund is usually framed as a deficiency in service."
+    },
+    {
+      "id": "CPA-RELIEF",
+      "title": "The Commission can order a refund with interest, plus compensation",
+      "applies_to": [
+        "refund"
+      ],
+      "plain": "If your complaint is proved, the Consumer Commission can order the seller to return the price you paid with interest, and to pay compensation for loss caused by their negligence.",
+      "cites": [
+        {
+          "instrument": "Consumer Protection Act, 2019",
+          "section": "39(1)(c)"
+        },
+        {
+          "instrument": "Consumer Protection Act, 2019",
+          "section": "39(1)(d)"
+        }
+      ],
+      "source_name": "Gazette of India: Consumer Protection Act, 2019",
+      "source_url": "https://egazette.gov.in/WriteReadData/2019/210422.pdf",
+      "verified_on": "2026-11-08",
+      "confidence": "high",
+      "caveats": "The rate of interest and the amount of compensation are decided by the Commission. Nobody can promise you a figure."
+    },
+    {
+      "id": "CPA-WHERE-FILE",
+      "title": "You can file where you live, and you can file online",
+      "applies_to": [
+        "refund"
+      ],
+      "plain": "You can file a consumer complaint in the District Commission where you live or work, or where the seller does business, or where the problem arose. The complaint can be filed electronically.",
+      "cites": [
+        {
+          "instrument": "Consumer Protection Act, 2019",
+          "section": "34(2)"
+        },
+        {
+          "instrument": "Consumer Protection Act, 2019",
+          "section": "35(1)"
+        }
+      ],
+      "source_name": "Gazette of India: Consumer Protection Act, 2019",
+      "source_url": "https://egazette.gov.in/WriteReadData/2019/210422.pdf",
+      "verified_on": "2026-11-08",
+      "confidence": "high",
+      "caveats": ""
+    },
+    {
+      "id": "CPA-JURISDICTION",
+      "title": "District Commission handles claims up to Rs 50 lakh",
+      "applies_to": [
+        "refund"
+      ],
+      "plain": "Since 30 Dec 2021, the District Consumer Commission hears complaints where what you paid is up to Rs 50 lakh. Above Rs 50 lakh up to Rs 2 crore goes to the State Commission; above Rs 2 crore to the National Commission.",
+      "cites": [
+        {
+          "instrument": "Consumer Protection (Jurisdiction of the District Commission, the State Commission and the National Commission) Rules, 2021",
+          "section": null
+        },
+        {
+          "instrument": "Consumer Protection Act, 2019",
+          "section": "34(1)"
+        }
+      ],
+      "source_name": "PIB, Ministry of Consumer Affairs, 30 Dec 2021",
+      "source_url": "https://pib.gov.in/PressReleasePage.aspx?PRID=1786342",
+      "verified_on": "2026-11-08",
+      "confidence": "high",
+      "caveats": "The Act itself says Rs 1 crore; the 2021 Rules lowered it to Rs 50 lakh. I found no later change, but check before filing."
+    },
+    {
+      "id": "CPA-LIMITATION",
+      "title": "File a consumer complaint within 2 years",
+      "applies_to": [
+        "refund"
+      ],
+      "plain": "A consumer complaint must be filed within two years from when the problem arose. A late complaint is accepted only if you show 'sufficient cause' and the Commission records its reasons.",
+      "cites": [
+        {
+          "instrument": "Consumer Protection Act, 2019",
+          "section": "69"
+        }
+      ],
+      "source_name": "Gazette of India: Consumer Protection Act, 2019",
+      "source_url": "https://egazette.gov.in/WriteReadData/2019/210422.pdf",
+      "verified_on": "2026-11-08",
+      "confidence": "high",
+      "caveats": "Exactly when the two years start can be argued. If you are close to two years, see a lawyer now."
+    },
+    {
+      "id": "CPA-FEE",
+      "title": "No filing fee for claims up to Rs 5 lakh",
+      "applies_to": [
+        "refund"
+      ],
+      "plain": "There is no fee to file a consumer complaint where what you paid is up to Rs 5 lakh. Above Rs 5 lakh up to Rs 10 lakh the fee is Rs 200.",
+      "cites": [
+        {
+          "instrument": "Consumer Protection (Consumer Disputes Redressal Commissions) Rules, 2020",
+          "section": "7"
+        }
+      ],
+      "source_name": "Gazette of India, G.S.R. 606(E), 17 Aug 2023 (new fee table)",
+      "source_url": "https://egazette.gov.in/WriteReadData/2023/248158.pdf",
+      "verified_on": "2026-11-08",
+      "confidence": "high",
+      "caveats": ""
+    },
+    {
+      "id": "ECOM-GRIEVANCE",
+      "title": "Online platforms must answer your complaint within one month",
+      "applies_to": [
+        "refund"
+      ],
+      "plain": "Every e-commerce platform, and every seller on a marketplace, must have a grievance officer whose contact details are shown on the platform. The officer must acknowledge your complaint within 48 hours and resolve it within one month. Accepted refunds must be paid within a reasonable time.",
+      "cites": [
+        {
+          "instrument": "Consumer Protection (E-Commerce) Rules, 2020",
+          "section": "4(4)"
+        },
+        {
+          "instrument": "Consumer Protection (E-Commerce) Rules, 2020",
+          "section": "4(5)"
+        },
+        {
+          "instrument": "Consumer Protection (E-Commerce) Rules, 2020",
+          "section": "4(10)"
+        },
+        {
+          "instrument": "Consumer Protection (E-Commerce) Rules, 2020",
+          "section": "6(4)"
+        }
+      ],
+      "source_name": "Gazette of India, G.S.R. 462(E), 23 Jul 2020",
+      "source_url": "https://egazette.gov.in/WriteReadData/2020/220661.pdf",
+      "verified_on": "2026-11-08",
+      "confidence": "high",
+      "caveats": "An amendment (Consumer Protection (E-Commerce) (Amendment) Rules, 2026) starts on 1 Jan 2027 and adds duties, e.g. giving you a copy of your complaint as recorded (PIB, 10 Sep 2026). Applies to online purchases only."
+    },
+    {
+      "id": "NCH",
+      "title": "National Consumer Helpline: 1915",
+      "applies_to": [
+        "refund"
+      ],
+      "plain": "The government's National Consumer Helpline is free. Call 1915 (8 AM to 8 PM), or WhatsApp/SMS 8800001915, or use consumerhelpline.gov.in, the NCH app or UMANG. It works in 17 languages and tries to settle the complaint with the company before you go to a Commission.",
+      "cites": [],
+      "source_name": "consumerhelpline.gov.in and PIB year-end review, Dept of Consumer Affairs (Jan 2026)",
+      "source_url": "https://consumerhelpline.gov.in/",
+      "verified_on": "2026-11-08",
+      "confidence": "high",
+      "caveats": "The helpline mediates; it cannot force a refund. If it fails, the Consumer Commission is the next step."
+    },
+    {
+      "id": "EJAGRITI",
+      "title": "File consumer cases online on e-Jagriti",
+      "applies_to": [
+        "refund"
+      ],
+      "plain": "Consumer complaints to District, State and National Commissions are filed online on e-Jagriti (e-jagriti.gov.in). It replaced the older e-Daakhil portal from 1 Jan 2025 and supports OTP registration, online fee payment and virtual hearings.",
+      "cites": [],
+      "source_name": "PIB year-end review, Dept of Consumer Affairs (Jan 2026)",
+      "source_url": "https://static.pib.gov.in/WriteReadData/specificdocs/documents/2026/jan/doc2026130774701.pdf",
+      "verified_on": "2026-11-08",
+      "confidence": "high",
+      "caveats": "If you see guides mentioning e-Daakhil, they are out of date."
+    },
+    {
+      "id": "COW-TIMELINE",
+      "title": "Salary must be paid by the 7th; final dues within 2 working days of leaving",
+      "applies_to": [
+        "salary"
+      ],
+      "plain": "For monthly-paid staff, wages must be paid before the 7th of the next month. If you resigned, were removed, dismissed or retrenched, or the business closed, the wages due must be paid within two working days.",
+      "cites": [
+        {
+          "instrument": "Code on Wages, 2019",
+          "section": "17"
+        }
+      ],
+      "source_name": "India Code: Code on Wages, 2019 (as on 21 Nov 2025)",
+      "source_url": "https://www.indiacode.nic.in/bitstream/123456789/15793/1/aA2019-29.pdf",
+      "verified_on": "2026-11-08",
+      "confidence": "high",
+      "caveats": "The government can set other time limits. 'Wages' has a legal definition (basic pay, DA, retaining allowance, with some exclusions), so some parts of a full-and-final settlement may follow other rules."
+    },
+    {
+      "id": "COW-CLAIM",
+      "title": "Claim unpaid wages before the government's Wage Authority, within 3 years",
+      "applies_to": [
+        "salary"
+      ],
+      "plain": "The government appoints an authority (a Gazetted Officer) to hear wage claims. You, your registered trade union, or the Inspector-cum-Facilitator can file. File within three years (later only with sufficient cause). The authority can also order compensation of up to ten times the claim, and should try to decide within three months.",
+      "cites": [
+        {
+          "instrument": "Code on Wages, 2019",
+          "section": "45"
+        }
+      ],
+      "source_name": "India Code: Code on Wages, 2019 (as on 21 Nov 2025)",
+      "source_url": "https://www.indiacode.nic.in/bitstream/123456789/15793/1/aA2019-29.pdf",
+      "verified_on": "2026-11-08",
+      "confidence": "high",
+      "caveats": "Who the authority is in your district depends on your state's notification. Ask the local Labour Department office."
+    },
+    {
+      "id": "COW-IN-FORCE",
+      "title": "The Code on Wages is in force from 21 Nov 2025",
+      "applies_to": [
+        "salary"
+      ],
+      "plain": "The Code on Wages, 2019 came into force on 21 Nov 2025 and repealed the old Payment of Wages Act, 1936. State rules under the Code are at different stages, so the exact office and forms can differ by state.",
+      "cites": [
+        {
+          "instrument": "Code on Wages, 2019",
+          "section": "69"
+        },
+        {
+          "instrument": "Payment of Wages Act, 1936",
+          "section": null
+        }
+      ],
+      "source_name": "PIB, Ministry of Labour & Employment, 21 Nov 2025; India Code commencement note (S.O. 5322(E))",
+      "source_url": "https://www.pib.gov.in/PressReleasePage.aspx?PRID=2192463",
+      "verified_on": "2026-11-08",
+      "confidence": "medium",
+      "caveats": "For salary that fell due before 21 Nov 2025, the savings clause may keep earlier actions alive. Which law governs an old claim is a question for a lawyer or the Labour office."
+    },
+    {
+      "id": "CONTRACT-BREACH",
+      "title": "Breaking an agreement makes the other side liable to compensate you",
+      "applies_to": [
+        "deposit",
+        "salary"
+      ],
+      "plain": "When someone breaks an agreement (like a rent agreement that says the deposit is refundable, or a job offer that fixes your salary), the person who suffers can claim compensation for the loss that naturally follows from the breach.",
+      "cites": [
+        {
+          "instrument": "Indian Contract Act, 1872",
+          "section": "73"
+        }
+      ],
+      "source_name": "Indian Contract Act, 1872 (bare text via Indian Kanoon; India Code was unreachable when checked)",
+      "source_url": "https://indiankanoon.org/doc/339747/",
+      "verified_on": "2026-11-08",
+      "confidence": "medium",
+      "caveats": "Remote or indirect losses are not covered. You must prove your loss. Recovering money this way usually means a civil suit, where a lawyer helps."
+    },
+    {
+      "id": "TENANCY-STATE",
+      "title": "Rent and deposit rules are set by each state",
+      "applies_to": [
+        "deposit"
+      ],
+      "plain": "There is no single national law on security deposits. Tenancies are governed by each state's own rental law, plus what your rent agreement says. If your landlord keeps the deposit without a valid reason, it is usually treated as a breach of your agreement.",
+      "cites": [],
+      "source_name": "PIB, Ministry of Housing & Urban Affairs, 9 Dec 2021 (Lok Sabha reply)",
+      "source_url": "https://www.pib.gov.in/PressReleasePage.aspx?PRID=1779681",
+      "verified_on": "2026-11-08",
+      "confidence": "high",
+      "caveats": "I do not hold the text of each state's rent law, so I cannot tell you your state's exact rule."
+    },
+    {
+      "id": "MTA",
+      "title": "Model Tenancy Act: a template some states have followed",
+      "applies_to": [
+        "deposit"
+      ],
+      "plain": "The Model Tenancy Act, 2021 is a model law the Centre sent to states in June 2021, for future tenancies. It caps the deposit for a home at two months' rent and says the landlord refunds it when taking back the empty flat, after valid deductions. It applies only where your state has adopted it. As of July 2022, the Centre reported that Andhra Pradesh, Tamil Nadu, Uttar Pradesh and Assam had revised their tenancy laws on its lines.",
+      "cites": [
+        {
+          "instrument": "Model Tenancy Act, 2021",
+          "section": null
+        }
+      ],
+      "source_name": "PIB, MoHUA, 25 Jul 2022 (states list) and 11 Aug 2021; MoHUA model text",
+      "source_url": "https://www.pib.gov.in/PressReleasePage.aspx?PRID=1844644",
+      "verified_on": "2026-11-08",
+      "confidence": "medium",
+      "caveats": "The states list is from July 2022 and may be out of date. Each state's own Act can differ from the model. I could not download the official model text (the server blocked it), so the two-month cap is confirmed from the indexed MoHUA text and several summaries, not my own reading of the PDF. No section numbers are cited for this reason."
+    },
+    {
+      "id": "LEGAL-AID",
+      "title": "You may be entitled to a free lawyer",
+      "applies_to": [
+        "all"
+      ],
+      "plain": "Free legal services are available to, among others: women and children, members of Scheduled Castes or Scheduled Tribes, persons with disability, industrial workmen, people in custody, victims of trafficking or disasters, and people below the income limit set by the state. Contact your District Legal Services Authority.",
+      "cites": [
+        {
+          "instrument": "Legal Services Authorities Act, 1987",
+          "section": "12"
+        }
+      ],
+      "source_name": "NALSA: Legal Services Authorities Act, 1987 (official PDF)",
+      "source_url": "https://cdnbbsr.s3waas.gov.in/s32e45f93088c7db59767efef516b306aa/uploads/2025/04/202504081796627129.pdf",
+      "verified_on": "2026-11-08",
+      "confidence": "high",
+      "caveats": "The income limit is set by each state and is not stored here. The authority also checks you have a prima facie case."
+    },
+    {
+      "id": "NALSA-15100",
+      "title": "Free legal aid helpline: 15100",
+      "applies_to": [
+        "all"
+      ],
+      "plain": "NALSA's toll-free legal aid helpline is 15100 (more at nalsa15100.in). They can connect you to free legal advice and your District Legal Services Authority.",
+      "cites": [],
+      "source_name": "nalsa.gov.in",
+      "source_url": "https://nalsa.gov.in/",
+      "verified_on": "2026-11-08",
+      "confidence": "high",
+      "caveats": ""
+    },
+    {
+      "id": "BNS",
+      "title": "IPC is replaced by the Bharatiya Nyaya Sanhita",
+      "applies_to": [
+        "escalation"
+      ],
+      "plain": "The Indian Penal Code (IPC) was replaced by the Bharatiya Nyaya Sanhita, 2023 (BNS) from 1 July 2024. Any advice quoting IPC sections for new events is out of date. Criminal matters are outside what this assistant handles.",
+      "cites": [
+        {
+          "instrument": "Bharatiya Nyaya Sanhita, 2023",
+          "section": null
+        }
+      ],
+      "source_name": "PIB, Ministry of Home Affairs, 30 Jul 2024",
+      "source_url": "https://www.pib.gov.in/PressReleasePage.aspx?PRID=2039055",
+      "verified_on": "2026-11-08",
+      "confidence": "high",
+      "caveats": "Used only to flag out-of-date IPC references. This assistant does not give criminal-law advice."
+    },
+    {
+      "id": "EMERGENCY-112",
+      "title": "In danger? Call 112",
+      "applies_to": [
+        "escalation"
+      ],
+      "plain": "If you are threatened or in danger right now, call 112, India's single emergency number for police, fire and ambulance.",
+      "cites": [],
+      "source_name": "112.gov.in (Emergency Response Support System, MHA)",
+      "source_url": "https://112.gov.in/",
+      "verified_on": "2026-11-08",
+      "confidence": "high",
+      "caveats": ""
+    }
+  ]
+}
