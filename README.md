@@ -21,7 +21,7 @@ microdramas (short vertical series with 1 to 2 minute episodes). The brief offer
 
 ## 1. The assignment in one minute
 
-Source: `../Kuku — AI Generalist Assignment.pdf`.
+Source: `../4_Kuku_input_pack/Assignment_brief.pdf`.
 
 - **Pick one problem**, spend about 2 to 3 hours, submit within 48 hours.
 - **Make assumptions instead of asking.** Write them down.
@@ -50,47 +50,41 @@ The three problems:
 
 ```
 KUKU/
-├── Kuku — AI Generalist Assignment.pdf       the brief
-├── I Married a Broken Soldier. He was a Duke/ the 50 episode scripts (Kuku's confidential content)
-└── kuku-solutions/                           everything built, this folder
-    ├── README.md                             this file
-    ├── SUBMISSION_GUIDE.md                   short checklist for submitting
-    ├── requirements.txt, .env.example, .gitignore
-    ├── common/                               shared code
-    │   ├── screenplay.py                     parses the timestamped screenplays
-    │   └── llm.py                            one swappable model adapter
-    ├── p1_promos/                            Problem 1
-    │   ├── find_promos.py                    the main tool (command line)
-    │   ├── signals.py                        hook / cliffhanger / clarity rules
-    │   ├── judge.py                          optional model re-scoring
-    │   ├── report.py                         writes JSON, CSV, Markdown, review.html
-    │   ├── evaluate.py, gold_moments.json    quality checks
-    │   └── app.py                            Streamlit app
-    ├── p2_lawyer/                            Problem 2 (has its own README)
-    │   ├── engine.py                         the conversation engine
-    │   ├── law_cards.json, validator.py      verified law and the anti-hallucination guardrail
-    │   ├── intake.py, casefile.py, advice.py, documents.py, practice.py, escalation.py, voice.py
-    │   ├── test_cases.json, run_tests.py, test_validator.py, test_model_stub.py
-    │   └── app.py                            Streamlit chat app
-    ├── p3_continuity/                        Problem 3
-    │   ├── check_continuity.py               the main tool (command line)
-    │   ├── checks.py                         the rule checks
-    │   ├── llm_check.py                      optional model pass
-    │   ├── bible.py                          builds a show bible
-    │   ├── inject_test.py                    plants errors to measure recall
-    │   └── app.py                            Streamlit app
-    ├── docs/                                 the solution docs and video scripts
-    │   ├── p1_solution.md / .pdf             two pages each
-    │   ├── p2_solution.md / .pdf
-    │   ├── p3_solution.md / .pdf
-    │   ├── p1/p2/p3_video_script.md          3 minute walkthrough scripts
-    │   └── build_pdfs.py                     rebuilds the PDFs from the Markdown
-    └── outputs/                              raw outputs from real runs
-        ├── p1/                               full run on the 50 episodes, plus evaluation and audit
-        ├── p1_baseline/                      the first version, kept to show what changed
-        ├── p2/                               15 test conversations, summary, guardrail tests
-        └── p3/                               issues, show bible, error-injection tests, audit
+├── 1_SUBMIT_THESE_FILES/      WHAT YOU UPLOAD (Problem 3 PDF + raw outputs zip + steps)
+├── 2_BACKUP_other_problems/   Problems 1 and 2 PDFs and zips, in case you change your mind
+├── 3_CODE/                    everything built, this folder (this README lives here)
+└── 4_Kuku_input_pack/         Kuku's brief and the 50 episodes. CONFIDENTIAL, never upload
+    ├── Assignment_brief.pdf
+    └── episodes/
 ```
+
+Inside `3_CODE/` (the python folders keep their names because the code imports them):
+
+```
+3_CODE/
+├── README.md                  this file
+├── SUBMISSION_GUIDE.md        short submit checklist
+├── check_key.py               tests your API key
+├── make_submission.sh         rebuilds the PDFs and refills folders 1 and 2
+├── requirements.txt, .env.example, .gitignore
+├── .env                       YOUR API KEY GOES HERE
+├── common/                    shared code
+│   ├── screenplay.py          parses the timestamped screenplays
+│   └── llm.py                 one swappable model adapter
+├── p1_promos/                 PROBLEM 1 code: promo finder
+├── p2_lawyer/                 PROBLEM 2 code: AI lawyer (has its own README)
+├── p3_continuity/             PROBLEM 3 code: continuity checker
+├── docs/                      solution docs (.md and .pdf) and video scripts
+└── outputs/                   raw outputs from real runs
+    ├── p1/, p1_baseline/      Problem 1 run, plus the first version
+    ├── p2/                    15 test conversations and results
+    └── p3/                    Problem 3 results and tests
+```
+
+Inside each problem folder:
+- **p1_promos:** `find_promos.py` (run this), `signals.py` (the rules), `judge.py` (model step), `report.py`, `evaluate.py`, `app.py`.
+- **p2_lawyer:** `engine.py` (conversation), `law_cards.json` and `validator.py` (verified law and the guardrail), `run_tests.py`, `app.py`.
+- **p3_continuity:** `check_continuity.py` (run this), `checks.py` (the rules), `llm_check.py` (model step), `inject_test.py`, `app.py`.
 
 Files named `manual_audit.md` are reviews of the raw outputs. They are kept separate from the raw output on purpose,
 so the raw files stay unedited.
@@ -102,11 +96,11 @@ so the raw files stay unedited.
 **Requirements:** Python 3.11 or newer. Google Chrome is only needed to rebuild the PDFs.
 
 ```bash
-cd ~/Downloads/KUKU/kuku-solutions
+cd ~/Downloads/KUKU/3_CODE
 pip install -r requirements.txt
 ```
 
-All commands below run from `kuku-solutions/`. No key is needed to start.
+All commands below run from `3_CODE/`. No key is needed to start.
 
 ### Two modes
 
@@ -136,8 +130,8 @@ With no `--model` flag, a tool uses the first key it finds in `.env`, and falls 
 ### Run Problem 1
 
 ```bash
-python3 -m p1_promos.find_promos --input "../I Married a Broken Soldier. He was a Duke" --model offline --out outputs/p1_check
-python3 -m p1_promos.evaluate --run outputs/p1_check/promos.json --input "../I Married a Broken Soldier. He was a Duke"
+python3 -m p1_promos.find_promos --input "../4_Kuku_input_pack/episodes" --model offline --out outputs/p1_check
+python3 -m p1_promos.evaluate --run outputs/p1_check/promos.json --input "../4_Kuku_input_pack/episodes"
 ```
 
 Takes about 25 seconds. Then open `outputs/p1_check/review.html` in a browser.
@@ -156,8 +150,8 @@ More detail is in `p2_lawyer/README.md`.
 ### Run Problem 3
 
 ```bash
-python3 -m p3_continuity.check_continuity --input "../I Married a Broken Soldier. He was a Duke" --model offline --out outputs/p3_check
-python3 -m p3_continuity.inject_test --input "../I Married a Broken Soldier. He was a Duke" --trials 10 --seed-base 7000
+python3 -m p3_continuity.check_continuity --input "../4_Kuku_input_pack/episodes" --model offline --out outputs/p3_check
+python3 -m p3_continuity.inject_test --input "../4_Kuku_input_pack/episodes" --trials 10 --seed-base 7000
 ```
 
 Takes under a second for the first command. Open `outputs/p3_check/continuity_report.md`.
@@ -481,8 +475,8 @@ Work through this in order. Items 1 to 4 are required for any submission.
    ```bash
    cp .env.example .env
    # paste the key into .env, then:
-   python3 -m p3_continuity.check_continuity --input "../I Married a Broken Soldier. He was a Duke" --out outputs/p3_model
-   python3 -m p1_promos.find_promos --input "../I Married a Broken Soldier. He was a Duke" --out outputs/p1_model
+   python3 -m p3_continuity.check_continuity --input "../4_Kuku_input_pack/episodes" --out outputs/p3_model
+   python3 -m p1_promos.find_promos --input "../4_Kuku_input_pack/episodes" --out outputs/p1_model
    python3 -m p2_lawyer.run_tests --model groq:llama-3.3-70b-versatile --out outputs/p2_groq
    ```
    Check the new results and update the numbers in the doc if they change. If a model run fails or looks bad, say so in
@@ -530,7 +524,7 @@ Work through this in order. Items 1 to 4 are required for any submission.
 
 | Problem | Fix |
 |---|---|
-| `ModuleNotFoundError: common` | Run commands from `kuku-solutions/`, using `python3 -m ...` as shown. |
+| `ModuleNotFoundError: common` | Run commands from `3_CODE/`, using `python3 -m ...` as shown. |
 | `GROQ_API_KEY is not set` | Add the key to `.env`, or add `--model offline`. |
 | Model run hits a rate limit | The adapter retries with backoff. Free tiers are slow. Cached answers are reused on a rerun. |
 | Model output is not valid JSON | The parser handles code fences and extra text. If it still fails, the tool skips that clip or episode and keeps going. |

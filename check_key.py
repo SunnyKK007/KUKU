@@ -3,7 +3,7 @@ from common.llm import LLM, first_available_spec
 
 spec = first_available_spec()
 if spec == "offline":
-    print("No key found. Open kuku-solutions/.env and paste your key after GEMINI_API_KEY= (or GROQ_API_KEY=).")
+    print("No key found. Open 3_CODE/.env and paste your key after GEMINI_API_KEY= (or GROQ_API_KEY=).")
     raise SystemExit(1)
 llm = LLM(spec)
 print("Using:", llm.label())

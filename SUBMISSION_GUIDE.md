@@ -20,8 +20,8 @@ Kuku reviews **one problem per person**. All three are built so you can choose, 
 3. **Get a free model key and rerun once** (Groq or Gemini). Every number in the docs is from rules-only mode. A model run lets you report the model judge honestly. If the numbers change, update the doc.
    ```bash
    cp .env.example .env   # paste the key, then:
-   python3 -m p1_promos.find_promos --input "../I Married a Broken Soldier. He was a Duke" --out outputs/p1_model
-   python3 -m p3_continuity.check_continuity --input "../I Married a Broken Soldier. He was a Duke" --out outputs/p3_model
+   python3 -m p1_promos.find_promos --input "../4_Kuku_input_pack/episodes" --out outputs/p1_model
+   python3 -m p3_continuity.check_continuity --input "../4_Kuku_input_pack/episodes" --out outputs/p3_model
    ```
 4. **Check the links open for anyone.** The brief requires this.
 
