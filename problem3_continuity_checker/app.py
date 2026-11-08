@@ -25,6 +25,7 @@ from common.llm import load_env  # noqa: E402
 from problem3_continuity_checker.check_continuity import run  # noqa: E402
 
 DEMO = pathlib.Path(__file__).resolve().parent / "demo_show"
+CARD_HINT = {"high": "Spoken aloud", "medium": "Video or voice", "low": "Worth a look", "info": "Format notes"}
 REPO = "https://github.com/SunnyKK007/KUKU"
 load_env()
 
@@ -32,20 +33,18 @@ st.set_page_config(page_title="Continuity Checker", page_icon=ui.logo_path("cont
 ui.apply_theme()
 
 SEV = {
-    "high": ("High", "#B91C1C", "#FEF2F2", "Spoken aloud: heard, subtitled and dubbed"),
-    "medium": ("Medium", "#B45309", "#FFFBEB", "Reaches video prompts or voice mapping"),
-    "low": ("Low", "#1D4ED8", "#EFF6FF", "Worth a look"),
-    "info": ("Info", "#475569", "#F1F5F9", "Format or notes"),
+    "high": ("High", "#B91C1C", "#FEF2F2", "Spoken aloud, so viewers hear it and it reaches subtitles and dubs"),
+    "medium": ("Medium", "#B45309", "#FFFBEB", "Reaches the video prompt or the choice of AI voice"),
+    "low": ("Low", "#1D4ED8", "#EFF6FF", "Worth a look, but unlikely to reach viewers"),
+    "info": ("Info", "#475569", "#F1F5F9", "Formatting and script notes"),
 }
 with st.sidebar:
     ui.brand("Continuity Checker", "continuity", "Problem 3 · Kuku AI Generalist")
     st.markdown(f"[View the code on GitHub]({REPO})")
     st.divider()
-    st.markdown("**Severity**")
-    for name, color, bg, meaning in SEV.values():
-        st.markdown(f'{ui.badge(name, color, bg)} <span class="muted">{meaning}</span>', unsafe_allow_html=True)
+    ui.severity_legend((name, color, meaning) for name, color, bg, meaning in SEV.values())
     st.divider()
-    st.markdown("**What it checks**")
+    st.markdown('<div class="side-title">What it checks</div>', unsafe_allow_html=True)
     st.markdown('<p class="muted">Name spellings, surnames and titles, speaker labels, unnamed characters, props and '
                 'format. The optional AI review also reads the story for things like injuries or costumes that '
                 'change between episodes.</p>', unsafe_allow_html=True)
@@ -196,7 +195,7 @@ with head_l:
 
 counts = {k: sum(1 for i in scoped if i["severity"] == k) for k in SEV}
 ui.stat_cards([("Episodes", res["episodes"], "#4338CA", res["model"].split(" (")[0])]
-              + [(SEV[k][0], counts[k], SEV[k][1], SEV[k][3]) for k in SEV])
+              + [(SEV[k][0], counts[k], SEV[k][1], CARD_HINT[k]) for k in SEV])
 
 if view in ("ai", "both"):
     cov = ai_coverage(res)

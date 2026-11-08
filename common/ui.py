@@ -109,6 +109,15 @@ div[data-testid="stExpander"] summary p { font-weight: 500; font-size: 15px; col
   .hero h1 { font-size: 27px; }
 }
 
+/* severity legend */
+.sev-legend { background: var(--card); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; margin: 6px 0 4px 0; }
+.sev-row { display: flex; gap: 12px; padding: 11px 14px; border-bottom: 1px solid var(--line); }
+.sev-row:last-child { border-bottom: 0; }
+.sev-bar { flex: 0 0 4px; border-radius: 4px; background: var(--c); }
+.sev-name { font-size: 13.5px; font-weight: 650; color: var(--c); line-height: 1.3; }
+.sev-desc { font-size: 12.5px; color: var(--ink3); line-height: 1.45; margin-top: 2px; }
+.side-title { font-size: 12px; font-weight: 600; letter-spacing: .07em; text-transform: uppercase; color: var(--ink3); margin: 6px 0 8px 0; }
+
 /* sidebar */
 section[data-testid="stSidebar"] { background: var(--card); border-right: 1px solid var(--line); }
 section[data-testid="stSidebar"] h3 { font-size: 18px; font-weight: 650; }
@@ -260,3 +269,11 @@ def model_picker(prefix: str, inline: bool = True):
 
     backups = [m for m in curated if m != chosen and m in models]
     return f"{prov}:{','.join([chosen] + backups)}", key, ready
+
+
+def severity_legend(levels) -> None:
+    """levels: iterable of (name, color, description)."""
+    rows = "".join(f'<div class="sev-row" style="--c:{c}"><span class="sev-bar"></span><div>'
+                   f'<div class="sev-name">{html.escape(n)}</div><div class="sev-desc">{html.escape(d)}</div></div></div>'
+                   for n, c, d in levels)
+    st.markdown(f'<div class="side-title">Severity levels</div><div class="sev-legend">{rows}</div>', unsafe_allow_html=True)
