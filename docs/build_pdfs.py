@@ -15,7 +15,8 @@ h1 { font-size: 15pt; margin: 0 0 4px; } h2 { font-size: 11pt; margin: 9px 0 3px
 p { margin: 3px 0; } ul, ol { margin: 2px 0 3px 18px; padding: 0; } li { margin: 1px 0; }
 table { border-collapse: collapse; width: 100%; margin: 3px 0; font-size: 8.8pt; }
 th, td { border: 1px solid #d6d6d6; padding: 2px 5px; text-align: left; vertical-align: top; }
-th { background: #f2f2f2; } code { font-size: 8.6pt; background: #f4f4f4; padding: 0 2px; }
+th { background: #f2f2f2; }
+a { color: #0b57d0; text-decoration: underline; } code { font-size: 8.6pt; background: #f4f4f4; padding: 0 2px; }
 """
 
 def fix_lists(text: str) -> str:
