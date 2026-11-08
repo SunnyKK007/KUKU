@@ -45,6 +45,9 @@ S: Session = st.session_state.session
 
 with st.sidebar:
     ui.brand("Nyay Saathi", "lawyer", "Deposit · Refund · Salary")
+    st.markdown("[View the code on GitHub](https://github.com/SunnyKK007/KUKU)")
+    st.divider()
+    ui.side_title("AI model")
     use_ai = st.toggle("Use an AI model", value=False,
                        help="Off: the assistant uses fixed rules and verified law cards only. On: an AI model also "
                             "reads your story and replies in your language.")
@@ -65,7 +68,8 @@ with st.sidebar:
         new_session(*st.session_state.model_sig)
         st.rerun()
 
-    st.subheader("Your case file")
+    st.divider()
+    ui.side_title("Your case file")
     st.markdown(S.case.summary_markdown())
     missing = S.case.missing_slots()
     if S.case.problem_type and missing:

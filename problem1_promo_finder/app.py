@@ -30,9 +30,12 @@ with st.sidebar:
     ui.brand("Promo Finder", "promo", "Problem 1 · Kuku AI Generalist")
     st.markdown("[View the code on GitHub](https://github.com/SunnyKK007/KUKU)")
     st.divider()
-    st.markdown("**A good promo**")
-    st.markdown('<p class="muted">Runs 20 to 60 seconds, opens on a hook in the first 3 seconds, ends on a cliffhanger, '
-                'and makes sense to someone who has never seen the show.</p>', unsafe_allow_html=True)
+    ui.legend("What makes a good promo", [
+        ("20 to 60 seconds", "#52525B", "One clip or a few joined moments, cut on a shot change"),
+        ("Hook in 3 seconds", "#B91C1C", "A slap, a reveal or a shocking line that stops the scroll"),
+        ("Cliffhanger ending", "#B45309", "Cuts on an unresolved moment so viewers need the next episode"),
+        ("Makes sense alone", "#0F766E", "A stranger can tell who wants what without backstory"),
+    ])
 
 ui.hero("Promo selection", "Promo Finder",
         "Reads a show's screenplays and returns a ranked shortlist of 20 to 60 second promos, each with exact "
@@ -107,7 +110,7 @@ ui.spacer(14)
 st.divider()
 st.markdown(f'<p class="sec-title">Ranked promos</p><p class="sec-sub">{len(res["promos"])} promos from '
             f'{res["episodes"]} episodes, found in {res["seconds"]} s.</p>', unsafe_allow_html=True)
-ui.stat_cards([("Episodes", res["episodes"], "#18181B", f"{round(res['runtime_minutes'])} minutes read"),
+ui.stat_cards([("Episodes", res["episodes"], "#71717A", f"{round(res['runtime_minutes'])} minutes read"),
                ("Promos", len(res["promos"]), "#047857", "ranked best first"),
                ("Judged by AI", res["judged"], "#B45309", "top clips re-scored"),
                ("Run time", f"{res['seconds']} s", "#475569", res["model"].split(" (")[0])])
