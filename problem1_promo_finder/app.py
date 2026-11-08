@@ -27,7 +27,7 @@ st.set_page_config(page_title="Promo Finder", page_icon=ui.logo_path("promo"), l
 ui.apply_theme()
 
 with st.sidebar:
-    ui.brand("Promo Finder", "promo", "Problem 1 · Kuku AI Generalist")
+    ui.brand("Promo Finder", "promo", "Promo selection")
     st.markdown("[View the code on GitHub](https://github.com/SunnyKK007/KUKU)")
     st.divider()
     ui.legend("What makes a good promo", [

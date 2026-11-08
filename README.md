@@ -1,6 +1,6 @@
 # AI tools for microdrama production
 
-Three working prototypes built for Kuku's AI Generalist assignment. Kuku produces AI-generated microdramas: short vertical series with 1 to 2 minute episodes, released at a pace of hundreds of shows a month. Each tool here takes one slow, manual step in that process and turns it into something a person can review in minutes.
+Three working prototypes for AI microdrama production. Microdramas are short vertical series with 1 to 2 minute episodes, and a studio such as Kuku can release hundreds of shows a month. Each tool here takes one slow, manual step in that process and turns it into something a person can review in minutes.
 
 | | Problem | Tool | What it does |
 |---|---|---|---|

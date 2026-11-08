@@ -39,7 +39,7 @@ SEV = {
     "info": ("Info", "#475569", "#F1F5F9", "Formatting and script notes"),
 }
 with st.sidebar:
-    ui.brand("Continuity Checker", "continuity", "Problem 3 · Kuku AI Generalist")
+    ui.brand("Continuity Checker", "continuity", "Script quality control")
     st.markdown(f"[View the code on GitHub]({REPO})")
     st.divider()
     ui.severity_legend((name, color, meaning) for name, color, bg, meaning in SEV.values())
