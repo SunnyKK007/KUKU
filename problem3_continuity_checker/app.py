@@ -149,6 +149,7 @@ if go:
             res["source_label"] = "the demo show" if target == DEMO else (f"{n_eps} uploaded file(s)" if files else "your folder")
             res["run_id"] = time.time()
             st.session_state["c_res"] = res
+            st.session_state["scroll_results"] = True
         except Exception as e:
             st.error(f"The check could not run: {e}")
         bar.empty()
@@ -159,6 +160,9 @@ if not res:
 
 ui.spacer(14)
 st.divider()
+ui.anchor("results")
+if st.session_state.pop("scroll_results", False):
+    ui.scroll_to("results")
 
 ai_ran = not res["model"].startswith("offline")
 ai_issues = [i for i in res["issues"] if i.get("source") == "model" and i["type"] != "model error"]

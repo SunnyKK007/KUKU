@@ -97,8 +97,10 @@ if go:
                         else:
                             (tmpdir / f.name).write_bytes(f.getvalue())
                     st.session_state["res"] = run(str(tmpdir), spec, top, judge_k, api_key=api_key)
+                    st.session_state["scroll_results"] = True
             else:
                 st.session_state["res"] = run(str(folder), spec, top, judge_k, api_key=api_key)
+                st.session_state["scroll_results"] = True
     except Exception as e:
         st.error(f"The run failed: {e}")
 
@@ -108,6 +110,9 @@ if not res:
 
 ui.spacer(14)
 st.divider()
+ui.anchor("results")
+if st.session_state.pop("scroll_results", False):
+    ui.scroll_to("results")
 st.markdown(f'<p class="sec-title">Ranked promos</p><p class="sec-sub">{len(res["promos"])} promos from '
             f'{res["episodes"]} episodes, found in {res["seconds"]} s.</p>', unsafe_allow_html=True)
 ui.stat_cards([("Episodes", res["episodes"], "#71717A", f"{round(res['runtime_minutes'])} minutes read"),

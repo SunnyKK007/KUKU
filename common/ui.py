@@ -290,3 +290,28 @@ def severity_legend(levels) -> None:
 
 def side_title(text: str) -> None:
     st.markdown(f'<div class="side-title">{html.escape(text)}</div>', unsafe_allow_html=True)
+
+
+def anchor(name: str) -> None:
+    """An invisible marker the page can scroll to."""
+    st.markdown(f'<div id="{html.escape(name)}" style="position:relative;top:-16px"></div>', unsafe_allow_html=True)
+
+
+def scroll_to(name: str) -> None:
+    """Scroll the page to an anchor once it has rendered, re-aiming while the page finishes drawing."""
+    import time
+    nonce = int(time.time() * 1000)
+    st.html(f"""<span data-scroll="{nonce}"></span><script>
+      (function () {{
+        const aim = (smooth) => {{
+          const el = document.getElementById("{name}");
+          if (el) el.scrollIntoView({{behavior: smooth ? "smooth" : "auto", block: "start"}});
+          return !!el;
+        }};
+        const start = (tries) => {{
+          if (aim(true)) {{ [600, 1200].forEach(t => setTimeout(() => aim(false), t)); }}
+          else if (tries > 0) {{ setTimeout(() => start(tries - 1), 150); }}
+        }};
+        setTimeout(() => start(25), 150);
+      }})();
+    </script>""", unsafe_allow_javascript=True)
