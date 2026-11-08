@@ -76,6 +76,19 @@ html, body, [class*="css"], .stMarkdown, button, input, textarea, label { font-f
 div[data-testid="stExpander"] { background: #FFFFFF; border-radius: 12px; border: 1px solid #E5E7EB; margin-bottom: 8px; }
 div[data-testid="stExpander"] summary p { font-weight: 500; font-size: 14.5px; }
 section[data-testid="stSidebar"] { background: #FFFFFF; border-right: 1px solid #E5E7EB; }
+.st-key-src_picker div[role="radiogroup"], .st-key-mode_picker div[role="radiogroup"] {
+    display: grid; gap: 14px; width: 100%; grid-auto-rows: 1fr; }
+.st-key-src_picker div[role="radiogroup"] { grid-template-columns: repeat(3, 1fr); }
+.st-key-mode_picker div[role="radiogroup"] { grid-template-columns: repeat(2, 1fr); }
+.st-key-src_picker label, .st-key-mode_picker label {
+    background: #FFFFFF; border: 2px solid #E5E7EB; border-radius: 16px; padding: 18px 20px; min-height: 96px;
+    cursor: pointer; transition: all .15s ease; align-items: flex-start; margin: 0; width: 100%; }
+.st-key-src_picker label:hover, .st-key-mode_picker label:hover { border-color: #A5B4FC; background: #F5F7FF; transform: translateY(-1px); }
+.st-key-src_picker label:has(input:checked), .st-key-mode_picker label:has(input:checked) {
+    border-color: #4F46E5; background: #EEF2FF; box-shadow: 0 0 0 4px rgba(79,70,229,.14); }
+.st-key-src_picker label p, .st-key-mode_picker label p { font-size: 15px; line-height: 1.5; color: #374151; }
+.st-key-src_picker label p strong, .st-key-mode_picker label p strong { font-size: 17.5px; color: #111827; }
+@media (max-width: 800px) { .st-key-src_picker div[role="radiogroup"], .st-key-mode_picker div[role="radiogroup"] { grid-template-columns: 1fr; } }
 @media (max-width: 800px) { .stat-grid { grid-template-columns: repeat(2, 1fr); } .steps { grid-template-columns: 1fr; } }
 </style>
 """, unsafe_allow_html=True)
@@ -126,15 +139,20 @@ with st.container(border=True):
     st.markdown('<p class="card-title">Step 1. Choose the scripts</p>'
                 '<p class="card-sub">Each episode is one .txt file in Kuku\'s timestamped screenplay format. '
                 'The check compares episodes with each other, so use at least two.</p>', unsafe_allow_html=True)
-    source = st.radio("Scripts", ["Demo show (4 episodes, ready to try)", "Upload episode files", "Folder on this computer"],
-                      horizontal=True, label_visibility="collapsed")
+    SRC_LABELS = {
+        "demo": "📺 **Demo show**  \n:gray[4 episodes, ready to run with one click]",
+        "upload": "📤 **Upload files**  \n:gray[Your episode .txt files, or one .zip]",
+        "folder": "📁 **Use a folder**  \n:gray[Paste the path to a folder of episodes on this computer]",
+    }
+    with st.container(key="src_picker"):
+        source = st.radio("Scripts", list(SRC_LABELS), format_func=SRC_LABELS.get, label_visibility="collapsed")
     folder, files, n_input = None, None, 0
-    if source.startswith("Demo"):
+    if source == "demo":
         folder = DEMO
         n_input = len(list(DEMO.glob("*.txt")))
         st.markdown('<p class="muted">A short original show written for this demo, with 8 kinds of continuity '
                     'mistakes planted in it. It works without any other files.</p>', unsafe_allow_html=True)
-    elif source.startswith("Upload"):
+    elif source == "upload":
         files = st.file_uploader("Episode .txt files, or one .zip of them", type=["txt", "zip"], accept_multiple_files=True)
         if files:
             n_input = sum(1 for f in files if f.name.endswith(".txt")) + sum(1 for f in files if f.name.endswith(".zip"))
@@ -151,11 +169,14 @@ with st.container(border=True):
 
 with st.container(border=True):
     st.markdown('<p class="card-title">Step 2. Choose the check</p>', unsafe_allow_html=True)
-    mode = st.radio("Check", ["Quick check: rules only (free, under a second)",
-                              "Full check: rules plus AI review (needs an API key, takes a few minutes)"],
-                    label_visibility="collapsed")
+    MODE_LABELS = {
+        "quick": "⚡ **Quick check**  \n:gray[Rules only. Free, and finishes in under a second]",
+        "full": "🧠 **Full check**  \n:gray[Rules plus an AI review of the story. Needs an API key and takes a few minutes]",
+    }
+    with st.container(key="mode_picker"):
+        mode = st.radio("Check", list(MODE_LABELS), format_func=MODE_LABELS.get, label_visibility="collapsed")
     spec = "offline"
-    if mode.startswith("Full"):
+    if mode == "full":
         c1, c2 = st.columns(2)
         with c1:
             prov = st.selectbox("AI provider", list(MODELS), format_func=lambda k: MODELS[k][0])
