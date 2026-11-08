@@ -28,7 +28,7 @@ PROVIDERS = {
     "groq": {"base_url": "https://api.groq.com/openai/v1", "key_env": "GROQ_API_KEY",
              "default_model": "llama-3.3-70b-versatile"},
     "gemini": {"base_url": "https://generativelanguage.googleapis.com/v1beta/openai/",
-               "key_env": "GEMINI_API_KEY", "default_model": "gemini-2.5-flash"},
+               "key_env": "GEMINI_API_KEY", "default_model": "gemini-3.5-flash"},
     "openrouter": {"base_url": "https://openrouter.ai/api/v1", "key_env": "OPENROUTER_API_KEY",
                    "default_model": "meta-llama/llama-3.3-70b-instruct:free"},
     "openai": {"base_url": "https://api.openai.com/v1", "key_env": "OPENAI_API_KEY",
@@ -117,6 +117,8 @@ class LLM:
                       max_tokens=max_tokens)
         if json_mode and self.provider not in ("anthropic",):
             kwargs["response_format"] = {"type": "json_object"}
+        if self.provider == "gemini":
+            kwargs["reasoning_effort"] = "none"
         delay = 4.0
         for attempt in range(6):
             try:

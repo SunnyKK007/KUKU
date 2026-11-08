@@ -1,0 +1,15 @@
+Kuku AI Generalist Assignment
+Sunny Singhal, EP23BTECH11014, Engineering Physics
+
+I solved all three problems. They share one codebase and each has its own
+two-page solution doc and raw outputs.
+
+  Problem1_Promo_Finder/          Problem 1: Find the promos
+  Problem2_AI_Lawyer/             Problem 2: Build an AI lawyer
+  Problem3_Continuity_Checker/    Problem 3: Find your own problem
+                                  (a continuity checker for AI microdrama scripts)
+
+Each folder has: Solution_Doc (PDF, 2 pages) and Raw_Outputs (zip).
+Code for all three, with run steps: see the GitHub link in the form.
+Raw outputs for Problems 1 and 3 quote Kuku's scripts, so they are shared
+here only, never in the public repo.

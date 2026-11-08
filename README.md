@@ -12,7 +12,7 @@ microdramas (short vertical series with 1 to 2 minute episodes). The brief offer
 5. [Problem 1: Promo finder](#5-problem-1-promo-finder)
 6. [Problem 2: AI lawyer (Nyay Saathi)](#6-problem-2-ai-lawyer-nyay-saathi)
 7. [Problem 3: Continuity checker](#7-problem-3-continuity-checker)
-8. [Which one to submit](#8-which-one-to-submit)
+8. [What gets submitted](#8-what-gets-submitted)
 9. [What you have to do now](#9-what-you-have-to-do-now)
 10. [Honest limits of this work](#10-honest-limits-of-this-work)
 11. [Troubleshooting](#11-troubleshooting)
@@ -50,8 +50,7 @@ The three problems:
 
 ```
 KUKU/
-├── 1_SUBMIT_THESE_FILES/      WHAT YOU UPLOAD (Problem 3 PDF + raw outputs zip + steps)
-├── 2_BACKUP_other_problems/   Problems 1 and 2 PDFs and zips, in case you change your mind
+├── 1_SUBMIT_THESE_FILES/      WHAT YOU UPLOAD: one Drive folder with all three PDFs and raw outputs
 ├── 3_CODE/                    everything built, this folder (this README lives here)
 └── 4_Kuku_input_pack/         Kuku's brief and the 50 episodes. CONFIDENTIAL, never upload
     ├── Assignment_brief.pdf
@@ -64,7 +63,7 @@ Inside `3_CODE/` (the python folders keep their names because the code imports t
 3_CODE/
 ├── README.md                  this file
 ├── check_key.py               tests your API key
-├── make_submission.sh         rebuilds the PDFs and refills folders 1 and 2
+├── make_submission.sh         rebuilds the PDFs and refills 1_SUBMIT_THESE_FILES
 ├── requirements.txt, .gitignore
 ├── .env                       YOUR API KEY GOES HERE
 ├── common/                    shared code
@@ -452,15 +451,14 @@ pass cannot quote the episode for an issue, that issue is dropped as a possible 
 
 ---
 
-## 8. Which one to submit
+## 8. What gets submitted
 
-Kuku reviews one submission per person. All three are finished, so choose one.
+All three problems are submitted together. `make_submission.sh` builds one folder,
+`../1_SUBMIT_THESE_FILES/Upload_this_folder_to_Drive/`, with a subfolder per problem (its 2-page PDF and
+raw-outputs zip) and a short `READ_ME_FIRST.txt`. Share that one folder on Google Drive.
 
-| Problem | Why choose it | Risk |
-|---|---|---|
-| **3. Continuity checker** (my recommendation) | You found a real problem in Kuku's own scripts and proved it with counts. It speaks directly to their AI pipeline. It has the strongest quality evidence of the three. | You must be ready to defend, in the interview, why it matters more than Problems 1 and 2. |
-| **1. Promo finder** | It is the problem the input pack was made for, and it runs on a new show in one command. | The most common choice, and recall is modest (9 of 16). |
-| **2. AI lawyer** | A full working app with a hard block on invented law. | It has no Kuku context, so it shows less fit for the role. |
+Note: the brief says Kuku reviews one problem per person. Submitting all three is a deliberate choice;
+each problem's doc stands on its own.
 
 ---
 
