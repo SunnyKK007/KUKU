@@ -1,0 +1,157 @@
+"""Shared look and small components for the three web apps."""
+from __future__ import annotations
+
+import html
+
+import streamlit as st
+
+CSS = """
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+:root {
+  --ink: #0F172A; --ink2: #475569; --ink3: #64748B; --line: #E2E8F0; --bg: #F8FAFC; --card: #FFFFFF;
+  --accent: #4338CA; --accent-soft: #EEF2FF; --accent-line: #C7D2FE;
+}
+html, body, [class*="css"], .stMarkdown, button, input, textarea, label, select { font-family: 'Inter', system-ui, sans-serif; }
+.stApp { background: var(--bg); }
+.block-container { max-width: 1120px; padding-top: 2.2rem; padding-bottom: 4rem; }
+header[data-testid="stHeader"] { background: transparent; }
+[data-testid="stToolbar"], [data-testid="stDeployButton"], #MainMenu, footer { display: none !important; }
+h1, h2, h3 { letter-spacing: -0.01em; color: var(--ink); }
+p, li { color: var(--ink2); line-height: 1.65; }
+a { color: var(--accent); }
+
+/* hero */
+.hero { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 30px 34px; margin-bottom: 22px;
+        box-shadow: 0 1px 2px rgba(15,23,42,.04); }
+.hero .eyebrow { font-size: 12px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); margin-bottom: 10px; }
+.hero h1 { font-size: 34px; font-weight: 700; line-height: 1.15; margin: 0 0 10px 0; }
+.hero p { font-size: 16.5px; color: var(--ink2); margin: 0; max-width: 700px; }
+
+/* section cards */
+div[data-testid="stVerticalBlockBorderWrapper"] { background: var(--card); border-color: var(--line) !important; border-radius: 14px !important;
+        box-shadow: 0 1px 2px rgba(15,23,42,.04); padding: 6px 10px; }
+.step { font-size: 11.5px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); margin: 2px 0 2px 0; }
+.sec-title { font-size: 19px; font-weight: 650; color: var(--ink); margin: 0 0 4px 0; }
+.sec-sub { font-size: 14px; color: var(--ink3); margin: 0 0 14px 0; }
+.muted { color: var(--ink3); font-size: 13.5px; }
+
+/* stat cards */
+.stats { display: grid; grid-template-columns: repeat(var(--n, 5), 1fr); gap: 14px; margin: 4px 0 18px 0; }
+.stat { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 16px 18px; }
+.stat .label { display: flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 600; color: var(--ink3);
+               text-transform: uppercase; letter-spacing: .06em; }
+.stat .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--c); }
+.stat .value { font-size: 32px; font-weight: 700; color: var(--ink); line-height: 1.2; margin-top: 6px; font-variant-numeric: tabular-nums; }
+.stat .hint { font-size: 12.5px; color: var(--ink3); margin-top: 2px; }
+
+/* badges and callouts */
+.badge { display: inline-block; border-radius: 999px; padding: 3px 11px; font-size: 12px; font-weight: 600; background: var(--bg2); color: var(--c); }
+.tag { display: inline-block; border-radius: 6px; padding: 3px 9px; font-size: 12px; font-weight: 500; background: #F1F5F9; color: #334155; margin-left: 6px; }
+.callout { border-left: 3px solid var(--c); background: var(--bg2); border-radius: 8px; padding: 12px 16px; margin: 10px 0 16px 0;
+           font-size: 14.5px; color: var(--ink); line-height: 1.55; }
+.callout b { color: var(--ink); }
+
+/* controls */
+.stButton > button[kind="primary"], .stDownloadButton > button { border-radius: 10px; height: 46px; font-weight: 600; font-size: 15px; }
+.stButton > button[kind="primary"] { background: var(--accent); border: 1px solid var(--accent); }
+.stButton > button[kind="primary"]:hover { background: #3730A3; border-color: #3730A3; }
+.stButton > button[kind="primary"] p, .stButton > button[kind="primary"] span, .stButton > button[kind="primary"] div { color: #FFFFFF !important; font-weight: 600; }
+.stButton > button[kind="primary"]:disabled { background: #CBD5E1; border-color: #CBD5E1; }
+.stButton > button[kind="primary"]:disabled p { color: #F8FAFC !important; }
+.spacer { height: var(--h, 16px); }
+.stDownloadButton > button { background: var(--card); border: 1px solid var(--line); color: var(--ink); }
+.stDownloadButton > button:hover { border-color: var(--accent-line); color: var(--accent); }
+div[data-baseweb="input"], div[data-baseweb="select"] > div, textarea { border-radius: 10px !important; }
+label[data-testid="stWidgetLabel"] p { font-size: 13.5px; font-weight: 500; color: var(--ink); }
+
+/* tabs */
+button[data-baseweb="tab"] { font-size: 15px; font-weight: 500; padding: 10px 4px; margin-right: 22px; color: var(--ink3); }
+button[data-baseweb="tab"][aria-selected="true"] { color: var(--accent); font-weight: 600; }
+div[data-baseweb="tab-highlight"] { background: var(--accent); height: 3px; }
+div[data-baseweb="tab-border"] { background: var(--line); }
+
+/* segmented control */
+div[data-testid="stButtonGroup"] { background: #EEF2F7; border-radius: 12px; padding: 4px; gap: 2px; width: fit-content; max-width: 100%; flex-wrap: wrap; }
+div[data-testid="stButtonGroup"] button { border: 0 !important; background: transparent; border-radius: 9px; padding: 7px 16px; font-weight: 500;
+        font-size: 14px; color: var(--ink2); }
+div[data-testid="stButtonGroup"] button:hover { color: var(--ink); background: rgba(255,255,255,.6); }
+div[data-testid="stButtonGroup"] button[data-testid="stBaseButton-segmented_controlActive"] { background: var(--card); color: var(--accent);
+        font-weight: 600; box-shadow: 0 1px 3px rgba(15,23,42,.12); }
+
+/* expanders */
+div[data-testid="stExpander"] { background: var(--card); border: 1px solid var(--line); border-radius: 12px; margin-bottom: 8px; }
+div[data-testid="stExpander"] details { border: 0; }
+div[data-testid="stExpander"] summary p { font-weight: 500; font-size: 15px; color: var(--ink); }
+
+/* option cards (radio shown as large tiles) */
+[class*="st-key-cardpick"] div[role="radiogroup"] { display: grid; gap: 14px; width: 100%; grid-auto-rows: 1fr; }
+[class*="st-key-cardpick3"] div[role="radiogroup"] { grid-template-columns: repeat(3, 1fr); }
+[class*="st-key-cardpick2"] div[role="radiogroup"] { grid-template-columns: repeat(2, 1fr); }
+[class*="st-key-cardpick"] label { background: var(--card); border: 1.5px solid var(--line); border-radius: 14px; padding: 18px 20px;
+        min-height: 92px; cursor: pointer; transition: all .15s ease; align-items: flex-start; margin: 0; width: 100%; }
+[class*="st-key-cardpick"] label:hover { border-color: var(--accent-line); background: #FAFAFF; }
+[class*="st-key-cardpick"] label:has(input:checked) { border-color: var(--accent); background: var(--accent-soft); box-shadow: 0 0 0 3px rgba(67,56,202,.12); }
+[class*="st-key-cardpick"] label p { font-size: 14.5px; line-height: 1.5; color: var(--ink3); }
+[class*="st-key-cardpick"] label p strong { font-size: 17px; color: var(--ink); font-weight: 650; }
+@media (max-width: 820px) {
+  [class*="st-key-cardpick"] div[role="radiogroup"] { grid-template-columns: 1fr !important; }
+  .stats { grid-template-columns: repeat(2, 1fr); }
+  .hero h1 { font-size: 27px; }
+}
+
+/* sidebar */
+section[data-testid="stSidebar"] { background: var(--card); border-right: 1px solid var(--line); }
+section[data-testid="stSidebar"] h3 { font-size: 18px; font-weight: 650; }
+</style>
+"""
+
+TONES = {
+    "info": ("#1D4ED8", "#EFF6FF"),
+    "ok": ("#047857", "#ECFDF5"),
+    "warn": ("#B45309", "#FFFBEB"),
+    "bad": ("#B91C1C", "#FEF2F2"),
+    "neutral": ("#475569", "#F1F5F9"),
+}
+
+
+def apply_theme() -> None:
+    st.markdown(CSS, unsafe_allow_html=True)
+
+
+def hero(eyebrow: str, title: str, subtitle: str) -> None:
+    st.markdown(f'<div class="hero"><div class="eyebrow">{html.escape(eyebrow)}</div>'
+                f'<h1>{html.escape(title)}</h1><p>{html.escape(subtitle)}</p></div>', unsafe_allow_html=True)
+
+
+def section(step: str, title: str, subtitle: str = "") -> None:
+    sub = f'<p class="sec-sub">{subtitle}</p>' if subtitle else ""
+    st.markdown(f'<div class="step">{html.escape(step)}</div><p class="sec-title">{html.escape(title)}</p>{sub}',
+                unsafe_allow_html=True)
+
+
+def stat_cards(items) -> None:
+    """items: list of (label, value, color, hint)."""
+    cards = "".join(
+        f'<div class="stat" style="--c:{c}"><div class="label"><span class="dot"></span>{html.escape(str(l))}</div>'
+        f'<div class="value">{v}</div><div class="hint">{html.escape(str(h))}</div></div>' for l, v, c, h in items)
+    st.markdown(f'<div class="stats" style="--n:{len(items)}">{cards}</div>', unsafe_allow_html=True)
+
+
+def badge(text: str, color: str, bg: str) -> str:
+    return f'<span class="badge" style="--c:{color};--bg2:{bg}">{html.escape(text)}</span>'
+
+
+def callout(text: str, tone: str = "info") -> None:
+    c, bg = TONES[tone]
+    st.markdown(f'<div class="callout" style="--c:{c};--bg2:{bg}">{text}</div>', unsafe_allow_html=True)
+
+
+def card_choice(key: str, options: dict, columns: int):
+    """Radio rendered as large selectable tiles. options maps value -> markdown label."""
+    with st.container(key=f"cardpick{columns}_{key}"):
+        return st.radio(key, list(options), format_func=options.get, label_visibility="collapsed")
+
+
+def spacer(px: int = 16) -> None:
+    st.markdown(f'<div class="spacer" style="--h:{px}px"></div>', unsafe_allow_html=True)

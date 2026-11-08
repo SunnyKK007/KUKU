@@ -24,11 +24,13 @@ try:
 except Exception:
     pass
 
+from common import ui  # noqa: E402
 from common.llm import PROVIDERS, first_available_spec  # noqa: E402
 from problem2_ai_lawyer import law, voice  # noqa: E402
 from problem2_ai_lawyer.engine import DISCLAIMER, Session  # noqa: E402
 
 st.set_page_config(page_title="Nyay Saathi: get your money back", layout="wide")
+ui.apply_theme()
 
 MODEL_CHOICES = ["auto", "offline", "groq:llama-3.3-70b-versatile", "gemini:gemini-2.5-flash",
                  "openrouter:meta-llama/llama-3.3-70b-instruct:free", "anthropic", "openai:gpt-4o-mini"]
@@ -80,9 +82,10 @@ with st.sidebar:
     with st.expander("Cost so far"):
         st.json(S.cost_report())
 
-st.title("Get your money back")
-st.info(f"{DISCLAIMER} I cover three problems only: a deposit your landlord won't return, a refund a company won't "
-        f"give, and salary your employer hasn't paid.")
+ui.hero("Legal information assistant", "Get your money back",
+        "Tell me what happened in your own words and language. I cover three problems only: a deposit your landlord "
+        "won't return, a refund a company won't give, and salary your employer hasn't paid.")
+ui.callout(DISCLAIMER, "info")
 
 tab_chat, tab_stand, tab_docs, tab_practice, tab_sources = st.tabs(
     ["Chat", "Where I stand", "Draft notice", "Practise", "Sources"])
