@@ -33,7 +33,7 @@ def run(folder: str, model: str | None = "offline", out: str | None = None, prog
         issues.sort(key=lambda i: (SEV_ORDER.get(i["severity"], 3), i.get("source") != "rules", -i["evidence_count"]))
         for n, i in enumerate(issues, 1):
             i["id"] = f"C{n:03d}"
-    res = {"show_folder": str(folder), "episodes": len(show), "model": llm.label(),
+    res = {"show_folder": str(folder), "episodes": len(show), "episode_numbers": [e.number for e in show], "model": llm.label(),
            "seconds": round(time.time() - t0, 1), "issue_counts": {
                s: sum(1 for i in issues if i["severity"] == s) for s in SEV_ORDER},
            "model_issues_dropped_unquoted": dropped, "usage": llm.cost_report(),

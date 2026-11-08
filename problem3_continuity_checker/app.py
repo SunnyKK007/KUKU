@@ -72,6 +72,11 @@ html, body, [class*="css"], .stMarkdown, button, input, textarea, label { font-f
 .fix { background: #ECFDF5; border: 1px solid #A7F3D0; color: #065F46; border-radius: 10px; padding: 10px 14px;
        font-size: 14px; margin: 6px 0 12px 0; }
 .muted { color: #6B7280; font-size: 13px; }
+.covrow { display: flex; flex-wrap: wrap; gap: 8px; margin: 4px 0 14px 0; }
+.cov { border-radius: 999px; padding: 4px 12px; font-size: 12.5px; font-weight: 600; border: 1px solid; }
+.cov-ok { background: #ECFDF5; color: #047857; border-color: #A7F3D0; }
+.cov-none { background: #F3F4F6; color: #4B5563; border-color: #E5E7EB; }
+.cov-bad { background: #FFFBEB; color: #B45309; border-color: #FDE68A; }
 .keyok { color: #047857; font-size: 13px; } .keyno { color: #B45309; font-size: 13px; }
 div[data-testid="stExpander"] { background: #FFFFFF; border-radius: 12px; border: 1px solid #E5E7EB; margin-bottom: 8px; }
 div[data-testid="stExpander"] summary p { font-weight: 500; font-size: 14.5px; }
@@ -120,6 +125,33 @@ st.markdown("""
   <div class="stepbox"><span class="n">3</span><b>Review the issues</b><p>See each slip with its episode and line, and mark what to fix.</p></div>
 </div>
 """, unsafe_allow_html=True)
+
+
+
+def ai_coverage(res):
+    """Per episode: how many AI findings, or why the AI did not review it."""
+    if res["model"].startswith("offline") or not res.get("episode_numbers"):
+        return None
+    import re
+    nums = res["episode_numbers"]
+    found = {n: 0 for n in nums}
+    failed = {}
+    for i in res["issues"]:
+        if i.get("source") != "model":
+            continue
+        if i["type"] == "model error":
+            m = re.match(r"AI model stopped at episode (\d+): (.*)", i["title"])
+            if m:
+                for n in nums:
+                    if n >= int(m.group(1)):
+                        failed[n] = m.group(2)
+                continue
+            m = re.match(r"E(\d+): (.*)", i["title"])
+            if m and int(m.group(1)) in found:
+                failed[int(m.group(1))] = m.group(2)
+        elif i["evidence"] and i["evidence"][0]["episode"] in found:
+            found[i["evidence"][0]["episode"]] += 1
+    return nums, found, failed
 
 
 def load_upload(files) -> pathlib.Path:
@@ -230,9 +262,6 @@ if total == 0:
     st.stop()
 st.success(f"Checked {res['episodes']} episodes from {res.get('source_label', 'the scripts')} in {res['seconds']} s "
            f"and found {total} issues to review.")
-if model_errors:
-    st.warning("The AI review stopped early (" + model_errors[0]["title"].split(": ", 1)[-1] +
-               "). The rule results below are complete.")
 
 cards = [("Episodes", res["episodes"], "#4F46E5", res["model"].split(" (")[0])]
 cards += [(SEV[k][0], counts[k], SEV[k][1], SEV[k][3]) for k in ("high", "medium", "low", "info")]
@@ -240,6 +269,25 @@ st.markdown('<div class="stat-grid">' + "".join(
     f'<div class="stat" style="--c:{c}"><div class="label">{html.escape(str(l))}</div>'
     f'<div class="value">{v}</div><div class="hint">{html.escape(str(h))}</div></div>' for l, v, c, h in cards)
     + "</div>", unsafe_allow_html=True)
+
+cov = ai_coverage(res)
+if cov:
+    nums, found, failed = cov
+    chips = []
+    for n in nums:
+        if n in failed:
+            chips.append(f'<span class="cov cov-bad" title="{html.escape(failed[n])}">Episode {n}: not reviewed</span>')
+        elif found[n]:
+            chips.append(f'<span class="cov cov-ok">Episode {n}: {found[n]} finding{"s" if found[n] != 1 else ""}</span>')
+        else:
+            chips.append(f'<span class="cov cov-none">Episode {n}: reviewed, nothing found</span>')
+    st.markdown('<p class="muted"><b>AI review coverage.</b> The AI reads the episodes in order and only flags a slip in '
+                'the episode where it first contradicts what came before. The rules compare all episodes at once, so '
+                'the two lists can differ.</p><div class="covrow">' + "".join(chips) + "</div>", unsafe_allow_html=True)
+    if failed:
+        first = sorted(failed)[0]
+        st.warning(f"The AI did not review {len(failed)} episode(s), starting with episode {first}: {failed[first]}. "
+                   "Rule results are complete for every episode.")
 
 tab_issues, tab_bible, tab_about = st.tabs(["Issues", "Show bible", "How it works"])
 
