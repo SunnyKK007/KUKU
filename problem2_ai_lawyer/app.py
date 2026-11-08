@@ -28,7 +28,7 @@ from common.llm import PROVIDERS, first_available_spec  # noqa: E402
 from problem2_ai_lawyer import law, voice  # noqa: E402
 from problem2_ai_lawyer.engine import DISCLAIMER, Session  # noqa: E402
 
-st.set_page_config(page_title="Nyay Saathi: get your money back", page_icon="⚖️", layout="wide")
+st.set_page_config(page_title="Nyay Saathi: get your money back", layout="wide")
 
 MODEL_CHOICES = ["auto", "offline", "groq:llama-3.3-70b-versatile", "gemini:gemini-2.5-flash",
                  "openrouter:meta-llama/llama-3.3-70b-instruct:free", "anthropic", "openai:gpt-4o-mini"]
@@ -80,12 +80,12 @@ with st.sidebar:
     with st.expander("Cost so far"):
         st.json(S.cost_report())
 
-st.title("⚖️ Get your money back")
+st.title("Get your money back")
 st.info(f"{DISCLAIMER} I cover three problems only: a deposit your landlord won't return, a refund a company won't "
         f"give, and salary your employer hasn't paid.")
 
 tab_chat, tab_stand, tab_docs, tab_practice, tab_sources = st.tabs(
-    ["💬 Chat", "📍 Where I stand", "📝 Draft notice", "🎭 Practise", "📚 Sources"])
+    ["Chat", "Where I stand", "Draft notice", "Practise", "Sources"])
 
 
 def show_reply(msg: dict):

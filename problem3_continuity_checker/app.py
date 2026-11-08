@@ -26,13 +26,13 @@ DEMO = pathlib.Path(__file__).resolve().parent / "demo_show"
 REPO = "https://github.com/SunnyKK007/KUKU"
 load_env()
 
-st.set_page_config(page_title="Continuity Checker", page_icon="🎬", layout="wide")
+st.set_page_config(page_title="Continuity Checker", layout="wide")
 
 SEV = {
-    "high": ("High", "#DC2626", "#FEF2F2", "🔴", "Spoken aloud: heard, subtitled and dubbed"),
-    "medium": ("Medium", "#D97706", "#FFFBEB", "🟠", "Reaches video prompts or voice mapping"),
-    "low": ("Low", "#2563EB", "#EFF6FF", "🔵", "Worth a look"),
-    "info": ("Info", "#6B7280", "#F3F4F6", "⚪", "Format or notes"),
+    "high": ("High", "#DC2626", "#FEF2F2", "Spoken aloud: heard, subtitled and dubbed"),
+    "medium": ("Medium", "#D97706", "#FFFBEB", "Reaches video prompts or voice mapping"),
+    "low": ("Low", "#2563EB", "#EFF6FF", "Worth a look"),
+    "info": ("Info", "#6B7280", "#F3F4F6", "Format or notes"),
 }
 MODELS = {
     "gemini": ("Google Gemini", "GEMINI_API_KEY", "gemini-3.5-flash", "gemini-3.1-flash-lite"),
@@ -94,12 +94,12 @@ section[data-testid="stSidebar"] { background: #FFFFFF; border-right: 1px solid 
 """, unsafe_allow_html=True)
 
 with st.sidebar:
-    st.markdown("### 🎬 Continuity Checker")
+    st.markdown("### Continuity Checker")
     st.markdown('<p class="muted">Problem 3 of the Kuku AI Generalist assignment.</p>', unsafe_allow_html=True)
     st.markdown(f"[View the code on GitHub]({REPO})")
     st.divider()
     st.markdown("**What the colours mean**")
-    for name, color, bg, dot, meaning in SEV.values():
+    for name, color, bg, meaning in SEV.values():
         st.markdown(f'<span class="badge" style="--c:{color};--bg:{bg}">{name}</span> '
                     f'<span class="muted">{meaning}</span>', unsafe_allow_html=True)
     st.divider()
@@ -140,9 +140,9 @@ with st.container(border=True):
                 '<p class="card-sub">Each episode is one .txt file in Kuku\'s timestamped screenplay format. '
                 'The check compares episodes with each other, so use at least two.</p>', unsafe_allow_html=True)
     SRC_LABELS = {
-        "demo": "📺 **Demo show**  \n:gray[4 episodes, ready to run with one click]",
-        "upload": "📤 **Upload files**  \n:gray[Your episode .txt files, or one .zip]",
-        "folder": "📁 **Use a folder**  \n:gray[Paste the path to a folder of episodes on this computer]",
+        "demo": "**Demo show**  \n:gray[4 episodes, ready to run with one click]",
+        "upload": "**Upload files**  \n:gray[Your episode .txt files, or one .zip]",
+        "folder": "**Use a folder**  \n:gray[Paste the path to a folder of episodes on this computer]",
     }
     with st.container(key="src_picker"):
         source = st.radio("Scripts", list(SRC_LABELS), format_func=SRC_LABELS.get, label_visibility="collapsed")
@@ -170,8 +170,8 @@ with st.container(border=True):
 with st.container(border=True):
     st.markdown('<p class="card-title">Step 2. Choose the check</p>', unsafe_allow_html=True)
     MODE_LABELS = {
-        "quick": "⚡ **Quick check**  \n:gray[Rules only. Free, and finishes in under a second]",
-        "full": "🧠 **Full check**  \n:gray[Rules plus an AI review of the story. Needs an API key and takes a few minutes]",
+        "quick": "**Quick check**  \n:gray[Rules only. Free, and finishes in under a second]",
+        "full": "**Full check**  \n:gray[Rules plus an AI review of the story. Needs an API key and takes a few minutes]",
     }
     with st.container(key="mode_picker"):
         mode = st.radio("Check", list(MODE_LABELS), format_func=MODE_LABELS.get, label_visibility="collapsed")
@@ -195,7 +195,7 @@ with st.container(border=True):
         spec = prov if not model_id.strip() else f"{prov}:{model_id.replace(' ', '')}"
 
 ready = bool(folder or files)
-go = st.button("▶  Run the check", type="primary", use_container_width=True, disabled=not ready)
+go = st.button("Run the check", type="primary", use_container_width=True, disabled=not ready)
 if not ready:
     st.caption("Choose the scripts in Step 1 to enable the button.")
 
@@ -235,7 +235,7 @@ if model_errors:
                "). The rule results below are complete.")
 
 cards = [("Episodes", res["episodes"], "#4F46E5", res["model"].split(" (")[0])]
-cards += [(SEV[k][0], counts[k], SEV[k][1], SEV[k][4]) for k in ("high", "medium", "low", "info")]
+cards += [(SEV[k][0], counts[k], SEV[k][1], SEV[k][3]) for k in ("high", "medium", "low", "info")]
 st.markdown('<div class="stat-grid">' + "".join(
     f'<div class="stat" style="--c:{c}"><div class="label">{html.escape(str(l))}</div>'
     f'<div class="value">{v}</div><div class="hint">{html.escape(str(h))}</div></div>' for l, v, c, h in cards)
@@ -257,9 +257,9 @@ with tab_issues:
     st.markdown(f'<p class="muted">Showing {len(shown)} of {total} issues. Click an issue to see where it is and mark a decision.</p>',
                 unsafe_allow_html=True)
     for i in shown:
-        name, color, bg, dot, _ = SEV[i["severity"]]
+        name, color, bg, _ = SEV[i["severity"]]
         by = "AI review" if i.get("source") == "model" else "Rules"
-        with st.expander(f"{dot}  {i['title']}"):
+        with st.expander(f"{name}: {i['title']}"):
             st.markdown(f'<span class="badge" style="--c:{color};--bg:{bg}">{name}</span>'
                         f'<span class="tag">{by}</span><span class="tag">{html.escape(i["type"])}</span>'
                         f'<span class="tag">{i["id"]}</span>', unsafe_allow_html=True)
@@ -286,9 +286,9 @@ with tab_issues:
             w.writerow([i["id"], i["severity"], i.get("source", "rules"), i["title"], i["suggested_fix"], decisions[i["id"]]])
     st.markdown("&nbsp;")
     d1, d2 = st.columns(2)
-    d1.download_button("⬇  Download issues and decisions (CSV)", buf.getvalue(), "continuity_issues.csv",
+    d1.download_button("Download issues and decisions (CSV)", buf.getvalue(), "continuity_issues.csv",
                        use_container_width=True)
-    d2.download_button("⬇  Download full results (JSON)",
+    d2.download_button("Download full results (JSON)",
                        json.dumps({k: v for k, v in res.items() if k != "bible"}, indent=2, ensure_ascii=False),
                        "continuity_results.json", use_container_width=True)
 
