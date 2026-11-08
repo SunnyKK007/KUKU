@@ -1,12 +1,14 @@
 # Microdrama Toolkit
 
+**Try it live:** [Continuity Checker](https://kuku-continuity-checker.streamlit.app) · [Promo Finder](https://kuku-promo-finder.streamlit.app) · [Nyay Saathi](https://kuku-nyay-saathi.streamlit.app)
+
 Three tools for the production side of AI-generated microdramas: short vertical series with 1 to 2 minute episodes, released in large numbers. Each one takes a slow, manual step and turns it into something a person can review in minutes.
 
-| Tool | What it does | Folder |
-|---|---|---|
-| **Continuity Checker** | Finds names, titles, voice labels and props that drift between episodes of a script, before it becomes video, voice and subtitles | `problem3_continuity_checker/` |
-| **Promo Finder** | Reads a show's screenplays and returns a ranked shortlist of 20 to 60 second promo clips, with exact timestamps, the hook, the cliffhanger and why each works | `problem1_promo_finder/` |
-| **Nyay Saathi** | A chat assistant that helps people in India recover a security deposit, a refund or unpaid salary, and cannot cite a law that has not been verified | `problem2_ai_lawyer/` |
+| Tool | What it does | Try it live | Folder |
+|---|---|---|---|
+| **Continuity Checker** | Finds names, titles, voice labels and props that drift between episodes of a script, before it becomes video, voice and subtitles | [Open the app](https://kuku-continuity-checker.streamlit.app) | `problem3_continuity_checker/` |
+| **Promo Finder** | Reads a show's screenplays and returns a ranked shortlist of 20 to 60 second promo clips, with exact timestamps, the hook, the cliffhanger and why each works | [Open the app](https://kuku-promo-finder.streamlit.app) | `problem1_promo_finder/` |
+| **Nyay Saathi** | A chat assistant that helps people in India recover a security deposit, a refund or unpaid salary, and cannot cite a law that has not been verified | [Open the app](https://kuku-nyay-saathi.streamlit.app) | `problem2_ai_lawyer/` |
 
 
 Every tool runs with no API key and no cost. Adding a key from any major AI provider unlocks a deeper review, and the model can be changed with a single setting.
