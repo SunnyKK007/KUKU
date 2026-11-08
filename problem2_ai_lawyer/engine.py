@@ -139,9 +139,9 @@ Facts of the case: {facts}
 Return ONLY JSON: {{"in_character": "<what {persona} says next, 1-3 sentences>"}}"""
 
 
-def make_llm(model: str | None):
+def make_llm(model: str | None, api_key: str | None = None):
     try:
-        llm = LLM(model or "offline")
+        llm = LLM(model or "offline", api_key=api_key)
         return llm, None
     except Exception as e:
         return LLM("offline"), f"{type(e).__name__}: {e}"
@@ -153,8 +153,8 @@ def _est_tokens(s: str) -> int:
 
 
 class Session:
-    def __init__(self, model: str | None = "offline", today: dt.date | None = None):
-        self.llm, self.model_error = make_llm(model)
+    def __init__(self, model: str | None = "offline", today: dt.date | None = None, api_key: str | None = None):
+        self.llm, self.model_error = make_llm(model, api_key)
         self.case = CaseFile(today=today or dt.date.today())
         self.transcript: list[dict] = []
         self.guardrail_log: list[dict] = []

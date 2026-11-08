@@ -78,7 +78,7 @@ class QuotaExhausted(RuntimeError):
 
 class LLM:
     def __init__(self, spec: str | None = None, cache_dir: pathlib.Path | None = None,
-                 temperature: float = 0.2):
+                 temperature: float = 0.2, api_key: str | None = None):
         load_env()
         spec = spec or first_available_spec()
         self.spec = spec
@@ -99,7 +99,7 @@ class LLM:
         self.model = self.models[0]
         self.usage["models_used"] = {}
         base_url = cfg["base_url"] or os.environ.get("LLM_BASE_URL")
-        key = os.environ.get(cfg["key_env"]) if cfg["key_env"] else "ollama"
+        key = (api_key or os.environ.get(cfg["key_env"])) if cfg["key_env"] else "ollama"
         if not key:
             raise RuntimeError(f"{cfg['key_env']} is not set. Add it to .env or use --model offline.")
         from openai import OpenAI

@@ -224,11 +224,11 @@ def rank(promos: list[dict], top: int) -> list[dict]:
 
 
 def run(folder: str, model: str = "offline", top: int = 25, judge_k: int = 40,
-        out: str | None = None) -> dict:
+        out: str | None = None, api_key: str | None = None) -> dict:
     t0 = time.time()
     show = load_show(folder)
     known = {b.speaker.upper() for e in show for b in e.dialogue}
-    llm = LLM(model)
+    llm = LLM(model, api_key=api_key)
     promos = []
     for ep in show:
         clips = best_clips(ep, known)

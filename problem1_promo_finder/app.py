@@ -7,7 +7,6 @@ from __future__ import annotations
 import html
 import io
 import json
-import os
 import pathlib
 import sys
 import tempfile
@@ -26,15 +25,6 @@ from problem1_promo_finder.report import review_html, seg_str  # noqa: E402
 load_env()
 st.set_page_config(page_title="Promo Finder", layout="wide")
 ui.apply_theme()
-
-MODELS = {
-    "gemini": ("Google Gemini", "GEMINI_API_KEY", "gemini-3.5-flash", "gemini-3.1-flash-lite"),
-    "groq": ("Groq", "GROQ_API_KEY", "llama-3.3-70b-versatile", "llama-3.1-8b-instant"),
-    "anthropic": ("Anthropic Claude", "ANTHROPIC_API_KEY", "claude-sonnet-5-5", "claude-haiku-5-5"),
-    "openai": ("OpenAI", "OPENAI_API_KEY", "gpt-4o-mini", "gpt-4o"),
-    "openrouter": ("OpenRouter", "OPENROUTER_API_KEY", "meta-llama/llama-3.3-70b-instruct:free", "mistralai/mistral-7b-instruct:free"),
-    "ollama": ("Ollama (local)", None, "llama3.1:8b", "qwen2.5:7b"),
-}
 
 with st.sidebar:
     st.markdown("### Promo Finder")
@@ -76,30 +66,19 @@ with st.container(border=True):
         "quick": "**Quick check**  \nRules only. Free, about 25 seconds for 50 episodes",
         "full": "**Full check**  \nRules plus an AI model that re-scores the top clips as a first-time viewer. Needs an API key",
     }, 2)
-    spec = "offline"
+    spec, api_key, key_ok = "offline", None, True
     if mode == "full":
-        c1, c2 = st.columns(2)
-        with c1:
-            prov = st.selectbox("AI provider", list(MODELS), format_func=lambda k: MODELS[k][0])
-        name, key_env, ex1, ex2 = MODELS[prov]
-        with c2:
-            model_id = st.text_input("Model id (optional)", placeholder=f"e.g. {ex1}",
-                                     help="The exact name of the model. Leave blank to use the default.")
-        if key_env and not os.environ.get(key_env):
-            ui.callout(f"No {key_env} found. Add <code>{key_env}=your_key</code> to the <code>.env</code> file in the "
-                       "code folder and restart the app.", "warn")
-        elif key_env:
-            ui.callout(f"{key_env} found.", "ok")
-        spec = prov if not model_id.strip() else f"{prov}:{model_id.replace(' ', '')}"
+        spec, api_key, key_ok = ui.model_picker("p1")
     with st.expander("Options"):
         top = st.slider("Promos to return", 5, 40, 25)
         judge_k = st.slider("Clips the AI re-scores", 0, 80, 40, disabled=(mode == "quick"))
 
-ready = bool(folder or files)
+ready = bool(folder or files) and key_ok
 ui.spacer(14)
 go = st.button("Find promos", type="primary", use_container_width=True, disabled=not ready)
 if not ready:
-    st.caption("Choose the scripts in Step 1 to enable the button.")
+    missing = ([] if (folder or files) else ["choose the scripts in Step 1"]) + ([] if key_ok else ["add your API key in Step 2"])
+    st.caption("To enable the button, " + " and ".join(missing) + ".")
 
 if go:
     try:
@@ -115,9 +94,9 @@ if go:
                                         (tmpdir / pathlib.Path(n).name).write_bytes(z.read(n))
                         else:
                             (tmpdir / f.name).write_bytes(f.getvalue())
-                    st.session_state["res"] = run(str(tmpdir), spec, top, judge_k)
+                    st.session_state["res"] = run(str(tmpdir), spec, top, judge_k, api_key=api_key)
             else:
-                st.session_state["res"] = run(str(folder), spec, top, judge_k)
+                st.session_state["res"] = run(str(folder), spec, top, judge_k, api_key=api_key)
     except Exception as e:
         st.error(f"The run failed: {e}")
 

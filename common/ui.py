@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import html
+import os
 
 import streamlit as st
 
@@ -63,6 +64,7 @@ div[data-testid="stVerticalBlockBorderWrapper"] { background: var(--card); borde
 .stDownloadButton > button { background: var(--card); border: 1px solid var(--line); color: var(--ink); }
 .stDownloadButton > button:hover { border-color: var(--accent-line); color: var(--accent); }
 div[data-baseweb="input"], div[data-baseweb="select"] > div, textarea { border-radius: 10px !important; }
+.field-label { font-size: 13.5px; font-weight: 500; color: var(--ink); margin: 14px 0 6px 0; }
 label[data-testid="stWidgetLabel"] p { font-size: 13.5px; font-weight: 500; color: var(--ink); }
 
 /* tabs */
@@ -155,3 +157,69 @@ def card_choice(key: str, options: dict, columns: int):
 
 def spacer(px: int = 16) -> None:
     st.markdown(f'<div class="spacer" style="--h:{px}px"></div>', unsafe_allow_html=True)
+
+
+MODELS = {
+    "gemini": ("Google Gemini", "GEMINI_API_KEY", "https://aistudio.google.com/apikey",
+               ["gemini-3.5-flash", "gemini-3.1-flash-lite", "gemini-3.8-flash", "gemini-3-flash-preview"]),
+    "groq": ("Groq", "GROQ_API_KEY", "https://console.groq.com/keys",
+             ["llama-3.3-70b-versatile", "llama-3.1-8b-instant"]),
+    "anthropic": ("Anthropic Claude", "ANTHROPIC_API_KEY", "https://console.anthropic.com/settings/keys",
+                  ["claude-sonnet-5-5", "claude-haiku-5-5", "claude-opus-5-5"]),
+    "openai": ("OpenAI", "OPENAI_API_KEY", "https://platform.openai.com/api-keys", ["gpt-4o-mini", "gpt-4o"]),
+    "openrouter": ("OpenRouter", "OPENROUTER_API_KEY", "https://openrouter.ai/keys",
+                   ["meta-llama/llama-3.3-70b-instruct:free", "mistralai/mistral-7b-instruct:free"]),
+    "ollama": ("Ollama (runs on your computer)", None, "https://ollama.com", ["llama3.1:8b", "qwen2.5:7b"]),
+}
+
+
+def _saved_key(key_env: str | None) -> str | None:
+    """A key already set on this computer (.env) or in Streamlit secrets."""
+    if not key_env:
+        return None
+    if os.environ.get(key_env):
+        return os.environ[key_env]
+    try:
+        v = st.secrets.get(key_env)
+        return v if isinstance(v, str) and v else None
+    except Exception:
+        return None
+
+
+def model_picker(prefix: str):
+    """Provider, model and API key inputs. Returns (spec, api_key, ready).
+
+    The key is held only in this browser session and passed straight to the model call.
+    It is never written to disk or to the repository."""
+    prov = st.selectbox("AI provider", list(MODELS), format_func=lambda k: MODELS[k][0], key=f"{prefix}_prov")
+    label, key_env, key_url, models = MODELS[prov]
+
+    st.markdown('<p class="field-label">Model</p>', unsafe_allow_html=True)
+    chosen = st.segmented_control("Model", models, default=models[0], key=f"{prefix}_model_{prov}",
+                                  format_func=lambda m: m + ("  (recommended)" if m == models[0] else ""),
+                                  label_visibility="collapsed") or models[0]
+    chain = [chosen] + [m for m in models if m != chosen]
+    if len(models) > 1:
+        st.markdown('<p class="muted">If the chosen model runs out of its free daily limit, the others in this row '
+                    'are tried automatically.</p>', unsafe_allow_html=True)
+    with st.expander("Use a model that is not listed"):
+        custom = st.text_input("Exact model name", placeholder=f"e.g. {models[0]}", key=f"{prefix}_custom",
+                               help="Type the provider's exact model name. Only this model will be used.")
+    spec = f"{prov}:{custom.strip()}" if custom.strip() else f"{prov}:{','.join(chain)}"
+
+    typed, saved, ready = None, None, True
+    if key_env:
+        typed = st.text_input(f"{label} API key", type="password", key=f"{prefix}_key_{prov}",
+                              placeholder="Paste your API key here",
+                              help="Used only while this page is open. It is never saved.") or None
+        saved = _saved_key(key_env)
+        st.markdown(f'<p class="muted">Your key is used only for this session and is sent only to {html.escape(label)}. '
+                    f'Don\'t have one? <a href="{key_url}" target="_blank">Get a free key</a>.</p>', unsafe_allow_html=True)
+        if typed:
+            callout("Using the key you entered.", "ok")
+        elif saved:
+            callout("Using the key saved on this computer (.env file).", "ok")
+        else:
+            callout("Paste your API key above to run the full check. The quick check needs no key.", "warn")
+            ready = False
+    return spec, (typed or saved), ready

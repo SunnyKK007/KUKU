@@ -76,7 +76,7 @@ The continuity and promo apps accept uploaded `.txt` files or a `.zip`, and when
 
 Every tool works in offline mode, which uses rules only, costs nothing and gives the same answer every time. Adding a model gives each tool judgment that rules cannot provide: understanding a story, judging a clip as a first-time viewer would, or answering in the user's own language.
 
-Create a file named `.env` in the repo folder with one key:
+In the web apps, choose Full check, pick a provider and a model from the list, and paste your API key into the key box on the page. The key is used only for that browser session and is never saved. For the command line, or to avoid pasting it each time, create a file named `.env` in the repo folder with one key (`.env` is listed in `.gitignore`, so it is never uploaded):
 
 ```
 GEMINI_API_KEY=your_key_here

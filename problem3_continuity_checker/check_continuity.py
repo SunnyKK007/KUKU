@@ -21,11 +21,12 @@ from problem3_continuity_checker.checks import SEV_ORDER, run_checks
 from problem3_continuity_checker.llm_check import run_llm_checks
 
 
-def run(folder: str, model: str | None = "offline", out: str | None = None, progress=None) -> dict:
+def run(folder: str, model: str | None = "offline", out: str | None = None, progress=None,
+        api_key: str | None = None) -> dict:
     t0 = time.time()
     show = load_show(folder)
     issues = run_checks(show)
-    llm = LLM(model)
+    llm = LLM(model, api_key=api_key)
     facts, dropped = [], 0
     if llm.available:
         extra, facts, dropped = run_llm_checks(llm, show, progress=progress)

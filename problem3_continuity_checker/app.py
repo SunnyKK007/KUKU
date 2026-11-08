@@ -8,7 +8,6 @@ import csv
 import html
 import io
 import json
-import os
 import pathlib
 import re
 import sys
@@ -38,15 +37,6 @@ SEV = {
     "low": ("Low", "#1D4ED8", "#EFF6FF", "Worth a look"),
     "info": ("Info", "#475569", "#F1F5F9", "Format or notes"),
 }
-MODELS = {
-    "gemini": ("Google Gemini", "GEMINI_API_KEY", "gemini-3.5-flash", "gemini-3.1-flash-lite"),
-    "groq": ("Groq", "GROQ_API_KEY", "llama-3.3-70b-versatile", "llama-3.1-8b-instant"),
-    "anthropic": ("Anthropic Claude", "ANTHROPIC_API_KEY", "claude-sonnet-5-5", "claude-haiku-5-5"),
-    "openai": ("OpenAI", "OPENAI_API_KEY", "gpt-4o-mini", "gpt-4o"),
-    "openrouter": ("OpenRouter", "OPENROUTER_API_KEY", "meta-llama/llama-3.3-70b-instruct:free", "mistralai/mistral-7b-instruct:free"),
-    "ollama": ("Ollama (local)", None, "llama3.1:8b", "qwen2.5:7b"),
-}
-
 with st.sidebar:
     st.markdown("### Continuity Checker")
     st.markdown('<p class="muted">Problem 3 of the Kuku AI Generalist assignment.</p>', unsafe_allow_html=True)
@@ -137,29 +127,16 @@ with st.container(border=True):
         "quick": "**Quick check**  \nRules only. Free, and finishes in under a second",
         "full": "**Full check**  \nAn AI model reads the story and reports what it finds. Needs an API key and takes a few minutes",
     }, 2)
-    spec = "offline"
+    spec, api_key, key_ok = "offline", None, True
     if mode == "full":
-        c1, c2 = st.columns(2)
-        with c1:
-            prov = st.selectbox("AI provider", list(MODELS), format_func=lambda k: MODELS[k][0])
-        name, key_env, ex1, ex2 = MODELS[prov]
-        with c2:
-            model_id = st.text_input("Model id (optional)", placeholder=f"e.g. {ex1}",
-                                     help="The exact name of the model. Leave blank to use the default.")
-        st.markdown(f'<p class="muted">Leave blank to use {ex1}. To add backups, separate them with commas, for example '
-                    f'<code>{ex1},{ex2}</code>. The next one is used if one runs out of free quota.</p>', unsafe_allow_html=True)
-        if key_env and not os.environ.get(key_env):
-            ui.callout(f"No {key_env} found. Add <code>{key_env}=your_key</code> to the <code>.env</code> file in the "
-                       "code folder and restart the app.", "warn")
-        elif key_env:
-            ui.callout(f"{key_env} found.", "ok")
-        spec = prov if not model_id.strip() else f"{prov}:{model_id.replace(' ', '')}"
+        spec, api_key, key_ok = ui.model_picker("p3")
 
-ready = bool(folder or files)
+ready = bool(folder or files) and key_ok
 ui.spacer(14)
 go = st.button("Run the check", type="primary", use_container_width=True, disabled=not ready)
 if not ready:
-    st.caption("Choose the scripts in Step 1 to enable the button.")
+    missing = ([] if (folder or files) else ["choose the scripts in Step 1"]) + ([] if key_ok else ["add your API key in Step 2"])
+    st.caption("To enable the button, " + " and ".join(missing) + ".")
 
 if go:
     target = load_upload(files) if files else folder
@@ -169,7 +146,8 @@ if go:
     else:
         bar = st.progress(0.0, "Checking the scripts...")
         try:
-            res = run(str(target), spec, progress=lambda i, n: bar.progress(i / n, f"AI review: episode {i + 1} of {n}"))
+            res = run(str(target), spec, progress=lambda i, n: bar.progress(i / n, f"AI review: episode {i + 1} of {n}"),
+                      api_key=api_key)
             res["source_label"] = "the demo show" if target == DEMO else (f"{n_eps} uploaded file(s)" if files else "your folder")
             res["run_id"] = time.time()
             st.session_state["c_res"] = res

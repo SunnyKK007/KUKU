@@ -25,45 +25,45 @@ except Exception:
     pass
 
 from common import ui  # noqa: E402
-from common.llm import PROVIDERS, first_available_spec  # noqa: E402
 from problem2_ai_lawyer import law, voice  # noqa: E402
 from problem2_ai_lawyer.engine import DISCLAIMER, Session  # noqa: E402
 
 st.set_page_config(page_title="Nyay Saathi: get your money back", layout="wide")
 ui.apply_theme()
 
-MODEL_CHOICES = ["auto", "offline", "groq:llama-3.3-70b-versatile", "gemini:gemini-2.5-flash",
-                 "openrouter:meta-llama/llama-3.3-70b-instruct:free", "anthropic", "openai:gpt-4o-mini"]
-
-
-def new_session(model: str):
-    spec = first_available_spec() if model == "auto" else model
-    st.session_state.session = Session(model=spec)
+def new_session(spec: str, api_key: str | None = None):
+    st.session_state.session = Session(model=spec, api_key=api_key)
     st.session_state.messages = []
     st.session_state.practice_msgs = []
     st.session_state.stand = None
-    st.session_state.model_choice = model
+    st.session_state.model_sig = (spec, api_key)
 
 
 if "session" not in st.session_state:
-    new_session("auto")
+    new_session("offline")
 S: Session = st.session_state.session
 
 with st.sidebar:
     st.header("Nyay Saathi")
     st.caption("Deposit · Refund · Salary")
-    choice = st.selectbox("Model", MODEL_CHOICES, index=MODEL_CHOICES.index(st.session_state.model_choice),
-                          help="'offline' needs no key and uses rules only. Others need a key in .env or Streamlit secrets.")
-    if choice != st.session_state.model_choice:
-        new_session(choice)
+    use_ai = st.toggle("Use an AI model", value=False,
+                       help="Off: the assistant uses fixed rules and verified law cards only. On: an AI model also "
+                            "reads your story and replies in your language.")
+    if use_ai:
+        spec, api_key, key_ok = ui.model_picker("p2")
+        if not key_ok:
+            spec, api_key = "offline", None
+    else:
+        spec, api_key = "offline", None
+    if (spec, api_key) != st.session_state.model_sig:
+        new_session(spec, api_key)
         st.rerun()
+    S = st.session_state.session
     st.write(f"In use: `{S.model_label}`")
-    keys = [n for n, cfg in PROVIDERS.items() if cfg["key_env"] and os.environ.get(cfg["key_env"])]
-    st.caption("Keys found: " + (", ".join(keys) if keys else "none (offline mode)"))
     if S.model_error:
         st.warning(f"Model problem, using rules instead: {S.model_error[:200]}")
     if st.button("New conversation", width="stretch"):
-        new_session(st.session_state.model_choice)
+        new_session(*st.session_state.model_sig)
         st.rerun()
 
     st.subheader("Your case file")
