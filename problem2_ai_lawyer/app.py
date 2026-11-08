@@ -49,7 +49,7 @@ with st.sidebar:
                        help="Off: the assistant uses fixed rules and verified law cards only. On: an AI model also "
                             "reads your story and replies in your language.")
     if use_ai:
-        spec, api_key, key_ok = ui.model_picker("p2")
+        spec, api_key, key_ok = ui.model_picker("p2", inline=False)
         if not key_ok:
             spec, api_key = "offline", None
     else:

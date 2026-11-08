@@ -109,14 +109,6 @@ div[data-testid="stExpander"] summary p { font-weight: 500; font-size: 15px; col
   .hero h1 { font-size: 27px; }
 }
 
-/* scrollable model list */
-[class*="st-key-modellist"] div[role="radiogroup"] { display: flex; flex-direction: column; gap: 2px; width: 100%; }
-[class*="st-key-modellist"] label { padding: 9px 12px; border-radius: 8px; width: 100%; margin: 0; cursor: pointer; }
-[class*="st-key-modellist"] label:hover { background: #F1F5F9; }
-[class*="st-key-modellist"] label:has(input:checked) { background: var(--accent-soft); }
-[class*="st-key-modellist"] label p { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 13.5px; color: var(--ink2); }
-[class*="st-key-modellist"] label:has(input:checked) p { color: var(--accent); font-weight: 600; }
-
 /* sidebar */
 section[data-testid="stSidebar"] { background: var(--card); border-right: 1px solid var(--line); }
 section[data-testid="stSidebar"] h3 { font-size: 18px; font-weight: 650; }
@@ -227,64 +219,44 @@ def _fetch_models(provider: str, key_fingerprint: str, _api_key: str | None) -> 
     return list_models(provider, _api_key)
 
 
-def model_picker(prefix: str):
-    """Provider, API key and a scrollable list of every model the provider offers.
+def model_picker(prefix: str, inline: bool = True):
+    """Provider and model as two dropdowns side by side, then the API key.
     Returns (spec, api_key, ready). The key stays in this browser session only and is never written anywhere."""
     import hashlib
-    prov = st.selectbox("AI provider", list(MODELS), format_func=lambda k: MODELS[k][0], key=f"{prefix}_prov")
+    c1, c2 = st.columns([1, 1.5]) if inline else (st.container(), st.container())
+    with c1:
+        prov = st.selectbox("AI provider", list(MODELS), format_func=lambda k: MODELS[k][0], key=f"{prefix}_prov")
     label, key_env, key_url, curated = MODELS[prov]
+    key_widget = f"{prefix}_key_{prov}"
+    saved = _saved_key(key_env)
+    key = st.session_state.get(key_widget) or saved if key_env else None
 
-    typed, saved, ready = None, None, True
-    if key_env:
-        typed = st.text_input(f"{label} API key", type="password", key=f"{prefix}_key_{prov}",
-                              placeholder="Paste your API key here",
-                              help="Used only while this page is open. It is never saved.") or None
-        saved = _saved_key(key_env)
-        st.markdown(f'<p class="muted">Your key is used only for this session and is sent only to {html.escape(label)}. '
-                    f'Don\'t have one? <a href="{key_url}" target="_blank">Get a free key</a>.</p>', unsafe_allow_html=True)
-        if typed:
-            callout("Using the key you entered.", "ok")
-        elif saved:
-            callout("Using the key saved on this computer (.env file).", "ok")
-        else:
-            callout("Paste your API key above to run the full check. The quick check needs no key.", "warn")
-            ready = False
-    key = typed or saved
-
-    models, live = list(curated), False
+    models = list(curated)
     if key or not key_env:
         try:
-            fp = hashlib.sha256((key or "").encode()).hexdigest()[:16]
-            fetched = _fetch_models(prov, fp, key)
+            fetched = _fetch_models(prov, hashlib.sha256((key or "").encode()).hexdigest()[:16], key)
             if fetched:
                 models = [m for m in curated if m in fetched] + [m for m in fetched if m not in curated]
-                live = True
         except Exception:
             pass
+    with c2:
+        chosen = st.selectbox(
+            "Model", models, index=0, key=f"{prefix}_m_{prov}_{len(models)}",
+            format_func=lambda m: m + ("  (recommended)" if m == curated[0] else ""),
+            help="Click to open the list, then scroll or type to find a model. If it runs out of free quota, "
+                 "the recommended ones are tried next.")
 
-    st.markdown('<p class="field-label">Model</p>', unsafe_allow_html=True)
-    st.markdown('<p class="muted" style="margin-top:-4px">'
-                + (f"{len(models)} models available from {html.escape(label)}. Scroll the list or search, then click one."
-                   if live else "Showing common models. Add your key to load every model your account can use.")
-                + "</p>", unsafe_allow_html=True)
-    q = ""
-    if len(models) > 6:
-        q = st.text_input("Search models", placeholder="Search models, for example flash or 70b",
-                          key=f"{prefix}_q_{prov}", label_visibility="collapsed").strip().lower()
-    shown = [m for m in models if q in m.lower()] if q else models
-    chosen = None
-    if shown:
-        default = curated[0] if curated[0] in shown else shown[0]
-        with st.container(height=min(272, 46 * len(shown) + 18), key=f"modellist_{prefix}"):
-            chosen = st.radio("Model", shown, index=shown.index(default), key=f"{prefix}_m_{prov}_{q}",
-                              format_func=lambda m: m + ("   (recommended)" if m == curated[0] else ""),
-                              label_visibility="collapsed")
-    else:
-        callout("No model matches that search.", "neutral")
-    chosen = chosen or curated[0]
+    ready = True
+    if key_env:
+        st.text_input(f"{label} API key", type="password", key=key_widget,
+                      placeholder="Paste your API key here" if not saved else "Saved on this computer. Paste a different key to replace it.",
+                      help="Used only while this page is open. It is never saved.")
+        st.markdown(f'<p class="muted">Used only for this session and sent only to {html.escape(label)}. '
+                    f'<a href="{key_url}" target="_blank">Get a free key</a></p>', unsafe_allow_html=True)
+        key = st.session_state.get(key_widget) or saved
+        if not key:
+            callout("Paste your API key to run the full check.", "warn")
+            ready = False
+
     backups = [m for m in curated if m != chosen and m in models]
-    if backups:
-        st.markdown('<p class="muted">If this model runs out of its free daily limit, the recommended ones are tried '
-                    'next automatically.</p>', unsafe_allow_html=True)
-    spec = f"{prov}:{','.join([chosen] + backups)}"
-    return spec, key, ready
+    return f"{prov}:{','.join([chosen] + backups)}", key, ready
