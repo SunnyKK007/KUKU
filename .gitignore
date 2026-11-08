@@ -15,3 +15,4 @@ outputs/p3_*/
 docs/*.md
 docs/*.pdf
 1_SUBMIT_THESE_FILES/
+.DS_Store
