@@ -1,5 +1,5 @@
 Kuku AI Generalist Assignment
-Sunny Singhal, EP23BTECH11014, Engineering Physics
+Sunny Kant Kumar, BT23BTECH11024, Biotechnology
 
 I solved all three problems. They share one codebase.
 
