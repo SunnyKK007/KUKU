@@ -83,36 +83,45 @@ class LLM:
         self.cache_dir = cache_dir or ROOT / ".llm_cache"
         if spec == "offline":
             self.provider, self.model, self.client = "offline", None, None
+            self.models = []
             return
         provider, _, model = spec.partition(":")
         if provider not in PROVIDERS:
             raise ValueError(f"Unknown provider '{provider}'. Choose from {list(PROVIDERS)} or 'offline'.")
         cfg = PROVIDERS[provider]
         self.provider = provider
-        self.model = model or cfg["default_model"] or os.environ.get("LLM_MODEL_NAME")
+        chain = [m.strip() for m in model.split(",") if m.strip()] if model else []
+        self.models = chain or [cfg["default_model"] or os.environ.get("LLM_MODEL_NAME")]
+        self.model = self.models[0]
+        self.usage["models_used"] = {}
         base_url = cfg["base_url"] or os.environ.get("LLM_BASE_URL")
         key = os.environ.get(cfg["key_env"]) if cfg["key_env"] else "ollama"
         if not key:
             raise RuntimeError(f"{cfg['key_env']} is not set. Add it to .env or use --model offline.")
         from openai import OpenAI
-        self.client = OpenAI(base_url=base_url, api_key=key)
+        self.client = OpenAI(base_url=base_url, api_key=key, timeout=60.0, max_retries=0)
 
     @property
     def available(self) -> bool:
         return self.client is not None
 
     def label(self) -> str:
-        return "offline (rules only)" if not self.available else f"{self.provider}:{self.model}"
+        if not self.available:
+            return "offline (rules only)"
+        used = list(self.usage.get("models_used", {})) or [self.model]
+        return f"{self.provider}:{'+'.join(used)}"
 
     def chat(self, messages: list[dict], json_mode: bool = False, max_tokens: int = 1500) -> str:
         if not self.available:
             raise RuntimeError("No model configured (offline mode).")
-        key = hashlib.sha256(json.dumps([self.provider, self.model, self.temperature, json_mode,
-                                         messages], sort_keys=True).encode()).hexdigest()
-        cache_file = self.cache_dir / f"{key}.json"
-        if cache_file.exists():
-            self.usage["cached"] += 1
-            return json.loads(cache_file.read_text())["content"]
+        def cache_path(model):
+            key = hashlib.sha256(json.dumps([self.provider, model, self.temperature, json_mode,
+                                             messages], sort_keys=True).encode()).hexdigest()
+            return self.cache_dir / f"{key}.json"
+        for m in self.models:
+            if cache_path(m).exists():
+                self.usage["cached"] += 1
+                return json.loads(cache_path(m).read_text())["content"]
         kwargs = dict(model=self.model, messages=messages, temperature=self.temperature,
                       max_tokens=max_tokens)
         if json_mode and self.provider not in ("anthropic",):
@@ -120,7 +129,7 @@ class LLM:
         if self.provider == "gemini":
             kwargs["reasoning_effort"] = "none"
         delay = 4.0
-        for attempt in range(6):
+        for attempt in range(6 + len(self.models)):
             try:
                 resp = self.client.chat.completions.create(**kwargs)
                 break
@@ -129,17 +138,23 @@ class LLM:
                 if "response_format" in msg and "response_format" in kwargs:
                     kwargs.pop("response_format")
                     continue
-                if attempt == 5 or not any(s in msg for s in ("429", "rate", "timeout", "503", "overloaded", "502", "resource_exhausted", "quota", "unavailable")):
+                unusable = "perday" in msg or "404" in msg or "no longer available" in msg or "not found" in msg
+                if unusable and self.model != self.models[-1]:
+                    self.model = self.models[self.models.index(self.model) + 1]
+                    kwargs["model"] = self.model
+                    continue
+                if attempt >= 5 + len(self.models) or not any(s in msg for s in ("429", "rate", "timeout", "503", "overloaded", "502", "resource_exhausted", "quota", "unavailable")):
                     raise
                 time.sleep(delay)
                 delay = min(delay * 2, 60)
         content = resp.choices[0].message.content or ""
         self.usage["calls"] += 1
+        self.usage["models_used"][self.model] = self.usage["models_used"].get(self.model, 0) + 1
         if getattr(resp, "usage", None):
             self.usage["prompt_tokens"] += resp.usage.prompt_tokens or 0
             self.usage["completion_tokens"] += resp.usage.completion_tokens or 0
         self.cache_dir.mkdir(parents=True, exist_ok=True)
-        cache_file.write_text(json.dumps({"content": content}))
+        cache_path(self.model).write_text(json.dumps({"content": content}))
         return content
 
     def json(self, system: str, user: str, max_tokens: int = 1500) -> dict:

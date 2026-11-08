@@ -50,7 +50,7 @@ The three problems:
 
 ```
 KUKU/
-├── 1_SUBMIT_THESE_FILES/      WHAT YOU UPLOAD: Project_Documentation (3 PDFs) + Output_Documentation (3 zips)
+├── 1_SUBMIT_THESE_FILES/      WHAT YOU UPLOAD: Project_Documentation + Output_Documentation (Problem 3)
 ├── 3_CODE/                    everything built, this folder (this README lives here)
 └── 4_Kuku_input_pack/         Kuku's brief and the 50 episodes. CONFIDENTIAL, never upload
     ├── Assignment_brief.pdf
@@ -453,12 +453,9 @@ pass cannot quote the episode for an issue, that issue is dropped as a possible 
 
 ## 8. What gets submitted
 
-All three problems are submitted together. `make_submission.sh` fills `../1_SUBMIT_THESE_FILES/` with
-`Project_Documentation/` (the three 2-page PDFs) and `Output_Documentation/` (the three raw-output zips),
-one Drive link each.
-
-Note: the brief says Kuku reviews one problem per person. Submitting all three is a deliberate choice;
-each problem's doc stands on its own.
+Problem 3 is submitted, because the brief asks for one problem. Its doc says Problems 1 and 2 were also built.
+`make_submission.sh` fills `../1_SUBMIT_THESE_FILES/` with `Project_Documentation/` (the Problem 3 PDF),
+`Output_Documentation/` (its raw-output zip) and `Other_problems_NOT_uploaded/` (Problems 1 and 2).
 
 ---
 
