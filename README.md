@@ -14,6 +14,7 @@ Every tool runs with no API key and no cost. Adding a key from any major AI prov
 
 ## Contents
 - [Quick start](#quick-start)
+- [Run it online](#run-it-online)
 - [Continuity Checker](#continuity-checker)
 - [Promo Finder](#promo-finder)
 - [Nyay Saathi](#nyay-saathi)
@@ -41,6 +42,17 @@ The app opens in your browser with a short demo show already loaded, so you can 
 streamlit run problem1_promo_finder/app.py
 streamlit run problem2_ai_lawyer/app.py
 ```
+
+## Run it online
+
+The apps can be hosted for free on [Streamlit Community Cloud](https://share.streamlit.io), straight from this repository:
+
+1. Sign in at share.streamlit.io with GitHub and choose **Create app**.
+2. Pick this repository, branch `main`, and one of these main files: `problem3_continuity_checker/app.py`, `problem1_promo_finder/app.py` or `problem2_ai_lawyer/app.py`.
+3. Click **Deploy**. Each tool becomes its own app with its own `*.streamlit.app` link.
+4. Optional: under **Settings > Secrets**, add a key such as `GEMINI_API_KEY = "..."` so visitors can use the AI review without pasting their own key.
+
+Free apps go to sleep after a while without visitors and take a few seconds to wake up.
 
 ## Continuity Checker
 

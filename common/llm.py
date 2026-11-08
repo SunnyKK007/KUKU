@@ -3,7 +3,7 @@ One swappable model adapter for every tool in this repo.
 
 Every provider below speaks the OpenAI chat-completions format, so switching
 models is one setting:  --model groq:llama-3.3-70b-versatile
-                        --model gemini:gemini-2.5-flash
+                        --model gemini:gemini-3.5-flash
                         --model anthropic:claude-sonnet-5-5
                         --model ollama:llama3.1:8b
                         --model custom:<model>   (uses LLM_BASE_URL + LLM_API_KEY)

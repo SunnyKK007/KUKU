@@ -1,4 +1,4 @@
-# Problem 2: Nyay Saathi (get your money back)
+# Nyay Saathi (get your money back)
 
 An AI legal-information assistant for three everyday money problems in India:
 a security deposit the landlord won't return, a consumer refund that never came,
@@ -19,12 +19,12 @@ streamlit run problem2_ai_lawyer/app.py                   # the chat app
 
 ## 2. Run with a model (better language handling)
 
-Create a file named `.env` at the repo root with one free key, e.g. `GROQ_API_KEY=...`
+Turn on **Use an AI model** in the sidebar, pick a provider and model, and paste a key. Or create a file named `.env` at the repo root with one free key, e.g. `GROQ_API_KEY=...`
 or `GEMINI_API_KEY=...`. Then:
 
 ```bash
 python3 -m problem2_ai_lawyer.run_tests --model groq:llama-3.3-70b-versatile --out outputs/problem2_groq
-python3 -m problem2_ai_lawyer.run_tests --model gemini:gemini-2.5-flash --out outputs/problem2_gemini
+python3 -m problem2_ai_lawyer.run_tests --model gemini:gemini-3.5-flash --out outputs/problem2_gemini
 streamlit run problem2_ai_lawyer/app.py        # pick the model in the sidebar
 ```
 
@@ -38,9 +38,9 @@ detection). Without it the app shows a message and you type instead.
 ## 3. Deploy on Streamlit Community Cloud (free)
 
 1. Push the repo to GitHub (the `.gitignore` already excludes `.env`).
-2. On share.streamlit.io: **New app** -> pick the repo -> main file path `problem2_ai_lawyer/app.py`.
+2. On share.streamlit.io: **Create app** -> pick the repo -> main file path `problem2_ai_lawyer/app.py`.
    Streamlit installs `problem2_ai_lawyer/requirements.txt` (it looks next to the entry point first).
-3. **Advanced settings -> Secrets**: add e.g. `GROQ_API_KEY = "..."` (and `SARVAM_API_KEY` for voice).
+3. **Settings -> Secrets**: add e.g. `GROQ_API_KEY = "..."` (and `SARVAM_API_KEY` for voice).
    The app copies secrets into environment variables. With no secrets it runs offline.
 
 ## Files
