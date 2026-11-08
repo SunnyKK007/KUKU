@@ -24,13 +24,13 @@ Kuku's input pack (the brief and 50 episode scripts of one show) is confidential
 You need Python 3.11 or newer. Google Chrome is only used to rebuild the PDFs.
 
 ```bash
-cd ~/Downloads/KUKU/2_Code
+cd ~/Downloads/KUKU/Code
 pip install -r requirements.txt
 ```
 
-Run every command from `2_Code/`. Each tool works with no API key, in an offline mode that uses rules only, costs nothing and gives the same answer every time. Adding a key lets a model handle what rules can't: language, story understanding, and judging a clip as a stranger would.
+Run every command from `Code/`. Each tool works with no API key, in an offline mode that uses rules only, costs nothing and gives the same answer every time. Adding a key lets a model handle what rules can't: language, story understanding, and judging a clip as a stranger would.
 
-To add a key, create a file named `.env` in `2_Code/` (Finder hides it; press Cmd+Shift+. to see it) with one line:
+To add a key, create a file named `.env` in `Code/` (Finder hides it; press Cmd+Shift+. to see it) with one line:
 
 ```
 GEMINI_API_KEY=your_key_here
@@ -55,8 +55,8 @@ Without the flag, a tool uses the first key it finds in `.env`, or offline mode 
 Problem 1, about 25 seconds for 50 episodes:
 
 ```bash
-python3 -m problem1_promo_finder.find_promos --input "../1_Assignment/episodes" --model offline --out outputs/problem1_check
-python3 -m problem1_promo_finder.evaluate --run outputs/problem1_check/promos.json --input "../1_Assignment/episodes"
+python3 -m problem1_promo_finder.find_promos --input "../Assignment/episodes" --model offline --out outputs/problem1_check
+python3 -m problem1_promo_finder.evaluate --run outputs/problem1_check/promos.json --input "../Assignment/episodes"
 ```
 
 Then open `outputs/problem1_check/review.html` in a browser.
@@ -73,8 +73,8 @@ streamlit run problem2_ai_lawyer/app.py
 Problem 3, under a second for the rules:
 
 ```bash
-python3 -m problem3_continuity_checker.check_continuity --input "../1_Assignment/episodes" --model offline --out outputs/problem3_check
-python3 -m problem3_continuity_checker.inject_test --input "../1_Assignment/episodes" --trials 10 --seed-base 7000
+python3 -m problem3_continuity_checker.check_continuity --input "../Assignment/episodes" --model offline --out outputs/problem3_check
+python3 -m problem3_continuity_checker.inject_test --input "../Assignment/episodes" --trials 10 --seed-base 7000
 ```
 
 Then open `outputs/problem3_check/continuity_report.md`.
@@ -217,7 +217,7 @@ The rules can't tell that two different descriptions are one person, so they mis
 ## Troubleshooting
 | Problem | Fix |
 |---|---|
-| `ModuleNotFoundError: common` | Run commands from `2_Code/`, using `python3 -m ...` as shown. |
+| `ModuleNotFoundError: common` | Run commands from `Code/`, using `python3 -m ...` as shown. |
 | `GROQ_API_KEY is not set` | Add the key to `.env`, or add `--model offline`. |
 | Model run hits a rate limit | The adapter retries and, with a model list, moves to the next model. Cached answers are reused on a rerun. |
 | Model output is not valid JSON | The parser handles code fences and extra text. If it still fails, the tool skips that clip or episode and keeps going. |

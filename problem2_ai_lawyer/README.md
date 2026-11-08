@@ -6,7 +6,7 @@ and unpaid salary. It builds a case file from a messy story, explains where the
 person stands using only verified law, drafts the notice, and lets them practise
 against the other side. Anything outside scope is sent to a lawyer or free legal aid.
 
-All commands run from the **repo root** (`2_Code/`), so `common/` imports work.
+All commands run from the **repo root** (`Code/`), so `common/` imports work.
 
 ## 1. Run with no key (offline, rules only, free)
 
