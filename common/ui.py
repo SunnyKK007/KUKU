@@ -1,8 +1,10 @@
 """Shared look and small components for the three web apps."""
 from __future__ import annotations
 
+import base64
 import html
 import os
+import pathlib
 
 import streamlit as st
 
@@ -17,14 +19,19 @@ html, body, [class*="css"], .stMarkdown, button, input, textarea, label, select 
 .stApp { background: var(--bg); }
 .block-container { max-width: 1120px; padding-top: 2.2rem; padding-bottom: 4rem; }
 header[data-testid="stHeader"] { background: transparent; }
-[data-testid="stToolbar"], [data-testid="stDeployButton"], #MainMenu, footer { display: none !important; }
+[data-testid="stDeployButton"], [data-testid="stAppDeployButton"], [data-testid="stMainMenu"], #MainMenu, footer, [data-testid="stStatusWidget"] { display: none !important; }
+[data-testid="stExpandSidebarButton"], [data-testid="stSidebarCollapsedControl"] { display: flex !important; visibility: visible !important; }
 h1, h2, h3 { letter-spacing: -0.01em; color: var(--ink); }
 p, li { color: var(--ink2); line-height: 1.65; }
 a { color: var(--accent); }
 
 /* hero */
 .hero { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 30px 34px; margin-bottom: 22px;
-        box-shadow: 0 1px 2px rgba(15,23,42,.04); }
+        box-shadow: 0 1px 2px rgba(15,23,42,.04); display: flex; gap: 22px; align-items: flex-start; }
+.hero-mark { flex: 0 0 auto; padding-top: 4px; }
+.brand { display: flex; align-items: center; gap: 12px; margin: 4px 0 6px 0; }
+.brand-name { font-size: 17px; font-weight: 700; color: var(--ink); line-height: 1.2; }
+.brand-tag { font-size: 12.5px; color: var(--ink3); margin-top: 2px; }
 .hero .eyebrow { font-size: 12px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); margin-bottom: 10px; }
 .hero h1 { font-size: 34px; font-weight: 700; line-height: 1.15; margin: 0 0 10px 0; }
 .hero p { font-size: 16.5px; color: var(--ink2); margin: 0; max-width: 700px; }
@@ -102,6 +109,14 @@ div[data-testid="stExpander"] summary p { font-weight: 500; font-size: 15px; col
   .hero h1 { font-size: 27px; }
 }
 
+/* scrollable model list */
+[class*="st-key-modellist"] div[role="radiogroup"] { display: flex; flex-direction: column; gap: 2px; width: 100%; }
+[class*="st-key-modellist"] label { padding: 9px 12px; border-radius: 8px; width: 100%; margin: 0; cursor: pointer; }
+[class*="st-key-modellist"] label:hover { background: #F1F5F9; }
+[class*="st-key-modellist"] label:has(input:checked) { background: var(--accent-soft); }
+[class*="st-key-modellist"] label p { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 13.5px; color: var(--ink2); }
+[class*="st-key-modellist"] label:has(input:checked) p { color: var(--accent); font-weight: 600; }
+
 /* sidebar */
 section[data-testid="stSidebar"] { background: var(--card); border-right: 1px solid var(--line); }
 section[data-testid="stSidebar"] h3 { font-size: 18px; font-weight: 650; }
@@ -117,13 +132,32 @@ TONES = {
 }
 
 
+ASSETS = pathlib.Path(__file__).resolve().parent / "assets"
+
+
+def logo_path(name: str) -> str:
+    return str(ASSETS / f"logo_{name}.png")
+
+
+def _logo_img(name: str, size: int) -> str:
+    data = base64.b64encode((ASSETS / f"logo_{name}.png").read_bytes()).decode()
+    return f'<img src="data:image/png;base64,{data}" width="{size}" height="{size}" style="border-radius:{size // 4}px" alt="">'
+
+
+def brand(name: str, logo: str, tagline: str) -> None:
+    """Logo and app name at the top of the sidebar."""
+    st.markdown(f'<div class="brand">{_logo_img(logo, 40)}<div><div class="brand-name">{html.escape(name)}</div>'
+                f'<div class="brand-tag">{html.escape(tagline)}</div></div></div>', unsafe_allow_html=True)
+
+
 def apply_theme() -> None:
     st.markdown(CSS, unsafe_allow_html=True)
 
 
-def hero(eyebrow: str, title: str, subtitle: str) -> None:
-    st.markdown(f'<div class="hero"><div class="eyebrow">{html.escape(eyebrow)}</div>'
-                f'<h1>{html.escape(title)}</h1><p>{html.escape(subtitle)}</p></div>', unsafe_allow_html=True)
+def hero(eyebrow: str, title: str, subtitle: str, logo: str | None = None) -> None:
+    mark = f'<div class="hero-mark">{_logo_img(logo, 56)}</div>' if logo else ""
+    st.markdown(f'<div class="hero">{mark}<div><div class="eyebrow">{html.escape(eyebrow)}</div>'
+                f'<h1>{html.escape(title)}</h1><p>{html.escape(subtitle)}</p></div></div>', unsafe_allow_html=True)
 
 
 def section(step: str, title: str, subtitle: str = "") -> None:
@@ -186,26 +220,19 @@ def _saved_key(key_env: str | None) -> str | None:
         return None
 
 
+@st.cache_data(ttl=3600, show_spinner=False)
+def _fetch_models(provider: str, key_fingerprint: str, _api_key: str | None) -> list[str]:
+    """Live model list, cached for an hour. The key itself is never part of the cache key."""
+    from common.llm import list_models
+    return list_models(provider, _api_key)
+
+
 def model_picker(prefix: str):
-    """Provider, model and API key inputs. Returns (spec, api_key, ready).
-
-    The key is held only in this browser session and passed straight to the model call.
-    It is never written to disk or to the repository."""
+    """Provider, API key and a scrollable list of every model the provider offers.
+    Returns (spec, api_key, ready). The key stays in this browser session only and is never written anywhere."""
+    import hashlib
     prov = st.selectbox("AI provider", list(MODELS), format_func=lambda k: MODELS[k][0], key=f"{prefix}_prov")
-    label, key_env, key_url, models = MODELS[prov]
-
-    st.markdown('<p class="field-label">Model</p>', unsafe_allow_html=True)
-    chosen = st.segmented_control("Model", models, default=models[0], key=f"{prefix}_model_{prov}",
-                                  format_func=lambda m: m + ("  (recommended)" if m == models[0] else ""),
-                                  label_visibility="collapsed") or models[0]
-    chain = [chosen] + [m for m in models if m != chosen]
-    if len(models) > 1:
-        st.markdown('<p class="muted">If the chosen model runs out of its free daily limit, the others in this row '
-                    'are tried automatically.</p>', unsafe_allow_html=True)
-    with st.expander("Use a model that is not listed"):
-        custom = st.text_input("Exact model name", placeholder=f"e.g. {models[0]}", key=f"{prefix}_custom",
-                               help="Type the provider's exact model name. Only this model will be used.")
-    spec = f"{prov}:{custom.strip()}" if custom.strip() else f"{prov}:{','.join(chain)}"
+    label, key_env, key_url, curated = MODELS[prov]
 
     typed, saved, ready = None, None, True
     if key_env:
@@ -222,4 +249,42 @@ def model_picker(prefix: str):
         else:
             callout("Paste your API key above to run the full check. The quick check needs no key.", "warn")
             ready = False
-    return spec, (typed or saved), ready
+    key = typed or saved
+
+    models, live = list(curated), False
+    if key or not key_env:
+        try:
+            fp = hashlib.sha256((key or "").encode()).hexdigest()[:16]
+            fetched = _fetch_models(prov, fp, key)
+            if fetched:
+                models = [m for m in curated if m in fetched] + [m for m in fetched if m not in curated]
+                live = True
+        except Exception:
+            pass
+
+    st.markdown('<p class="field-label">Model</p>', unsafe_allow_html=True)
+    st.markdown('<p class="muted" style="margin-top:-4px">'
+                + (f"{len(models)} models available from {html.escape(label)}. Scroll the list or search, then click one."
+                   if live else "Showing common models. Add your key to load every model your account can use.")
+                + "</p>", unsafe_allow_html=True)
+    q = ""
+    if len(models) > 6:
+        q = st.text_input("Search models", placeholder="Search models, for example flash or 70b",
+                          key=f"{prefix}_q_{prov}", label_visibility="collapsed").strip().lower()
+    shown = [m for m in models if q in m.lower()] if q else models
+    chosen = None
+    if shown:
+        default = curated[0] if curated[0] in shown else shown[0]
+        with st.container(height=min(272, 46 * len(shown) + 18), key=f"modellist_{prefix}"):
+            chosen = st.radio("Model", shown, index=shown.index(default), key=f"{prefix}_m_{prov}_{q}",
+                              format_func=lambda m: m + ("   (recommended)" if m == curated[0] else ""),
+                              label_visibility="collapsed")
+    else:
+        callout("No model matches that search.", "neutral")
+    chosen = chosen or curated[0]
+    backups = [m for m in curated if m != chosen and m in models]
+    if backups:
+        st.markdown('<p class="muted">If this model runs out of its free daily limit, the recommended ones are tried '
+                    'next automatically.</p>', unsafe_allow_html=True)
+    spec = f"{prov}:{','.join([chosen] + backups)}"
+    return spec, key, ready

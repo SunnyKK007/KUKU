@@ -28,7 +28,7 @@ from common import ui  # noqa: E402
 from problem2_ai_lawyer import law, voice  # noqa: E402
 from problem2_ai_lawyer.engine import DISCLAIMER, Session  # noqa: E402
 
-st.set_page_config(page_title="Nyay Saathi: get your money back", layout="wide")
+st.set_page_config(page_title="Nyay Saathi: get your money back", page_icon=ui.logo_path("lawyer"), layout="wide")
 ui.apply_theme()
 
 def new_session(spec: str, api_key: str | None = None):
@@ -44,8 +44,7 @@ if "session" not in st.session_state:
 S: Session = st.session_state.session
 
 with st.sidebar:
-    st.header("Nyay Saathi")
-    st.caption("Deposit · Refund · Salary")
+    ui.brand("Nyay Saathi", "lawyer", "Deposit · Refund · Salary")
     use_ai = st.toggle("Use an AI model", value=False,
                        help="Off: the assistant uses fixed rules and verified law cards only. On: an AI model also "
                             "reads your story and replies in your language.")
@@ -84,7 +83,7 @@ with st.sidebar:
 
 ui.hero("Legal information assistant", "Get your money back",
         "Tell me what happened in your own words and language. I cover three problems only: a deposit your landlord "
-        "won't return, a refund a company won't give, and salary your employer hasn't paid.")
+        "won't return, a refund a company won't give, and salary your employer hasn't paid.", logo="lawyer")
 ui.callout(DISCLAIMER, "info")
 
 tab_chat, tab_stand, tab_docs, tab_practice, tab_sources = st.tabs(

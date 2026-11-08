@@ -186,3 +186,26 @@ def parse_json(raw: str) -> dict:
         if m:
             return json.loads(m.group(0))
         raise
+
+
+NON_CHAT = ("embed", "tts", "image", "veo", "imagen", "aqa", "audio", "live", "transcribe", "whisper", "moderation",
+            "dall-e", "davinci", "babbage", "realtime", "search", "guard", "vision-preview", "computer-use", "omni",
+            "antigravity", "customtools", "lyria", "banana", "music", "speech", "robotics")
+
+
+def list_models(provider: str, api_key: str | None = None, timeout: float = 15.0) -> list[str]:
+    """Every chat model the provider's API reports for this key. Raises on failure."""
+    load_env()
+    cfg = PROVIDERS[provider]
+    key = (api_key or os.environ.get(cfg["key_env"])) if cfg["key_env"] else "ollama"
+    if not key:
+        raise RuntimeError("no key")
+    from openai import OpenAI
+    client = OpenAI(base_url=cfg["base_url"] or os.environ.get("LLM_BASE_URL"), api_key=key, timeout=timeout, max_retries=0)
+    names = []
+    for m in client.models.list():
+        mid = getattr(m, "id", "") or ""
+        mid = mid.split("/", 1)[1] if provider == "gemini" and mid.startswith("models/") else mid
+        if mid and not any(w in mid.lower() for w in NON_CHAT):
+            names.append(mid)
+    return sorted(set(names))

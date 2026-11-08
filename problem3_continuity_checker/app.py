@@ -28,7 +28,7 @@ DEMO = pathlib.Path(__file__).resolve().parent / "demo_show"
 REPO = "https://github.com/SunnyKK007/KUKU"
 load_env()
 
-st.set_page_config(page_title="Continuity Checker", layout="wide")
+st.set_page_config(page_title="Continuity Checker", page_icon=ui.logo_path("continuity"), layout="wide")
 ui.apply_theme()
 
 SEV = {
@@ -38,8 +38,7 @@ SEV = {
     "info": ("Info", "#475569", "#F1F5F9", "Format or notes"),
 }
 with st.sidebar:
-    st.markdown("### Continuity Checker")
-    st.markdown('<p class="muted">Problem 3 of the Kuku AI Generalist assignment.</p>', unsafe_allow_html=True)
+    ui.brand("Continuity Checker", "continuity", "Problem 3 · Kuku AI Generalist")
     st.markdown(f"[View the code on GitHub]({REPO})")
     st.divider()
     st.markdown("**Severity**")
@@ -53,7 +52,7 @@ with st.sidebar:
 
 ui.hero("Script quality control", "Continuity Checker",
         "AI-written scripts often change a character's name, title or voice label from one episode to the next. "
-        "This tool finds those slips in the script, before it becomes video, voice and subtitles.")
+        "This tool finds those slips in the script, before it becomes video, voice and subtitles.", logo="continuity")
 
 
 def load_upload(files) -> pathlib.Path:

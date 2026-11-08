@@ -23,12 +23,11 @@ from problem1_promo_finder.find_promos import run  # noqa: E402
 from problem1_promo_finder.report import review_html, seg_str  # noqa: E402
 
 load_env()
-st.set_page_config(page_title="Promo Finder", layout="wide")
+st.set_page_config(page_title="Promo Finder", page_icon=ui.logo_path("promo"), layout="wide")
 ui.apply_theme()
 
 with st.sidebar:
-    st.markdown("### Promo Finder")
-    st.markdown('<p class="muted">Problem 1 of the Kuku AI Generalist assignment.</p>', unsafe_allow_html=True)
+    ui.brand("Promo Finder", "promo", "Problem 1 · Kuku AI Generalist")
     st.markdown("[View the code on GitHub](https://github.com/SunnyKK007/KUKU)")
     st.divider()
     st.markdown("**A good promo**")
@@ -37,7 +36,7 @@ with st.sidebar:
 
 ui.hero("Promo selection", "Promo Finder",
         "Reads a show's screenplays and returns a ranked shortlist of 20 to 60 second promos, each with exact "
-        "timestamps, the hook, the cliffhanger and why it works.")
+        "timestamps, the hook, the cliffhanger and why it works.", logo="promo")
 
 with st.container(border=True):
     ui.section("Step 1", "Choose the scripts",
