@@ -11,7 +11,7 @@ from __future__ import annotations
 import difflib
 import re
 
-from common.llm import LLM
+from common.llm import LLM, QuotaExhausted
 from common.screenplay import Episode
 
 SYSTEM = """You are the continuity supervisor for an AI-generated vertical drama series.
@@ -66,6 +66,12 @@ def run_llm_checks(llm: LLM, show: list[Episode], max_facts: int = 80, progress=
                 + "\n\nNEXT EPISODE SCRIPT:\n" + compact(ep))
         try:
             out = llm.json(SYSTEM, user, max_tokens=1200)
+        except QuotaExhausted as e:
+            issues.append({"type": "model error", "severity": "info",
+                           "title": f"AI model stopped at episode {ep.number}: {str(e)[:120]}",
+                           "detail": "The rule checks are complete. Try again tomorrow or use another model.",
+                           "evidence": [], "evidence_count": 0, "suggested_fix": "", "source": "model"})
+            break
         except Exception as e:
             issues.append({"type": "model error", "severity": "info", "title": f"E{ep.number}: {str(e)[:120]}",
                            "detail": "", "evidence": [], "evidence_count": 0, "suggested_fix": "", "source": "model"})

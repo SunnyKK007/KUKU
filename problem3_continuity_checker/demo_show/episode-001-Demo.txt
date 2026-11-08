@@ -1,0 +1,46 @@
+EPISODE NUMBER: Episode 1
+EPISODE LOGLINE: Elena Hartwell returns to Ravenswood Manor to claim her inheritance, and meets the cold Marcus Blackwood.
+CONTINUITY NOTES: First episode of the series.
+
+--- SCRIPT START ---
+
+SCENE 01
+Scene heading: INT. RAVENSWOOD MANOR - HALL - NIGHT
+Scene start: 00:00.00
+Scene end: 00:22.50
+
+Actions and dialogue:
+
+**CAMERA:**
+Start: (00:00.00) | End: (00:03.00)
+Wide shot of Elena standing in the doorway of Ravenswood Manor, holding her late father's journal.
+
+**ELENA (Determined):**
+Start: (00:03.00) | End: (00:06.00)
+"I am Elena Hartwell, and this house is mine."
+
+**CAMERA:**
+Start: (00:06.00) | End: (00:08.50)
+Close-up on Victoria descending the staircase with a cold smile.
+
+**VICTORIA (Mocking):**
+Start: (00:08.50) | End: (00:11.50)
+"Your father left you nothing but debts."
+
+**CAMERA:**
+Start: (00:11.50) | End: (00:14.00)
+Medium shot of Marcus stepping out of the shadows.
+
+**MARCUS (Cold):**
+Start: (00:14.00) | End: (00:17.00)
+"The Duke of Ravenswood decides who stays here."
+
+**ELENA (Defiant):**
+Start: (00:17.00) | End: (00:19.50)
+"Then I will speak to the Duke myself."
+
+**ACTION:**
+Start: (00:19.50) | End: (00:22.50)
+Elena grips her late father's journal tightly as thunder rolls.
+
+--- SCRIPT END ---

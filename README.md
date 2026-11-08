@@ -63,7 +63,7 @@ python3 -m problem2_ai_lawyer.test_model_stub
 streamlit run problem2_ai_lawyer/app.py
 ```
 
-Each tool also has a web app for editors:
+The quickest way to try the continuity checker is its web app, which includes a short original demo show with planted mistakes, so it works without any other files. Each tool has a web app:
 
 ```bash
 streamlit run problem3_continuity_checker/app.py
@@ -237,6 +237,7 @@ common/
   llm.py                   one connection to any AI model
 problem3_continuity_checker/
   check_continuity.py      main tool
+  demo_show/               a 4-episode original demo show with planted mistakes
   checks.py                the rule checks
   llm_check.py             the AI model pass
   bible.py                 builds the show bible

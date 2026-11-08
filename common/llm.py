@@ -72,6 +72,10 @@ def first_available_spec() -> str:
     return "offline"
 
 
+class QuotaExhausted(RuntimeError):
+    """Every model in the list is out of daily quota or unavailable; retrying will not help."""
+
+
 class LLM:
     def __init__(self, spec: str | None = None, cache_dir: pathlib.Path | None = None,
                  temperature: float = 0.2):
@@ -143,6 +147,8 @@ class LLM:
                     self.model = self.models[self.models.index(self.model) + 1]
                     kwargs["model"] = self.model
                     continue
+                if unusable:
+                    raise QuotaExhausted(f"{self.model}: daily free quota used up or model unavailable") from e
                 if attempt >= 5 + len(self.models) or not any(s in msg for s in ("429", "rate", "timeout", "503", "overloaded", "502", "resource_exhausted", "quota", "unavailable")):
                     raise
                 time.sleep(delay)

@@ -1,0 +1,54 @@
+EPISODE NUMBER: Episode 3
+EPISODE LOGLINE: A hooded woman warns Elena in the garden, and Marcus reveals his true name.
+CONTINUITY NOTES: Picks up immediately from Episode 2.
+
+--- SCRIPT START ---
+
+SCENE 01
+Scene heading: EXT. RAVENSWOOD GARDEN - NIGHT
+Scene start: 00:00.00
+Scene end: 00:28.00
+
+Actions and dialogue:
+
+**CAMERA:**
+Start: (00:00.00) | End: (00:02.50)
+Close-up on Victoria hidden beneath a dark hood among the roses.
+
+**HOODED WOMAN (Low):**
+Start: (00:02.50) | End: (00:05.50)
+"Leave this place before the full moon."
+
+**CAMERA:**
+Start: (00:05.50) | End: (00:07.50)
+Medium shot of Elena turning sharply.
+
+**ELENA (Startled):**
+Start: (00:07.50) | End: (00:10.00)
+"Who are you? Show your face!"
+
+**CAMERA:**
+Start: (00:10.00) | End: (00:12.50)
+Close-up on Victoria pulling the hood lower over her eyes.
+
+**HOODED WOMAN (Cold):**
+Start: (00:12.50) | End: (00:15.50)
+"Someone who knows what your father hid."
+
+**CAMERA:**
+Start: (00:15.50) | End: (00:18.00)
+Tight shot of Victoria backing into the dark hedges.
+
+**HOODED WOMAN (Fading):**
+Start: (00:18.00) | End: (00:21.00)
+"Burn the journal, or you will burn with it."
+
+**CAMERA:**
+Start: (00:21.00) | End: (00:23.50)
+Wide shot of Marcus arriving with a lantern.
+
+**MARCUS (Grave):**
+Start: (00:23.50) | End: (00:28.00)
+"I am Marcus Blackwell, heir to the Duke of Ravenmoor. I should have told you."
+
+--- SCRIPT END ---

@@ -1,0 +1,38 @@
+EPISODE NUMBER: Episode 2
+EPISODE LOGLINE: Victoria plots to drive Elena out, while Marcus begins to doubt his loyalty.
+CONTINUITY NOTES: Picks up immediately from Episode 1.
+
+--- SCRIPT START ---
+
+SCENE 01
+Scene heading: INT. RAVENSWOOD MANOR - LIBRARY - DAY
+Scene start: 00:00.00
+Scene end: 00:18.00
+
+Actions and dialogue:
+
+**CAMERA:**
+Start: (00:00.00) | End: (00:03.00)
+Medium shot of Elena reading her late father's diary by the window.
+
+**LADY ELENA (Quiet):**
+Start: (00:03.00) | End: (00:06.50)
+"Father wrote that someone in this house lied to him."
+
+**CAMERA:**
+Start: (00:06.50) | End: (00:09.00)
+Close-up on Marcus Blackwood watching from the door.
+
+**MARCUS (Gentle):**
+Start: (00:09.00) | End: (00:12.50)
+"Welcome to Ravenwood, Elena. Be careful who you trust."
+
+**CAMERA:**
+Start: (00:12.50) | End: (00:15.00)
+Close-up on Victoria listening outside the library.
+
+**VICTORIA (Whispering):**
+Start: (00:15.00) | End: (00:18.00)
+"She found the diary. We must act tonight."
+
+--- SCRIPT END ---
