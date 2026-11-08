@@ -43,7 +43,7 @@ ui.hero("Promo selection", "Promo Finder",
 
 with st.container(border=True):
     ui.section("Step 1", "Choose the scripts",
-               "Each episode is one .txt file in Kuku's timestamped screenplay format.")
+               "Each episode is one .txt file in a timestamped screenplay format.")
     source = ui.card_choice("source", {
         "upload": "**Upload files**  \nYour episode .txt files, or one .zip",
         "folder": "**Use a folder**  \nPaste the path to a folder of episodes on this computer",

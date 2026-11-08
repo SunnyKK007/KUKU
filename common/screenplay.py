@@ -1,5 +1,5 @@
 """
-Parser for Kuku timestamped screenplays.
+Parser for timestamped screenplays.
 
 Turns each episode file into a list of Beats (camera, action, sound, dialogue),
 each with start/end seconds, speaker, delivery cue and source line number.

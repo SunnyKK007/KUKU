@@ -1,4 +1,4 @@
 # Streamlit Community Cloud reads this file (same folder as the entry point problem2_ai_lawyer/app.py)
-streamlit>=1.40
+streamlit>=1.53
 openai>=1.40
 requests>=2.31

@@ -17,3 +17,7 @@ docs/*.md
 docs/*.pdf
 .DS_Store
 .claude/
+
+# Local assignment tooling (kept on this computer, not published)
+docs/
+make_submission.sh

@@ -94,7 +94,7 @@ def ai_coverage(res):
 
 with st.container(border=True):
     ui.section("Step 1", "Choose the scripts",
-               "Each episode is one .txt file in Kuku's timestamped screenplay format. The check compares episodes "
+               "Each episode is one .txt file in a timestamped screenplay format. The check compares episodes "
                "with each other, so use at least two.")
     source = ui.card_choice("source", {
         "demo": "**Demo show**  \n4 episodes, ready to run with one click",
@@ -140,7 +140,7 @@ if go:
     target = load_upload(files) if files else folder
     n_eps = len(list(pathlib.Path(target).glob("*.txt")))
     if n_eps == 0:
-        st.error("No .txt episode files were found. Upload Kuku screenplay .txt files or a .zip of them.")
+        st.error("No .txt episode files were found. Upload screenplay .txt files or a .zip of them.")
     else:
         bar = st.progress(0.0, "Checking the scripts...")
         try:
@@ -304,6 +304,6 @@ the script spreads into all of them, so this tool checks the script first.
 | AI review (optional) | A model reads the episodes in order and reports contradictions, quoting the script |
 
 Rule findings are marked to fix. AI findings must quote the script, and any whose quote is not found are rejected;
-the rest are marked to check, because a model can be wrong. On Kuku's 50-episode show, the rules found 15 issues in
+the rest are marked to check, because a model can be wrong. On a 50-episode show, the rules found 15 issues in
 under a second and caught 44 of 45 deliberately planted mistakes.
 """)
