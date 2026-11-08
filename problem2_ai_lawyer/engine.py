@@ -2,7 +2,7 @@
 The conversation engine. Plain Python, no Streamlit, so the app and the tests
 share exactly the same logic.
 
-    from p2_lawyer.engine import Session
+    from problem2_ai_lawyer.engine import Session
     s = Session(model="offline")          # or "groq", "gemini:gemini-2.5-flash", ...
     out = s.reply("My landlord in Pune won't return my 50,000 deposit")
     print(out["text"])
@@ -30,7 +30,7 @@ from .intake import (LANG_NAMES, MONTHS_COUNT_RE, PROOF_ITEMS, SKIP_RE, SLOTS, W
                      extract_proof, parse_choice, question)
 from .validator import validate
 
-log = logging.getLogger("p2_lawyer.engine")
+log = logging.getLogger("problem2_ai_lawyer.engine")
 
 DISCLAIMER = ("Legal information, not legal advice. I can be wrong. For court cases or anything serious, "
               "speak to a lawyer. Free legal aid: 15100.")

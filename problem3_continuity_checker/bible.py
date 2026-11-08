@@ -5,7 +5,7 @@ import re
 from collections import Counter, defaultdict
 
 from common.screenplay import Episode
-from p3_continuity.checks import proper_names
+from problem3_continuity_checker.checks import proper_names
 
 
 def build_bible(show: list[Episode]) -> dict:

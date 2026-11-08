@@ -1,27 +1,21 @@
 #!/bin/sh
-# Rebuild the PDFs and refill ../1_SUBMIT_THESE_FILES for the Problem 3 submission.
-#   Project_Documentation/        Problem 3 solution PDF       -> "Project documentation" link
-#   Output_Documentation/         Problem 3 raw outputs zip    -> "Output documentation" link
-#   Other_problems_NOT_uploaded/  Problems 1 and 2, for your reference and the interview
-#   Video_scripts_for_you/        outlines for recording
+# Rebuilds the report PDFs and the ../3_Submission folder.
 set -e
 cd "$(dirname "$0")"
 python3 docs/build_pdfs.py
-SUB=../1_SUBMIT_THESE_FILES
-DOCS="$SUB/Project_Documentation"
-OUTS="$SUB/Output_Documentation"
-OTHER="$SUB/Other_problems_NOT_uploaded"
-VID="$SUB/Video_scripts_for_you"
-rm -rf "$DOCS" "$OUTS" "$OTHER" "$SUB/Upload_this_folder_to_Drive"
-mkdir -p "$DOCS" "$OUTS" "$OTHER" "$VID"
+SUB=../3_Submission
+OTHER="$SUB/Other_Problems"
+rm -rf "$SUB"
+mkdir -p "$OTHER"
 
-cp docs/p3_solution.pdf "$DOCS/Problem3_Continuity_Checker.pdf"
-(cd outputs && zip -qr "../$OUTS/Problem3_Continuity_Checker_outputs.zip" p3 $(ls -d p3_model 2>/dev/null || true))
+cp docs/problem3_report.pdf "$SUB/Problem3_Report.pdf"
+(cd outputs && zip -qr "../$SUB/Problem3_Outputs.zip" problem3 problem3_with_model)
+cp docs/problem3_video_script.md "$SUB/Problem3_Video_Script.md"
+cp docs/how_to_submit.md "$SUB/How_to_Submit.md"
 
-cp docs/p1_solution.pdf "$OTHER/Problem1_Promo_Finder.pdf"
-cp docs/p2_solution.pdf "$OTHER/Problem2_AI_Lawyer.pdf"
-(cd outputs && zip -qr "../$OTHER/Problem1_Promo_Finder_outputs.zip" p1 p1_baseline)
-(cd outputs && zip -qr "../$OTHER/Problem2_AI_Lawyer_outputs.zip" p2)
+cp docs/problem1_report.pdf "$OTHER/Problem1_Report.pdf"
+(cd outputs && zip -qr "../$OTHER/Problem1_Outputs.zip" problem1 problem1_first_version)
+cp docs/problem2_report.pdf "$OTHER/Problem2_Report.pdf"
+(cd outputs && zip -qr "../$OTHER/Problem2_Outputs.zip" problem2)
 
-cp docs/p1_video_script.md docs/p2_video_script.md docs/p3_video_script.md "$VID/"
-echo "Done. Share 1_SUBMIT_THESE_FILES/Project_Documentation and 1_SUBMIT_THESE_FILES/Output_Documentation on Drive."
+echo "Done: ../3_Submission"

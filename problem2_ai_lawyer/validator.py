@@ -23,7 +23,7 @@ from dataclasses import dataclass, field
 
 from . import law
 
-log = logging.getLogger("p2_lawyer.guardrail")
+log = logging.getLogger("problem2_ai_lawyer.guardrail")
 
 YEAR = r"(?:18|19|20)\d{2}"
 SECTION_NUM = r"\d+[A-Z]?(?:\s*\(\s*[0-9a-zA-Z]{1,4}\s*\))*"

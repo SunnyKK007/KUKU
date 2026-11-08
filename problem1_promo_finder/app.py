@@ -1,6 +1,6 @@
 """
 Streamlit app for the promo finder.
-Run locally:  streamlit run p1_promos/app.py
+Run locally:  streamlit run problem1_promo_finder/app.py
 Upload episode .txt files (or a .zip of them), pick a model, get ranked promos.
 """
 from __future__ import annotations
@@ -17,8 +17,8 @@ sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent.parent))
 import streamlit as st  # noqa: E402
 
 from common.llm import PROVIDERS, first_available_spec  # noqa: E402
-from p1_promos.find_promos import run  # noqa: E402
-from p1_promos.report import review_html, seg_str  # noqa: E402
+from problem1_promo_finder.find_promos import run  # noqa: E402
+from problem1_promo_finder.report import review_html, seg_str  # noqa: E402
 
 st.set_page_config(page_title="Promo Finder", layout="wide")
 st.title("Promo Finder")

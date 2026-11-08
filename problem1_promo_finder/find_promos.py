@@ -12,8 +12,8 @@ Pipeline
   7. report     (code)   JSON, CSV, Markdown and an HTML review page for the editor
 
 Usage
-  python3 -m p1_promos.find_promos --input "<folder of .txt>" --model offline
-  python3 -m p1_promos.find_promos --input "<folder>" --model groq:llama-3.3-70b-versatile
+  python3 -m problem1_promo_finder.find_promos --input "<folder of .txt>" --model offline
+  python3 -m problem1_promo_finder.find_promos --input "<folder>" --model groq:llama-3.3-70b-versatile
 """
 from __future__ import annotations
 
@@ -24,9 +24,9 @@ import time
 
 from common.llm import LLM
 from common.screenplay import Episode, fmt, load_show
-from p1_promos import signals as S
-from p1_promos.judge import judge
-from p1_promos.report import write_reports
+from problem1_promo_finder import signals as S
+from problem1_promo_finder.judge import judge
+from problem1_promo_finder.report import write_reports
 
 MIN_LEN, MAX_LEN = 20.0, 60.0
 SWEET_LO, SWEET_HI = 28.0, 50.0
@@ -277,7 +277,7 @@ def main():
     ap.add_argument("--model", default=None, help="provider:model, or 'offline' (default: first key in .env)")
     ap.add_argument("--top", type=int, default=25)
     ap.add_argument("--judge-k", type=int, default=40, help="how many shortlisted clips the model re-scores")
-    ap.add_argument("--out", default="outputs/p1")
+    ap.add_argument("--out", default="outputs/problem1")
     a = ap.parse_args()
     res = run(a.input, a.model, a.top, a.judge_k, a.out)
     print(f"{res['episodes']} episodes, {res['candidates_kept']} shortlisted, model={res['model']}, "

@@ -7,12 +7,10 @@ data/
 *.txt.bak
 # Outputs and docs for Problems 1 and 3 quote Kuku's confidential scripts.
 # They are submitted through the form (PDF) and a Drive link, never pushed.
-outputs/p1/
-outputs/p1_baseline/
-outputs/p3/
-outputs/p1_*/
-outputs/p3_*/
+outputs/problem1/
+outputs/problem1_first_version/
+outputs/problem3/
+outputs/problem3_with_model/
 docs/*.md
 docs/*.pdf
-1_SUBMIT_THESE_FILES/
 .DS_Store

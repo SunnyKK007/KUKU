@@ -3,7 +3,7 @@ Guardrail test: feed deliberately hallucinated legal text through the
 validator and check every fake citation is caught, while real (verified)
 citations pass untouched.
 
-Run:  python3 -m p2_lawyer.test_validator      (also works with pytest)
+Run:  python3 -m problem2_ai_lawyer.test_validator      (also works with pytest)
 """
 from __future__ import annotations
 
@@ -44,7 +44,7 @@ CASES = [
 
 
 def run(verbose: bool = True) -> dict:
-    logging.getLogger("p2_lawyer.guardrail").setLevel(logging.ERROR)
+    logging.getLogger("problem2_ai_lawyer.guardrail").setLevel(logging.ERROR)
     results, passed = [], 0
     for text, caught, kept in CASES:
         r = validate(text)

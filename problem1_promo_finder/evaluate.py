@@ -7,7 +7,7 @@ Quality check for a promo run.
 2. Recall against reference moments: how many must-catch moments appear in
    the top 10 / top 25.
 
-Usage: python3 -m p1_promos.evaluate --run outputs/p1/promos.json --input "<folder>"
+Usage: python3 -m problem1_promo_finder.evaluate --run outputs/problem1/promos.json --input "<folder>"
 """
 from __future__ import annotations
 
@@ -56,7 +56,7 @@ def recall(res: dict, gold: list[dict], k: int) -> tuple[int, list[str]]:
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--run", default="outputs/p1/promos.json")
+    ap.add_argument("--run", default="outputs/problem1/promos.json")
     ap.add_argument("--input", required=True)
     ap.add_argument("--gold", default=str(HERE / "gold_moments.json"))
     ap.add_argument("--out", default=None)

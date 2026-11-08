@@ -3,7 +3,7 @@ Nyay Saathi: a legal-information assistant for getting your money back
 (security deposit, consumer refund, unpaid salary). Streamlit front end;
 all logic lives in engine.py.
 
-Run from the repo root:   streamlit run p2_lawyer/app.py
+Run from the repo root:   streamlit run problem2_ai_lawyer/app.py
 """
 from __future__ import annotations
 
@@ -25,8 +25,8 @@ except Exception:
     pass
 
 from common.llm import PROVIDERS, first_available_spec  # noqa: E402
-from p2_lawyer import law, voice  # noqa: E402
-from p2_lawyer.engine import DISCLAIMER, Session  # noqa: E402
+from problem2_ai_lawyer import law, voice  # noqa: E402
+from problem2_ai_lawyer.engine import DISCLAIMER, Session  # noqa: E402
 
 st.set_page_config(page_title="Nyay Saathi: get your money back", page_icon="⚖️", layout="wide")
 

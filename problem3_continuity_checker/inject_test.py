@@ -6,7 +6,7 @@ places (seeded, so results are reproducible), run the checker, and count which
 planted errors appear in the report. New issues that were not planted and not in
 the clean run are counted as noise.
 
-  python3 -m p3_continuity.inject_test --input "<folder>" --trials 5
+  python3 -m problem3_continuity_checker.inject_test --input "<folder>" --trials 5
 """
 from __future__ import annotations
 
@@ -20,7 +20,7 @@ import tempfile
 from collections import Counter
 
 from common.screenplay import load_show
-from p3_continuity.checks import proper_names, run_checks
+from problem3_continuity_checker.checks import proper_names, run_checks
 
 
 def typo(word: str, rng: random.Random) -> str:
@@ -100,7 +100,7 @@ def main():
     ap.add_argument("--input", required=True)
     ap.add_argument("--trials", type=int, default=5)
     ap.add_argument("--seed-base", type=int, default=1000, help="change for a held-out run")
-    ap.add_argument("--out", default="outputs/p3/injection_test.md")
+    ap.add_argument("--out", default="outputs/problem3/injection_test.md")
     a = ap.parse_args()
     norm = lambda t: re.sub(r"\d+", "#", t)
     clean = {norm(i["title"]) for i in run_checks(load_show(a.input))}

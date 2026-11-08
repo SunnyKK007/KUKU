@@ -7,7 +7,7 @@ The test checks that what reaches the user is still safe: the validator strips
 the inventions, the code-level escalation still fires, facts are merged, and
 the rephrase step keeps card references.
 
-Run:  python3 -m p2_lawyer.test_model_stub
+Run:  python3 -m problem2_ai_lawyer.test_model_stub
 """
 from __future__ import annotations
 
@@ -54,7 +54,7 @@ class HallucinatingLLM:
 
 
 def run(verbose: bool = True) -> dict:
-    logging.getLogger("p2_lawyer").setLevel(logging.ERROR)
+    logging.getLogger("problem2_ai_lawyer").setLevel(logging.ERROR)
     s = Session(model="offline", today=dt.date(2026, 11, 8))
     s.llm = HallucinatingLLM()
     r1 = s.reply("Mera landlord Hyderabad mein 40000 deposit wapas nahi kar raha, aur kal usne dhamki di ki maarega")

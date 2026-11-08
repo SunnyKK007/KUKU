@@ -1,4 +1,4 @@
-"""Render docs/*_solution.md to PDF with headless Chrome and report page counts.
+"""Render docs/*_report.md to PDF with headless Chrome and report page counts.
 Usage: python3 docs/build_pdfs.py"""
 import pathlib
 import subprocess
@@ -32,7 +32,7 @@ def fix_lists(text: str) -> str:
     return "\n".join(out)
 
 
-for md_file in sorted(HERE.glob("*_solution.md")):
+for md_file in sorted(HERE.glob("*_report.md")):
     html = markdown.markdown(fix_lists(md_file.read_text()), extensions=["tables"])
     html_file = md_file.with_suffix(".html")
     html_file.write_text(f"<!doctype html><html><head><meta charset='utf-8'><style>{CSS}</style></head><body>{html}</body></html>")

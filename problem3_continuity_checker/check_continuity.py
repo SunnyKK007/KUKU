@@ -1,8 +1,8 @@
 """
 Continuity checker for AI microdrama scripts.
 
-  python3 -m p3_continuity.check_continuity --input "<folder of episode .txt>" --model offline
-  python3 -m p3_continuity.check_continuity --input "<folder>" --model gemini:gemini-2.5-flash
+  python3 -m problem3_continuity_checker.check_continuity --input "<folder of episode .txt>" --model offline
+  python3 -m problem3_continuity_checker.check_continuity --input "<folder>" --model gemini:gemini-2.5-flash
 
 Writes to --out: continuity_report.md, issues.json, issues.csv, show_bible.json
 """
@@ -16,9 +16,9 @@ import time
 
 from common.llm import LLM
 from common.screenplay import load_show
-from p3_continuity.bible import build_bible
-from p3_continuity.checks import SEV_ORDER, run_checks
-from p3_continuity.llm_check import run_llm_checks
+from problem3_continuity_checker.bible import build_bible
+from problem3_continuity_checker.checks import SEV_ORDER, run_checks
+from problem3_continuity_checker.llm_check import run_llm_checks
 
 
 def run(folder: str, model: str | None = "offline", out: str | None = None, progress=None) -> dict:
@@ -83,7 +83,7 @@ def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--input", required=True)
     ap.add_argument("--model", default=None)
-    ap.add_argument("--out", default="outputs/p3")
+    ap.add_argument("--out", default="outputs/problem3")
     a = ap.parse_args()
     res = run(a.input, a.model, a.out)
     print(f"{res['episodes']} episodes, model={res['model']}, {res['seconds']}s, issues: {res['issue_counts']}")

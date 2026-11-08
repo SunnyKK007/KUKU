@@ -4,9 +4,9 @@ Kuku makes AI-generated microdramas, short vertical series with 1 to 2 minute ep
 
 | Problem | Folder | What it does |
 |---|---|---|
-| 1. Find the promos | `p1_promos/` | Reads timestamped screenplays and returns ranked 20-60 second promos with segments, hook, cliffhanger and a reason |
-| 2. AI lawyer | `p2_lawyer/` | Helps a person in India recover a deposit, refund or unpaid salary, and cannot cite law that isn't on a verified list |
-| 3. Continuity checker | `p3_continuity/` | Finds names, titles, voice labels and props that drift between episodes of an AI-generated series |
+| 1. Find the promos | `problem1_promo_finder/` | Reads timestamped screenplays and returns ranked 20-60 second promos with segments, hook, cliffhanger and a reason |
+| 2. AI lawyer | `problem2_ai_lawyer/` | Helps a person in India recover a deposit, refund or unpaid salary, and cannot cite law that isn't on a verified list |
+| 3. Continuity checker | `problem3_continuity_checker/` | Finds names, titles, voice labels and props that drift between episodes of an AI-generated series |
 
 Kuku's input pack (the brief and 50 episode scripts of one show) is confidential, so it is not in this repo. Neither are the outputs for Problems 1 and 3, which quote the scripts.
 
@@ -24,13 +24,13 @@ Kuku's input pack (the brief and 50 episode scripts of one show) is confidential
 You need Python 3.11 or newer. Google Chrome is only used to rebuild the PDFs.
 
 ```bash
-cd ~/Downloads/KUKU/3_CODE
+cd ~/Downloads/KUKU/2_Code
 pip install -r requirements.txt
 ```
 
-Run every command from `3_CODE/`. Each tool works with no API key, in an offline mode that uses rules only, costs nothing and gives the same answer every time. Adding a key lets a model handle what rules can't: language, story understanding, and judging a clip as a stranger would.
+Run every command from `2_Code/`. Each tool works with no API key, in an offline mode that uses rules only, costs nothing and gives the same answer every time. Adding a key lets a model handle what rules can't: language, story understanding, and judging a clip as a stranger would.
 
-To add a key, create a file named `.env` in `3_CODE/` (Finder hides it; press Cmd+Shift+. to see it) with one line:
+To add a key, create a file named `.env` in `2_Code/` (Finder hides it; press Cmd+Shift+. to see it) with one line:
 
 ```
 GEMINI_API_KEY=your_key_here
@@ -55,36 +55,36 @@ Without the flag, a tool uses the first key it finds in `.env`, or offline mode 
 Problem 1, about 25 seconds for 50 episodes:
 
 ```bash
-python3 -m p1_promos.find_promos --input "../4_Kuku_input_pack/episodes" --model offline --out outputs/p1_check
-python3 -m p1_promos.evaluate --run outputs/p1_check/promos.json --input "../4_Kuku_input_pack/episodes"
+python3 -m problem1_promo_finder.find_promos --input "../1_Assignment/episodes" --model offline --out outputs/problem1_check
+python3 -m problem1_promo_finder.evaluate --run outputs/problem1_check/promos.json --input "../1_Assignment/episodes"
 ```
 
-Then open `outputs/p1_check/review.html` in a browser.
+Then open `outputs/problem1_check/review.html` in a browser.
 
-Problem 2 (details in `p2_lawyer/README.md`):
+Problem 2 (details in `problem2_ai_lawyer/README.md`):
 
 ```bash
-python3 -m p2_lawyer.run_tests --model offline
-python3 -m p2_lawyer.test_validator
-python3 -m p2_lawyer.test_model_stub
-streamlit run p2_lawyer/app.py
+python3 -m problem2_ai_lawyer.run_tests --model offline
+python3 -m problem2_ai_lawyer.test_validator
+python3 -m problem2_ai_lawyer.test_model_stub
+streamlit run problem2_ai_lawyer/app.py
 ```
 
 Problem 3, under a second for the rules:
 
 ```bash
-python3 -m p3_continuity.check_continuity --input "../4_Kuku_input_pack/episodes" --model offline --out outputs/p3_check
-python3 -m p3_continuity.inject_test --input "../4_Kuku_input_pack/episodes" --trials 10 --seed-base 7000
+python3 -m problem3_continuity_checker.check_continuity --input "../1_Assignment/episodes" --model offline --out outputs/problem3_check
+python3 -m problem3_continuity_checker.inject_test --input "../1_Assignment/episodes" --trials 10 --seed-base 7000
 ```
 
-Then open `outputs/p3_check/continuity_report.md`.
+Then open `outputs/problem3_check/continuity_report.md`.
 
 The web apps:
 
 ```bash
-streamlit run p1_promos/app.py
-streamlit run p3_continuity/app.py
-streamlit run p2_lawyer/app.py
+streamlit run problem1_promo_finder/app.py
+streamlit run problem3_continuity_checker/app.py
+streamlit run problem2_ai_lawyer/app.py
 ```
 
 The Problem 1 and 3 apps take uploaded `.txt` files or a `.zip`, or, when running locally, a folder path.
@@ -92,8 +92,8 @@ The Problem 1 and 3 apps take uploaded `.txt` files or a `.zip`, or, when runnin
 To run on a new show, point `--input` at any folder of episode `.txt` files in the same format:
 
 ```bash
-python3 -m p1_promos.find_promos --input "/path/to/new show" --model offline --out outputs/new_p1
-python3 -m p3_continuity.check_continuity --input "/path/to/new show" --model offline --out outputs/new_p3
+python3 -m problem1_promo_finder.find_promos --input "/path/to/new show" --model offline --out outputs/new_p1
+python3 -m problem3_continuity_checker.check_continuity --input "/path/to/new show" --model offline --out outputs/new_p3
 ```
 
 I tested this on a 10-episode subset and in a clean copy of the project, and the results matched the saved runs exactly.
@@ -120,7 +120,7 @@ Kuku's editors watch every episode to choose promo moments. A promo is a 20 to 6
 | Rank | Code | Final score, a small bonus for early episodes, then at most one promo per episode, three per five-episode stretch, and no trope over a third of the slate. Second-best clips are kept as alternates |
 | Review | Human | `review.html` and the Streamlit app show each pick with its script for an editor to approve or reject |
 
-The full run produced 25 promos across 25 episodes, 10 of them stitched cold opens, covering all 7 story tropes. Every one is 20 to 60 seconds, stays inside its episode, cuts no spoken line and has a sound or action beat in the first 3 seconds, and all 676 script lines quoted in them match the episode files at their timestamps. For recall I wrote 16 must-catch moments from the episode loglines before tuning (`gold_moments.json`). Nine appear in the top 25, and 10 when the editor also sees the alternates. The top 10 catches only 4, because the slate rules spread picks across the show. My audit of the top 12 rated 3 strong, 6 good, 1 mixed, 1 weak and 1 duplicate of another pick. Reading the first version's results exposed bugs: a hand-in-hand walk into sunlight counted as a cliffhanger, and "strikes flint over kindling" counted as violence. That version is kept in `outputs/p1_baseline/`.
+The full run produced 25 promos across 25 episodes, 10 of them stitched cold opens, covering all 7 story tropes. Every one is 20 to 60 seconds, stays inside its episode, cuts no spoken line and has a sound or action beat in the first 3 seconds, and all 676 script lines quoted in them match the episode files at their timestamps. For recall I wrote 16 must-catch moments from the episode loglines before tuning (`gold_moments.json`). Nine appear in the top 25, and 10 when the editor also sees the alternates. The top 10 catches only 4, because the slate rules spread picks across the show. My audit of the top 12 rated 3 strong, 6 good, 1 mixed, 1 weak and 1 duplicate of another pick. Reading the first version's results exposed bugs: a hand-in-hand walk into sunlight counted as a cliffhanger, and "strikes flint over kindling" counted as violence. That version is kept in `outputs/problem1_first_version/`.
 
 The picks I would post first:
 1. E13, 00:45.80 to 01:20.50. Her husband screams at her to stop as she crawls barehanded into thorns to save him.
@@ -155,7 +155,7 @@ The model never writes law. Each card has a plain summary, the exact section, an
 
 The card sources are official: the Consumer Protection Act 2019 gazette, PIB releases, India Code, NALSA and consumerhelpline.gov.in. A few items are marked medium confidence, such as the Model Tenancy Act two-month deposit cap, which I confirmed only from an index of the official PDF. Anything I couldn't verify has no card: the civil time limit to sue for a deposit, state rent Acts, legal-aid income limits, and any case law.
 
-I wrote 15 test personas (`test_cases.json`), including Hinglish, Hindi and Tamil messages, a case-law request, a divorce question, a threatened tenant, a large salary claim, no proof at all, a vague one-liner, a Model Tenancy Act state and a running court case. Each produces an unedited transcript in `outputs/p2/`.
+I wrote 15 test personas (`test_cases.json`), including Hinglish, Hindi and Tamil messages, a case-law request, a divorce question, a threatened tenant, a large salary claim, no proof at all, a vague one-liner, a Model Tenancy Act state and a running court case. Each produces an unedited transcript in `outputs/problem2/`.
 
 | Check | Result |
 |---|---|
@@ -197,7 +197,7 @@ On the real scripts the rules flag 15 issues in under a second. Checked by hand,
 | After fixing two causes, same seeds | 23 | 23 |
 | Held-out run, 10 new trials | 45 | 44 (98%), no false alarms |
 
-I ran the model pass on all 50 episodes with free Gemini 3 Flash models, switching models as each one's daily quota of about 20 requests ran out (`outputs/p3_model/`). It dropped 14 findings whose quotes weren't in the script and kept 58, with one episode timing out. About half are real and are things the rules can't see, such as vanishing bandages, a wound that moves, chains and prison clothes that change, and "Aristocratic Woman" in E7 being Clarissa. The rest come from invented earlier facts or normal changes, such as a new gown on a new day, so model findings reach the editor as "check" rather than "fix".
+I ran the model pass on all 50 episodes with free Gemini 3 Flash models, switching models as each one's daily quota of about 20 requests ran out (`outputs/problem3_with_model/`). It dropped 14 findings whose quotes weren't in the script and kept 58, with one episode timing out. About half are real and are things the rules can't see, such as vanishing bandages, a wound that moves, chains and prison clothes that change, and "Aristocratic Woman" in E7 being Clarissa. The rest come from invented earlier facts or normal changes, such as a new gown on a new day, so model findings reach the editor as "check" rather than "fix".
 
 The rules can't tell that two different descriptions are one person, so they miss that ALEXANDER'S MOTHER and DOWAGER DUCHESS are the same, that LADY IN GOLD GOWN is Clarissa, and that NOBLEWOMAN is Catherine. The planted errors are error types I chose, so 98% is an upper bound. The tool can't judge intent either: a deliberate alias looks like an error, so a person decides.
 
@@ -217,7 +217,7 @@ The rules can't tell that two different descriptions are one person, so they mis
 ## Troubleshooting
 | Problem | Fix |
 |---|---|
-| `ModuleNotFoundError: common` | Run commands from `3_CODE/`, using `python3 -m ...` as shown. |
+| `ModuleNotFoundError: common` | Run commands from `2_Code/`, using `python3 -m ...` as shown. |
 | `GROQ_API_KEY is not set` | Add the key to `.env`, or add `--model offline`. |
 | Model run hits a rate limit | The adapter retries and, with a model list, moves to the next model. Cached answers are reused on a rerun. |
 | Model output is not valid JSON | The parser handles code fences and extra text. If it still fails, the tool skips that clip or episode and keeps going. |

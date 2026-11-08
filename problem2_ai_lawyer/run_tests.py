@@ -2,8 +2,8 @@
 Run every persona in test_cases.json through the engine and write the raw,
 unedited transcripts plus automatic checks.
 
-    python3 -m p2_lawyer.run_tests --model offline
-    python3 -m p2_lawyer.run_tests --model groq:llama-3.3-70b-versatile --out outputs/p2_groq
+    python3 -m problem2_ai_lawyer.run_tests --model offline
+    python3 -m problem2_ai_lawyer.run_tests --model groq:llama-3.3-70b-versatile --out outputs/problem2_groq
 
 Outputs: <out>/<case_id>.md, <out>/summary.json, <out>/guardrail_tests.json
 """
@@ -115,7 +115,7 @@ def run_case(case: dict, model: str) -> tuple[str, dict]:
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--model", default="offline")
-    ap.add_argument("--out", default=str(ROOT / "outputs" / "p2"))
+    ap.add_argument("--out", default=str(ROOT / "outputs" / "problem2"))
     ap.add_argument("--only", default=None, help="run one case id")
     args = ap.parse_args()
     logging.basicConfig(level=logging.ERROR)

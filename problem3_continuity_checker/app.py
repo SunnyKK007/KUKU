@@ -1,6 +1,6 @@
 """
 Streamlit app for the continuity checker.
-Run locally:  streamlit run p3_continuity/app.py
+Run locally:  streamlit run problem3_continuity_checker/app.py
 """
 from __future__ import annotations
 
@@ -16,7 +16,7 @@ sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent.parent))
 import streamlit as st  # noqa: E402
 
 from common.llm import PROVIDERS, first_available_spec  # noqa: E402
-from p3_continuity.check_continuity import run  # noqa: E402
+from problem3_continuity_checker.check_continuity import run  # noqa: E402
 
 st.set_page_config(page_title="Continuity Checker", layout="wide")
 st.title("Continuity Checker")

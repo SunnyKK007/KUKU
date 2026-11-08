@@ -6,15 +6,15 @@ and unpaid salary. It builds a case file from a messy story, explains where the
 person stands using only verified law, drafts the notice, and lets them practise
 against the other side. Anything outside scope is sent to a lawyer or free legal aid.
 
-All commands run from the **repo root** (`3_CODE/`), so `common/` imports work.
+All commands run from the **repo root** (`2_Code/`), so `common/` imports work.
 
 ## 1. Run with no key (offline, rules only, free)
 
 ```bash
-python3 -m p2_lawyer.run_tests --model offline   # 15 personas -> outputs/p2/*.md + summary.json
-python3 -m p2_lawyer.test_validator              # guardrail test: fake laws, cases, helplines
-python3 -m p2_lawyer.test_model_stub             # model-mode code path with a deliberately lying fake model
-streamlit run p2_lawyer/app.py                   # the chat app
+python3 -m problem2_ai_lawyer.run_tests --model offline   # 15 personas -> outputs/problem2/*.md + summary.json
+python3 -m problem2_ai_lawyer.test_validator              # guardrail test: fake laws, cases, helplines
+python3 -m problem2_ai_lawyer.test_model_stub             # model-mode code path with a deliberately lying fake model
+streamlit run problem2_ai_lawyer/app.py                   # the chat app
 ```
 
 ## 2. Run with a model (better language handling)
@@ -23,9 +23,9 @@ Create a file named `.env` at the repo root with one free key, e.g. `GROQ_API_KE
 or `GEMINI_API_KEY=...`. Then:
 
 ```bash
-python3 -m p2_lawyer.run_tests --model groq:llama-3.3-70b-versatile --out outputs/p2_groq
-python3 -m p2_lawyer.run_tests --model gemini:gemini-2.5-flash --out outputs/p2_gemini
-streamlit run p2_lawyer/app.py        # pick the model in the sidebar
+python3 -m problem2_ai_lawyer.run_tests --model groq:llama-3.3-70b-versatile --out outputs/problem2_groq
+python3 -m problem2_ai_lawyer.run_tests --model gemini:gemini-2.5-flash --out outputs/problem2_gemini
+streamlit run problem2_ai_lawyer/app.py        # pick the model in the sidebar
 ```
 
 Swapping the model is one string (`common/llm.py`). Any OpenAI-compatible endpoint works via
@@ -38,8 +38,8 @@ detection). Without it the app shows a message and you type instead.
 ## 3. Deploy on Streamlit Community Cloud (free)
 
 1. Push the repo to GitHub (the `.gitignore` already excludes `.env`).
-2. On share.streamlit.io: **New app** -> pick the repo -> main file path `p2_lawyer/app.py`.
-   Streamlit installs `p2_lawyer/requirements.txt` (it looks next to the entry point first).
+2. On share.streamlit.io: **New app** -> pick the repo -> main file path `problem2_ai_lawyer/app.py`.
+   Streamlit installs `problem2_ai_lawyer/requirements.txt` (it looks next to the entry point first).
 3. **Advanced settings -> Secrets**: add e.g. `GROQ_API_KEY = "..."` (and `SARVAM_API_KEY` for voice).
    The app copies secrets into environment variables. With no secrets it runs offline.
 
