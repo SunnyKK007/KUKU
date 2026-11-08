@@ -8,7 +8,6 @@ Three tools for the production side of AI-generated microdramas: short vertical 
 | **Promo Finder** | Reads a show's screenplays and returns a ranked shortlist of 20 to 60 second promo clips, with exact timestamps, the hook, the cliffhanger and why each works | `problem1_promo_finder/` |
 | **Nyay Saathi** | A chat assistant that helps people in India recover a security deposit, a refund or unpaid salary, and cannot cite a law that has not been verified | `problem2_ai_lawyer/` |
 
-![Continuity Checker results](assets/screenshots/continuity-checker-results.jpg)
 
 Every tool runs with no API key and no cost. Adding a key from any major AI provider unlocks a deeper review, and the model can be changed with a single setting.
 
