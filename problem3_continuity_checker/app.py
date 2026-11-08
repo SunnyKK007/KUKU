@@ -35,7 +35,7 @@ ui.apply_theme()
 SEV = {
     "high": ("High", "#B91C1C", "#FEF2F2", "Spoken aloud, so viewers hear it and it reaches subtitles and dubs"),
     "medium": ("Medium", "#B45309", "#FFFBEB", "Reaches the video prompt or the choice of AI voice"),
-    "low": ("Low", "#1D4ED8", "#EFF6FF", "Worth a look, but unlikely to reach viewers"),
+    "low": ("Low", "#0F766E", "#F0FDFA", "Worth a look, but unlikely to reach viewers"),
     "info": ("Info", "#475569", "#F1F5F9", "Formatting and script notes"),
 }
 with st.sidebar:
@@ -194,7 +194,7 @@ with head_l:
                 unsafe_allow_html=True)
 
 counts = {k: sum(1 for i in scoped if i["severity"] == k) for k in SEV}
-ui.stat_cards([("Episodes", res["episodes"], "#4338CA", res["model"].split(" (")[0])]
+ui.stat_cards([("Episodes", res["episodes"], "#18181B", res["model"].split(" (")[0])]
               + [(SEV[k][0], counts[k], SEV[k][1], CARD_HINT[k]) for k in SEV])
 
 if view in ("ai", "both"):

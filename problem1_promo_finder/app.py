@@ -107,7 +107,7 @@ ui.spacer(14)
 st.divider()
 st.markdown(f'<p class="sec-title">Ranked promos</p><p class="sec-sub">{len(res["promos"])} promos from '
             f'{res["episodes"]} episodes, found in {res["seconds"]} s.</p>', unsafe_allow_html=True)
-ui.stat_cards([("Episodes", res["episodes"], "#4338CA", f"{round(res['runtime_minutes'])} minutes read"),
+ui.stat_cards([("Episodes", res["episodes"], "#18181B", f"{round(res['runtime_minutes'])} minutes read"),
                ("Promos", len(res["promos"]), "#047857", "ranked best first"),
                ("Judged by AI", res["judged"], "#B45309", "top clips re-scored"),
                ("Run time", f"{res['seconds']} s", "#475569", res["model"].split(" (")[0])])

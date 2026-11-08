@@ -13,7 +13,7 @@ CSS = """
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 :root {
   --ink: #0F172A; --ink2: #475569; --ink3: #64748B; --line: #E2E8F0; --bg: #F8FAFC; --card: #FFFFFF;
-  --accent: #4338CA; --accent-soft: #EEF2FF; --accent-line: #C7D2FE;
+  --accent: #18181B; --accent-soft: #F4F4F5; --accent-line: #A1A1AA;
 }
 html, body, [class*="css"], .stMarkdown, button, input, textarea, label, select { font-family: 'Inter', system-ui, sans-serif; }
 .stApp { background: var(--bg); }
@@ -23,7 +23,7 @@ header[data-testid="stHeader"] { background: transparent; }
 [data-testid="stExpandSidebarButton"], [data-testid="stSidebarCollapsedControl"] { display: flex !important; visibility: visible !important; }
 h1, h2, h3 { letter-spacing: -0.01em; color: var(--ink); }
 p, li { color: var(--ink2); line-height: 1.65; }
-a { color: var(--accent); }
+a { color: var(--accent); text-decoration: underline; text-underline-offset: 3px; text-decoration-color: #A1A1AA; }
 
 /* hero */
 .hero { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 30px 34px; margin-bottom: 22px;
@@ -63,7 +63,7 @@ div[data-testid="stVerticalBlockBorderWrapper"] { background: var(--card); borde
 /* controls */
 .stButton > button[kind="primary"], .stDownloadButton > button { border-radius: 10px; height: 46px; font-weight: 600; font-size: 15px; }
 .stButton > button[kind="primary"] { background: var(--accent); border: 1px solid var(--accent); }
-.stButton > button[kind="primary"]:hover { background: #3730A3; border-color: #3730A3; }
+.stButton > button[kind="primary"]:hover { background: #3F3F46; border-color: #3F3F46; }
 .stButton > button[kind="primary"] p, .stButton > button[kind="primary"] span, .stButton > button[kind="primary"] div { color: #FFFFFF !important; font-weight: 600; }
 .stButton > button[kind="primary"]:disabled { background: #CBD5E1; border-color: #CBD5E1; }
 .stButton > button[kind="primary"]:disabled p { color: #F8FAFC !important; }
@@ -99,8 +99,8 @@ div[data-testid="stExpander"] summary p { font-weight: 500; font-size: 15px; col
 [class*="st-key-cardpick2"] div[role="radiogroup"] { grid-template-columns: repeat(2, 1fr); }
 [class*="st-key-cardpick"] label { background: var(--card); border: 1.5px solid var(--line); border-radius: 14px; padding: 18px 20px;
         min-height: 92px; cursor: pointer; transition: all .15s ease; align-items: flex-start; margin: 0; width: 100%; }
-[class*="st-key-cardpick"] label:hover { border-color: var(--accent-line); background: #FAFAFF; }
-[class*="st-key-cardpick"] label:has(input:checked) { border-color: var(--accent); background: var(--accent-soft); box-shadow: 0 0 0 3px rgba(67,56,202,.12); }
+[class*="st-key-cardpick"] label:hover { border-color: var(--accent-line); background: #FAFAFA; }
+[class*="st-key-cardpick"] label:has(input:checked) { border-color: var(--accent); background: var(--accent-soft); box-shadow: 0 0 0 3px rgba(24,24,27,.08); }
 [class*="st-key-cardpick"] label p { font-size: 14.5px; line-height: 1.5; color: var(--ink3); }
 [class*="st-key-cardpick"] label p strong { font-size: 17px; color: var(--ink); font-weight: 650; }
 @media (max-width: 820px) {
@@ -125,7 +125,7 @@ section[data-testid="stSidebar"] h3 { font-size: 18px; font-weight: 650; }
 """
 
 TONES = {
-    "info": ("#1D4ED8", "#EFF6FF"),
+    "info": ("#3F3F46", "#F4F4F5"),
     "ok": ("#047857", "#ECFDF5"),
     "warn": ("#B45309", "#FFFBEB"),
     "bad": ("#B91C1C", "#FEF2F2"),
