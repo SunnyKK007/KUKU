@@ -33,8 +33,8 @@ Three working prototypes built for Kuku's AI Generalist assignment. Kuku produce
 Requirements: Python 3.11 or newer.
 
 ```bash
-git clone https://github.com/YOUR-USERNAME/kuku-ai-generalist.git
-cd kuku-ai-generalist
+git clone https://github.com/SunnyKK007/KUKU.git
+cd KUKU
 pip install -r requirements.txt
 ```
 
