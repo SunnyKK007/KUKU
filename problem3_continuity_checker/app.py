@@ -74,10 +74,27 @@ with st.sidebar:
     options = ["offline"] + [p for p in PROVIDERS if p != "custom"]
     choice = st.selectbox("Provider", options, index=0,
                           help="Offline uses the rule checks only. Pick a provider to add the AI story-level pass.")
-    model_name = st.text_input("Model id", value="",
-                               placeholder="blank = provider default", disabled=(choice == "offline"))
-    spec = choice if choice == "offline" or not model_name else f"{choice}:{model_name}"
-    st.caption("Rules run in under a second for 50 episodes. The model pass takes a few minutes.")
+    examples = {
+        "gemini": ("gemini-3.5-flash", "gemini-3.1-flash-lite"),
+        "groq": ("llama-3.3-70b-versatile", "llama-3.1-8b-instant"),
+        "anthropic": ("claude-sonnet-5-5", "claude-haiku-5-5"),
+        "openai": ("gpt-4o-mini", "gpt-4o"),
+        "openrouter": ("meta-llama/llama-3.3-70b-instruct:free", "mistralai/mistral-7b-instruct:free"),
+        "ollama": ("llama3.1:8b", "qwen2.5:7b"),
+    }
+    ex = examples.get(choice)
+    model_name = st.text_input(
+        "Model id", value="",
+        placeholder=f"e.g. {ex[0]}" if ex else "not needed in offline mode",
+        disabled=(choice == "offline"),
+        help="The exact name of the AI model to use. Leave it blank to use the provider's default model.")
+    if ex:
+        st.caption(f"Type the model's exact name, for example `{ex[0]}` or `{ex[1]}`. "
+                   f"Leave it blank to use the default ({ex[0]}). To try several, separate them with commas: "
+                   f"`{ex[0]},{ex[1]}`. The next one is used if one runs out of its free daily limit.")
+    else:
+        st.caption("Offline uses rules only, so no model is needed. Results come in under a second.")
+    spec = choice if choice == "offline" or not model_name else f"{choice}:{model_name.replace(' ', '')}"
     st.divider()
     st.markdown("**Severity guide**")
     for key, (name, color, bg, dot, meaning) in SEV.items():
