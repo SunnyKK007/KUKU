@@ -4,9 +4,9 @@
 
 | Tool | Open it |
 |---|---|
-| Continuity Checker | [kuku-continuity-checker.streamlit.app](https://kuku-continuity-checker.streamlit.app) |
-| Promo Finder | [kuku-promo-finder.streamlit.app](https://kuku-promo-finder.streamlit.app) |
-| Nyay Saathi | [kuku-nyay-saathi.streamlit.app](https://kuku-nyay-saathi.streamlit.app) |
+| Continuity Checker | [kuku-continuity-checker.streamlit.app](https://continuitychecker.streamlit.app/) |
+| Promo Finder | [kuku-promo-finder.streamlit.app](https://promofinder.streamlit.app/) |
+| Nyay Saathi | [kuku-nyay-saathi.streamlit.app](https://ailawyerkuku.streamlit.app/) |
 
 The free mode needs no account and no API key.
 
